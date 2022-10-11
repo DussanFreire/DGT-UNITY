@@ -14,6 +14,7 @@ public class Node : MonoBehaviour
     public GameObject node;
     public Color color;
     public EdgeColorModel edgeColors;
+    
     public NodeColorModel nodeColors;
     public List<int> childIds;
     public List<EdgeModel> edges = new List<EdgeModel>();
@@ -21,7 +22,7 @@ public class Node : MonoBehaviour
     public List<SpringJoint> joints = new List<SpringJoint>();
     public List<Node> nodeParent = new List<Node>();
     public List<Node> nodeChildren = new List<Node>();
-    
+
     bool clicked = false;
     GameObject textBackground;
     // Start is called before the first frame update
