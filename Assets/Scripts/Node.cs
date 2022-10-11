@@ -8,12 +8,7 @@ public class Node : MonoBehaviour
     public List<Arrow> allArrows { get; set; }
     public List<EdgeModel> allEdges { get; set; }
     public List<Node> allNodes { get; set; }
-
-
     public List<Arrow> arrows;
-
-
-
     public int id;
     public GameObject edgePrefab;
     public GameObject node;
