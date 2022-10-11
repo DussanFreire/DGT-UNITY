@@ -14,7 +14,6 @@ public class Node : MonoBehaviour
     public GameObject node;
     public Color color;
     public EdgeColorModel edgeColors;
-    
     public NodeColorModel nodeColors;
     public List<int> childIds;
     public List<EdgeModel> edges = new List<EdgeModel>();
