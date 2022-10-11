@@ -16,6 +16,7 @@ public class Node : MonoBehaviour
     public EdgeColorModel edgeColors;
     public NodeColorModel nodeColors;
     public List<int> childIds;
+    
     public List<EdgeModel> edges = new List<EdgeModel>();
     public List<EdgeModel> edgesParent = new List<EdgeModel>();
     public List<SpringJoint> joints = new List<SpringJoint>();
