@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Input;
+using System;
 
 public class Node : MonoBehaviour
 {
@@ -23,7 +24,6 @@ public class Node : MonoBehaviour
 
     public List<Node> nodeChildren = new List<Node>();
     
-
     bool clicked = false;
     GameObject textBackground;
     // Start is called before the first frame update
@@ -36,7 +36,6 @@ public class Node : MonoBehaviour
         textBackground.transform.rotation = Camera.main.transform.rotation;
         textBackground.GetComponent<MeshRenderer>().material.color = Color.black;
         transform.GetChild(0).GetComponent<TextMesh>().text = "";
-        transform.GetChild(1).GetComponent<TextMesh>().text = ""; //nodo
         startConfiguration();
         MakeChangeColorOnTouch(node);
 
@@ -55,6 +54,8 @@ public class Node : MonoBehaviour
   
 
     }
+
+   
     public List<Arrow> generateCube(Vector3 position, int idSource, int idTarget)
     {
 
@@ -63,6 +64,7 @@ public class Node : MonoBehaviour
         arrowObject.transform.rotation = Quaternion.LookRotation(position);
         arrowObject.transform.localPosition = position;
         arrowObject.transform.localScale = new Vector3(0.01f, 0.01f, 0.01f);
+        arrowObject.GetComponent<MeshRenderer>().material.SetFloat("_Mode", 3);
         arrowObject.GetComponent<MeshRenderer>().material.color = getColor(EdgeColorModel.regularEdge);
         Arrow arr = new Arrow();
         arr.arr = arrowObject;
@@ -102,8 +104,15 @@ public class Node : MonoBehaviour
 
     public void setColor(Color color)
     {
-        this.color = color;
+
+        this.color = new Color(color.r,color.g,color.b,0.25f);
     }
+     public void setColors(EdgeColorModel edgeColor, NodeColorModel nodeColor)
+    {
+        this.edgeColors = edgeColor;
+        this.nodeColors = nodeColor;
+    }
+
 
     public void setChildIds(List<int> childIds)
     {
@@ -130,12 +139,7 @@ public class Node : MonoBehaviour
         this.node.GetComponent<Renderer>().material.color = getColor(NodeColorModel.pasiveNode);
     }
 
-    public void setColors(EdgeColorModel edgeColor, NodeColorModel nodeColor)
-    {
-        this.edgeColors = edgeColor;
-        this.nodeColors = nodeColor;
-    }
-
+   
     public EdgeModel AddEdge(Node node, int sourceId)
     {
         //Adds fixed joint to the game object 
@@ -207,46 +211,6 @@ public class Node : MonoBehaviour
 
     }
 
-
-    /*  public bool isPaintable(int intensityOfColor)
-      {
-          return (node.GetComponent<Renderer>().material.color == color) || isValidColor(intensityOfColor);
-      } 
-
-      public void addRecursiveColor(Node currentNode, int idOrigin,int baseIntensity )
-      {
-          if (baseIntensity <= 1)
-              changeArrowColor(currentNode,getColor(EdgeColorModel.farEdge));
-          if (currentNode.GetComponent<Renderer>().material.color == getColorByIntensity(childEdge.intensityOfColor))
-              return;
-          foreach (EdgeModel childEdge in currentNode.edges)
-          {
-              if (currentNode.nodeChildren.Exists(n => n.id == childEdge.target && n.id != idOrigin && n.isPaintable(baseIntensity)))
-              {
-                  Node childNode = currentNode.nodeChildren.Find(n => n.id == childEdge.target && n.id != idOrigin && n.isPaintable(baseIntensity));
-                  childEdge.intensityOfColor = baseIntensity + 1;
-                  Color colorRequired = getColorByIntensity(childEdge.intensityOfColor);
-                  showTextLabel(childNode, colorRequired, false);
-                  childNode.node.GetComponent<Renderer>().material.color = colorRequired;
-                  childEdge.edge.GetComponent<Renderer>().material.color = colorRequired;
-                  addRecursiveColor(childNode, idOrigin, childEdge.intensityOfColor);
-              }
-          }
-
-          foreach (EdgeModel parentEdge in currentNode.edgesParent)
-           {
-              if (currentNode.nodeParent.Exists(n => n.id == parentEdge.origin && n.id != idOrigin && n.isPaintable(baseIntensity)))
-              {
-                  Node parentNode = currentNode.nodeParent.Find(n => n.id == parentEdge.origin && n.id != idOrigin && n.isPaintable(baseIntensity));
-                  parentEdge.intensityOfColor = baseIntensity + 1;
-                  Color colorRequired = getColorByIntensity(parentEdge.intensityOfColor);
-                  showTextLabel(parentNode, colorRequired, false);
-                  parentNode.node.GetComponent<Renderer>().material.color = colorRequired;
-                  parentEdge.edge.GetComponent<Renderer>().material.color = colorRequired;
-                  addRecursiveColor(parentNode, idOrigin, parentEdge.intensityOfColor);
-              }
-           }
-      }*/
     public void addRecursiveColor(Node currentNode, int idOrigin, int baseIntensity)
     {
         if (baseIntensity >= 2)
@@ -339,7 +303,7 @@ public class Node : MonoBehaviour
             hideTextLabel(CuerrentNode.allNodes[i]);
         }
     }
-
+    
 
     public void MakeChangeColorOnTouch(GameObject targetNode)
     {
@@ -349,13 +313,38 @@ public class Node : MonoBehaviour
         var pointerHandler = targetNode.AddComponent<PointerHandler>();
         pointerHandler.OnPointerDown.AddListener((e) => {
             resetAllNodes(material);
+            turnTranspAllArrows();
+            turnTranspAllNodes();
+            turnTranspAllEdges();
             activateNodes(material);
 
         });
-        //pointerHandler.OnPointerUp.AddListener((e) => {
-        //    resetNodes(material);
-        //});
+    }
 
+    private void turnTranspAllEdges()
+    {
+        for (int i = 0; i < this.allEdges.Count; i++)
+        {
+            Color edgeColor = getColor(EdgeColorModel.regularEdge);
+            this.allEdges[i].edge.GetComponent<Renderer>().material.color = new Color(edgeColor.r,edgeColor.g,edgeColor.b,0.5f);
+        }
+    }
+
+    private void turnTranspAllArrows()
+    {
+        for (int i = 0; i < this.allArrows.Count; i++)
+        {
+            Color edgeColor = Color.green;
+            this.allArrows[i].arr.GetComponent<MeshRenderer>().material.color = new Color(edgeColor.r,edgeColor.g,edgeColor.b,0.5f);
+        }
+    }
+
+    private void turnTranspAllNodes()
+    {
+        for (int i = 0; i < this.allNodes.Count; i++)
+        {
+            this.allNodes[i].node.GetComponent<Renderer>().material.color =  this.allNodes[i].color;
+        }
     }
 
     private void activateNodes(Material material)
