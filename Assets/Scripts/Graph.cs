@@ -107,16 +107,6 @@ public class Graph : MonoBehaviour
             node.setColors(RequestModel.edgeColors, RequestModel.nodeColors);
 			allNodes.Add(node);
 			List<Arrow> arrs = new List<Arrow>();
-			foreach (Link link in nodeRequest.links)
-			{
-				NodeRequestModel nodeTarget = RequestModel.nodes.Find(n => n.id == link.target);
-				float magnitud = (float)getVectorMagnitud(nodeTarget, nodeRequest);
-				arrs = node.generateCube(new Vector3(getNumber(nodeRequest.x, nodeTarget.x, magnitud), getNumber(nodeRequest.y, nodeTarget.y, magnitud), getNumber(nodeRequest.z, nodeTarget.z, magnitud)), link.source, link.target);
-			}
-			foreach (Arrow aux in arrs)
-			{
-				arrows.Add(aux);
-			}
 		}
 
 		foreach (Node node in allNodes)
@@ -125,25 +115,12 @@ public class Graph : MonoBehaviour
 			if (links.Count > 0)
 			{
 				node.SetEdgePrefab(edgePrefab);
-				// Vector3 scale = node.edgePrefab.transform.GetChild(0).localScale;
-				// scale.z =0.0025f;
-				// node.edgePrefab.transform.GetChild(0).localScale = scale;
+				Vector3 scale = node.edgePrefab.transform.GetChild(0).localScale;
+				scale.z =0.0015f;
+				node.edgePrefab.transform.GetChild(0).localScale = scale;
 				setEdges(node, links, allNodes);
 			}
-			node.allArrows = arrows;
         }
-		// foreach (NodeRequestModel nodeRequest in RequestModel.nodes)
-		// {
-		// 	foreach (Link link in nodeRequest.links)
-		// 	{
-		// 		Node node  = getNodeById(nodeRequest.id, allNodes);
-		// 		NodeRequestModel nodeTarget = RequestModel.nodes.Find(n => n.id == link.target);
-		// 			Vector3 scale = node.edgePrefab.transform.GetChild(0).localScale;
-		// 		float magnitud = (float)getVectorMagnitud(nodeTarget, nodeRequest);
-		// 		scale.z =0.0025f;
-		// 		node.edgePrefab.transform.GetChild(0).localPosition=new Vector3(getNumberArrow(nodeRequest.x, nodeTarget.x, magnitud), getNumberArrow(nodeRequest.y, nodeTarget.y, magnitud), getNumberArrow(nodeRequest.z, nodeTarget.z, magnitud));
-		// 	}
-		// }
         foreach (Node node in allNodes)
         {
 

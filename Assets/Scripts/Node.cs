@@ -6,10 +6,8 @@ using System;
 public class Node : MonoBehaviour
 {
 
-    public List<Arrow> allArrows { get; set; }
     public List<EdgeModel> allEdges { get; set; }
     public List<Node> allNodes { get; set; }
-    public List<Arrow> arrows;
     public int id;
     public GameObject edgePrefab;
     public GameObject node;
@@ -51,28 +49,9 @@ public class Node : MonoBehaviour
             transform.GetChild(0).Rotate(0, 180, 0);
             textBackground.transform.LookAt(pos);
         }
-  
-
     }
 
-   
-    public List<Arrow> generateCube(Vector3 position, int idSource, int idTarget)
-    {
 
-        GameObject arrowObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-
-        arrowObject.transform.rotation = Quaternion.LookRotation(position);
-        arrowObject.transform.localPosition = position;
-        arrowObject.transform.localScale = new Vector3(0.01f, 0.01f, 0.01f);
-        arrowObject.GetComponent<MeshRenderer>().material.SetFloat("_Mode", 3);
-        arrowObject.GetComponent<MeshRenderer>().material.color = getColor(EdgeColorModel.regularEdge);
-        Arrow arr = new Arrow();
-        arr.arr = arrowObject;
-        arr.source = idSource;
-        arr.target = idTarget;
-        arrows.Add(arr);
-        return arrows;
-    }
     public void startConfiguration()
     {
         int i = 0;
@@ -86,8 +65,8 @@ public class Node : MonoBehaviour
             ls.z = Vector3.Distance(transform.position, target.transform.position);
             edge.edge.transform.localScale = ls;
             edge.edge.transform.position = new Vector3((transform.position.x + target.transform.position.x) / 2,
-                              (transform.position.y + target.transform.position.y) / 2,
-                              (transform.position.z + target.transform.position.z) / 2);
+                            (transform.position.y + target.transform.position.y) / 2,
+                            (transform.position.z + target.transform.position.z) / 2);
             i++;
         }
     }
@@ -107,7 +86,7 @@ public class Node : MonoBehaviour
 
         this.color = new Color(color.r,color.g,color.b,0.25f);
     }
-     public void setColors(EdgeColorModel edgeColor, NodeColorModel nodeColor)
+    public void setColors(EdgeColorModel edgeColor, NodeColorModel nodeColor)
     {
         this.edgeColors = edgeColor;
         this.nodeColors = nodeColor;
@@ -139,7 +118,6 @@ public class Node : MonoBehaviour
         this.node.GetComponent<Renderer>().material.color = getColor(NodeColorModel.pasiveNode);
     }
 
-   
     public EdgeModel AddEdge(Node node, int sourceId)
     {
         //Adds fixed joint to the game object 
@@ -215,10 +193,8 @@ public class Node : MonoBehaviour
     {
         if (baseIntensity >= 2)
             return;
-        else
-            changeArrowColor(currentNode, getColor(EdgeColorModel.farEdge));
         foreach (EdgeModel child in currentNode.edges)
-       {
+        {
             if (currentNode.nodeChildren.Exists(n => n.id == child.target && n.id != idOrigin))
             {
                 Node childNode = currentNode.nodeChildren.Find(n => n.id == child.target);
@@ -227,6 +203,7 @@ public class Node : MonoBehaviour
                 childNode.node.GetComponent<Renderer>().material.color = colorRequired;
                 showTextLabel(childNode, colorRequired, false);
                 child.edge.GetComponent<Renderer>().material.color = colorRequired;
+                child.edge.transform.GetChild(0).GetComponent<Renderer>().material.color = colorRequired;
                 addRecursiveColor(childNode, idOrigin, child.intensityOfColor);
             }
         }
@@ -235,16 +212,19 @@ public class Node : MonoBehaviour
         {
 
             if (currentNode.nodeParent.Exists(n => n.id == parent.origin && n.id != idOrigin))
-           {
+            {
                 Node parentNode = currentNode.nodeParent.Find(n => n.id == parent.origin);
                 parent.intensityOfColor = baseIntensity + 1;
                 Color colorRequired = getColorByIntensity(parent.intensityOfColor);
                 showTextLabel(parentNode, colorRequired, false);
                 parentNode.node.GetComponent<Renderer>().material.color = colorRequired;
                 parent.edge.GetComponent<Renderer>().material.color = colorRequired;
+
+                parent.edge.transform.GetChild(0).GetComponent<Renderer>().material.color = colorRequired;
+
                 addRecursiveColor(parentNode, idOrigin, parent.intensityOfColor);
-           }
-       }
+            }
+        }
     }
 
     public void resetActiveEdgesColors(Node currentNode)
@@ -281,7 +261,6 @@ public class Node : MonoBehaviour
                     hideTextLabel(parentNode);
 
                 }
-             
             }
         }
     }
@@ -313,7 +292,6 @@ public class Node : MonoBehaviour
         var pointerHandler = targetNode.AddComponent<PointerHandler>();
         pointerHandler.OnPointerDown.AddListener((e) => {
             resetAllNodes(material);
-            turnTranspAllArrows();
             turnTranspAllNodes();
             turnTranspAllEdges();
             activateNodes(material);
@@ -327,17 +305,11 @@ public class Node : MonoBehaviour
         {
             Color edgeColor = getColor(EdgeColorModel.regularEdge);
             this.allEdges[i].edge.GetComponent<Renderer>().material.color = new Color(edgeColor.r,edgeColor.g,edgeColor.b,0.5f);
+            this.allEdges[i].edge.transform.GetChild(0).GetComponent<Renderer>().material.color = new Color(edgeColor.r, edgeColor.g, edgeColor.b, 0.5f);
         }
     }
 
-    private void turnTranspAllArrows()
-    {
-        for (int i = 0; i < this.allArrows.Count; i++)
-        {
-            Color edgeColor = Color.green;
-            this.allArrows[i].arr.GetComponent<MeshRenderer>().material.color = new Color(edgeColor.r,edgeColor.g,edgeColor.b,0.5f);
-        }
-    }
+
 
     private void turnTranspAllNodes()
     {
@@ -351,7 +323,6 @@ public class Node : MonoBehaviour
     {
         material.color = getColor(NodeColorModel.activeNode);
         addRecursiveColor(this, this.id, 0);
-        changeArrowColor(this, getColor(EdgeColorModel.nearEdge));
         showTextLabel(this, Color.white);
     }
 
@@ -360,7 +331,6 @@ public class Node : MonoBehaviour
     {
         material.color = this.color;
         resetActiveEdgesColors(this);
-        resetArrowColors();
         hideTextLabel(this);
     }
 
@@ -368,35 +338,11 @@ public class Node : MonoBehaviour
     {
         material.color = this.color;
         resetAllEdges(this);
-        resetArrowColors();
         hideTextLabel(this);
     }
 
-    private void changeArrowColor(Node node,Color color)
-    {
-        foreach (Arrow arrow in node.allArrows)
-        {
-            if (node.id == arrow.source)
-            {
-                arrow.arr.GetComponent<MeshRenderer>().material.color = color;
-            }
-            if (node.id == arrow.target)
-            {
-                arrow.arr.GetComponent<MeshRenderer>().material.color = color;
-
-            }
-        }
-    }
 
 
-    private void resetArrowColors()
-    {
- 
-        foreach (Arrow arrow in allArrows)
-        {
-            arrow.arr.GetComponent<MeshRenderer>().material.color = getColor(EdgeColorModel.regularEdge);
-        }
-    }
 
     public  float getWidth(string nodoName, float characterSize)
     {
