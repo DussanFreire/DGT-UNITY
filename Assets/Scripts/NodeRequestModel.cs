@@ -10,6 +10,7 @@ public class NodeRequestModel
 	public List<string> filters;
     public List<Link> links;
 	public List<int> childIds;
+	public bool visible;
 	public float x;
 	public float y;
 	public float z;

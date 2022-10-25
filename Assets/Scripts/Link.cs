@@ -5,4 +5,6 @@ public class Link
 {
     public int source;
     public int target;
+	public bool visible;
+
 }

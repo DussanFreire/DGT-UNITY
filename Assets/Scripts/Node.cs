@@ -9,6 +9,7 @@ public class Node : MonoBehaviour
     public List<EdgeModel> allEdges { get; set; }
     public List<Node> allNodes { get; set; }
     public int id;
+    public bool visible;
     public GameObject edgePrefab;
     public GameObject node;
     public Color color;
@@ -189,6 +190,34 @@ public class Node : MonoBehaviour
 
     }
 
+
+    void changeColor(Node currentNode,Material material){
+        material.color = getColor(NodeColorModel.activeNode);
+        showTextLabel(currentNode, Color.white);
+
+        for (int i = 0; i < this.allEdges.Count; i++)
+        {
+            if(allEdges[i].origin ==currentNode.id || allEdges[i].target ==currentNode.id){
+                Color edgeColor = getColor(NodeColorModel.activeNode);
+                this.allEdges[i].edge.GetComponent<Renderer>().material.color = edgeColor;
+                this.allEdges[i].edge.transform.GetChild(0).GetComponent<Renderer>().material.color =edgeColor;
+            }
+            if(allEdges[i].origin ==currentNode.id ){
+                Color nodeColor = getColor(EdgeColorModel.nearEdge);
+                Node node = this.allNodes.Find(n=>n.id==allEdges[i].target);
+                node.node.GetComponent<Renderer>().material.color =nodeColor;
+                node.showTextLabel(node,nodeColor);
+            }
+            if(allEdges[i].target ==currentNode.id ){
+                Color nodeColor = getColor(EdgeColorModel.nearEdge);
+                Node node = this.allNodes.Find(n=>n.id==allEdges[i].origin);
+                node.node.GetComponent<Renderer>().material.color =nodeColor;
+                node.showTextLabel(node,nodeColor);
+            }
+        }
+
+        
+    }
     public void addRecursiveColor(Node currentNode, int idOrigin, int baseIntensity)
     {
         if (baseIntensity >= 2)
@@ -227,59 +256,11 @@ public class Node : MonoBehaviour
         }
     }
 
-    public void resetActiveEdgesColors(Node currentNode)
+    void resetAllLabels()
     {
-        currentNode.node.GetComponent<Renderer>().material.color = currentNode.color;
-        foreach (EdgeModel child in currentNode.edges)
+        for (int i = 0; i < this.allNodes.Count; i++)
         {
-            if (child.intensityOfColor != 0 )
-            {
-
-                if (currentNode.nodeChildren.Exists(n => n.id == child.target && n.node != null))
-                {
-                    Node childNode = currentNode.nodeChildren.Find(n => n.id == child.target);
-                    child.intensityOfColor = 0;
-                    child.edge.GetComponent<Renderer>().material.color = getColor(EdgeColorModel.regularEdge);
-                    hideTextLabel(childNode);
-                    resetActiveEdgesColors(childNode);
-
-                }
-
-            }
-        }
-
-        foreach (EdgeModel parent in currentNode.edgesParent)
-        {
-            if (parent.intensityOfColor != 0)
-            {
-                if(currentNode.nodeParent.Exists(n => n.id == parent.origin && n.node != null))
-                {
-                    Node parentNode = currentNode.nodeParent.Find(n => n.id == parent.origin);
-                    parent.intensityOfColor = 0;
-                    parent.edge.GetComponent<Renderer>().material.color = getColor(EdgeColorModel.regularEdge);
-                    resetActiveEdgesColors(parentNode);
-                    hideTextLabel(parentNode);
-
-                }
-            }
-        }
-    }
-
-
-    void resetAllEdges(Node CuerrentNode)
-    {
-        for (int i = 0; i < CuerrentNode.allEdges.Count; i++)
-        {
-            if(CuerrentNode.allEdges[i].intensityOfColor != 0)
-            {
-                EdgeModel edgeActive = CuerrentNode.allEdges[i];
-                Node nodeActive = CuerrentNode.allNodes.Find(n => n.id == edgeActive.origin);
-                resetActiveEdgesColors(nodeActive);
-            }
-        }
-        for (int i = 0; i < CuerrentNode.allNodes.Count; i++)
-        {
-            hideTextLabel(CuerrentNode.allNodes[i]);
+            hideTextLabel(this.allNodes[i]);
         }
     }
     
@@ -291,10 +272,11 @@ public class Node : MonoBehaviour
         Material material = targetNode.GetComponent<Renderer>().material;
         var pointerHandler = targetNode.AddComponent<PointerHandler>();
         pointerHandler.OnPointerDown.AddListener((e) => {
-            resetAllNodes(material);
+            resetAllLabels();
             turnTranspAllNodes();
             turnTranspAllEdges();
-            activateNodes(material);
+
+            changeColor(this,material);
 
         });
     }
@@ -303,13 +285,12 @@ public class Node : MonoBehaviour
     {
         for (int i = 0; i < this.allEdges.Count; i++)
         {
+            this.allEdges[i].intensityOfColor = 0;
             Color edgeColor = getColor(EdgeColorModel.regularEdge);
-            this.allEdges[i].edge.GetComponent<Renderer>().material.color = new Color(edgeColor.r,edgeColor.g,edgeColor.b,0.5f);
-            this.allEdges[i].edge.transform.GetChild(0).GetComponent<Renderer>().material.color = new Color(edgeColor.r, edgeColor.g, edgeColor.b, 0.5f);
+            this.allEdges[i].edge.GetComponent<Renderer>().material.color = new Color(edgeColor.r,edgeColor.g,edgeColor.b,0.25f);
+            this.allEdges[i].edge.transform.GetChild(0).GetComponent<Renderer>().material.color = new Color(edgeColor.r, edgeColor.g, edgeColor.b, 0.25f);
         }
     }
-
-
 
     private void turnTranspAllNodes()
     {
@@ -322,27 +303,9 @@ public class Node : MonoBehaviour
     private void activateNodes(Material material)
     {
         material.color = getColor(NodeColorModel.activeNode);
-        addRecursiveColor(this, this.id, 0);
         showTextLabel(this, Color.white);
+        addRecursiveColor(this, this.id, 0);
     }
-
-
-    private void resetNodes(Material material)
-    {
-        material.color = this.color;
-        resetActiveEdgesColors(this);
-        hideTextLabel(this);
-    }
-
-    private void resetAllNodes(Material material)
-    {
-        material.color = this.color;
-        resetAllEdges(this);
-        hideTextLabel(this);
-    }
-
-
-
 
     public  float getWidth(string nodoName, float characterSize)
     {

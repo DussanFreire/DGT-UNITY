@@ -9,28 +9,35 @@ public class Graph : MonoBehaviour
 {
 	public GameObject nodePrefab;
 	GameObject arrowObject;
-
+	bool onInit =true;
 	public GameObject edgePrefab;
 	public List<Arrow> arrows;
     public List<EdgeModel> allEdges { get; set; }
     public List<Node> allNodes { get; set; }
     public List<string> filters { get; set; }
 
-    private const string URL = "https://test-dependencies.herokuapp.com/file/brain";
+    private const string URL_INIT = "https://test-dependencies.herokuapp.com/file/restart";
+    private const string URL_UPDATE = "https://test-dependencies.herokuapp.com/file/brain";
 
 	// Start is called before the first frame update
 	void Start()
 	{
 		allEdges = new List<EdgeModel>();
         allNodes = new List<Node>();
-        GenerateRequest();
+		GenerateRequest();
+		// InvokeRepeating("GenerateRequest", 0.0f, 10.0f);
 	}
 
 
 
 	public void GenerateRequest()
 	{
-		StartCoroutine(ProcessRequest(URL, ResponseCallback));
+		if(onInit){
+			StartCoroutine(ProcessRequest(URL_INIT, ResponseCallback));
+			onInit=false;
+		}else{
+			StartCoroutine(ProcessRequest(URL_UPDATE, ResponseCallback));
+		}
 	}
 
 
@@ -55,12 +62,66 @@ public class Graph : MonoBehaviour
 		}
 	}
 
-	private void ResponseCallback(RequestModel RequestModel)
+	private void ResponseCallback(RequestModel requestModel)
 	{
-		createNodesFromData(RequestModel);
+		if(requestModel.version == 0){
+			createNodesFromData(requestModel);
+		}
+		else
+		{
+			updateNodesFromData(requestModel);
+		}
 	}
 
-	private float getNumber(float source, float target, float magnitud)
+    private void updateNodesFromData(RequestModel requestModel)
+    {
+		foreach (NodeRequestModel nodeRequest in requestModel.nodes)
+		{
+			Node nodeToUpdate = allNodes.Find(n=>n.id == nodeRequest.id);
+			Color color;
+            if (ColorUtility.TryParseHtmlString(nodeRequest.color, out color))
+			{
+				nodeToUpdate.node.GetComponent<Renderer>().material.color = new Color(color.r,color.g,color.b);
+			}
+			nodeToUpdate.visible = nodeRequest.visible;
+			if(nodeToUpdate.visible){
+				nodeToUpdate.setColor(color);
+			}else{
+				nodeToUpdate.node.GetComponent<Renderer>().material.color = new Color(color.r,color.g,color.b,0.25f);
+			}
+		}
+
+		foreach (Node node in allNodes)
+		{
+			List<Link> links = getEdges(node.id, requestModel);
+			if (links.Count > 0)
+			{
+				foreach (Link link in links)
+				{
+					EdgeModel edgeToUpdate=  allEdges.Find(e=>e.target==link.target&& e.origin ==link.source);
+					edgeToUpdate.visible = link.visible;
+				}
+			}
+        }
+		for (int i = 0; i < this.allEdges.Count; i++)
+        {
+			if (!this.allEdges[i].visible)
+			{
+				Color edgeColor = getColor(EdgeColorModel.regularEdge);
+            	this.allEdges[i].edge.GetComponent<Renderer>().material.color = new Color(edgeColor.r,edgeColor.g,edgeColor.b,0.25f);
+            	this.allEdges[i].edge.transform.GetChild(0).GetComponent<Renderer>().material.color = new Color(edgeColor.r, edgeColor.g, edgeColor.b, 0.25f);
+			}
+			else
+			{
+				Color edgeColor = getColor(EdgeColorModel.regularEdge);
+            	this.allEdges[i].edge.GetComponent<Renderer>().material.color = new Color(edgeColor.r,edgeColor.g,edgeColor.b);
+            	this.allEdges[i].edge.transform.GetChild(0).GetComponent<Renderer>().material.color = new Color(edgeColor.r, edgeColor.g, edgeColor.b);
+			}
+           
+        }
+    }
+
+    private float getNumber(float source, float target, float magnitud)
 	{
 		float x = target - source;
 		x = (Math.Abs(x) - (Math.Abs(x) * (100 * 0.0003f) / magnitud)) * (target < source ? -1.0f : 1.0f);
@@ -99,9 +160,14 @@ public class Graph : MonoBehaviour
 				nodeGameObj.node.GetComponent<Renderer>().material.color = new Color(color.r,color.g,color.b);
 			}
 			nodeGameObjList.Add(nodeGameObj);
+			node.visible = nodeRequest.visible;
 			node = nodeGameObj.node.GetComponent<Node>();
 			node.setNode(nodeGameObj.node);
-			node.setColor(color);
+			if(nodeRequest.visible){
+				node.setColor(color);
+			}else{
+				nodeGameObj.node.GetComponent<Renderer>().material.color = new Color(color.r,color.g,color.b,0.25f);
+			}
 			node.id = nodeGameObj.id;
 			node.setChildIds(nodeRequest.childIds);
             node.setColors(RequestModel.edgeColors, RequestModel.nodeColors);
@@ -129,6 +195,22 @@ public class Graph : MonoBehaviour
 			node.allEdges = allEdges;
 			node.allNodes = allNodes;
         }
+		for (int i = 0; i < this.allEdges.Count; i++)
+        {
+			if (!this.allEdges[i].visible)
+			{
+				Color edgeColor = getColor(EdgeColorModel.regularEdge);
+            	this.allEdges[i].edge.GetComponent<Renderer>().material.color = new Color(edgeColor.r,edgeColor.g,edgeColor.b,0.25f);
+            	this.allEdges[i].edge.transform.GetChild(0).GetComponent<Renderer>().material.color = new Color(edgeColor.r, edgeColor.g, edgeColor.b, 0.25f);
+			}
+			else
+			{
+				Color edgeColor = getColor(EdgeColorModel.regularEdge);
+            	this.allEdges[i].edge.GetComponent<Renderer>().material.color = new Color(edgeColor.r,edgeColor.g,edgeColor.b);
+            	this.allEdges[i].edge.transform.GetChild(0).GetComponent<Renderer>().material.color = new Color(edgeColor.r, edgeColor.g, edgeColor.b);
+			}
+           
+        }
     }
 
 	private void setEdges(Node node, List<Link> links, List<Node> nodeList)
@@ -138,8 +220,15 @@ public class Graph : MonoBehaviour
 			Node targetNode = getNodeById(link.target, nodeList);
 
             EdgeModel edgeAdded =  node.AddEdge(targetNode, link.source);
+			edgeAdded.visible = link.visible;
 			allEdges.Add(edgeAdded);
 		}
+	}
+	private Color getColor(string colorHex)
+	{
+		Color color;
+		ColorUtility.TryParseHtmlString(colorHex, out color);
+		return color;
 	}
 
 	private Node getNodeById(int id, List<Node> nodeList)

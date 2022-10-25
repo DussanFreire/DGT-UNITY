@@ -6,6 +6,7 @@ public class EdgeModel
     public int origin;
     public int target;
     public int intensityOfColor { get; set; }
+    public bool visible { get; set; }
 
     public EdgeModel()
     {
