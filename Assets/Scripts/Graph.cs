@@ -23,22 +23,9 @@ public class Graph : MonoBehaviour
 	{
 		allEdges = new List<EdgeModel>();
         allNodes = new List<Node>();
-
         GenerateRequest();
-		arrowObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-		arrowObject.transform.localScale = new Vector3(0.5f, 0.1f, 0.01f);
-		arrowObject.GetComponent<MeshRenderer>().material.color = Color.magenta;
-
-
 	}
 
-	// Update is called once per frame
-	void Update()
-	{
-		Vector3 pos = Camera.main.transform.position;
-		arrowObject.transform.LookAt(pos);
-		arrowObject.transform.position = pos + (Camera.main.transform.forward * 0.3f)+( new Vector3(0,-0.2f,0));
-	}
 
 
 	public void GenerateRequest()
@@ -79,6 +66,13 @@ public class Graph : MonoBehaviour
 		x = (Math.Abs(x) - (Math.Abs(x) * (100 * 0.0003f) / magnitud)) * (target < source ? -1.0f : 1.0f);
 		return target - x;
 	}
+
+	private float getNumberArrow(float source, float target, float magnitud)
+	{
+		float x = target - source;
+		x = (Math.Abs(x) - (Math.Abs(x) * (100 * 0.0009f) / magnitud)) * (target < source ? -1.0f : 1.0f);
+		return target - x;
+	}
 	private double getVectorMagnitud(NodeRequestModel target, NodeRequestModel source)
 	{
 		return Math.Sqrt(Math.Pow((target.x - source.x), 2) + Math.Pow((target.y - source.y), 2) + Math.Pow((target.z - source.z), 2));
@@ -91,10 +85,6 @@ public class Graph : MonoBehaviour
 
 		foreach (NodeRequestModel nodeRequest in RequestModel.nodes)
 		{
-			if(nodeRequest.name== "jwt.decorator.ts")
-            {
-				int haha = 0;
-            }
 			NodeGameObjModel nodeGameObj = new NodeGameObjModel();
 			Node node = new Node();
 			Color color;
@@ -106,7 +96,7 @@ public class Graph : MonoBehaviour
 
             if (ColorUtility.TryParseHtmlString(nodeRequest.color, out color))
 			{
-				nodeGameObj.node.GetComponent<Renderer>().material.color = color;
+				nodeGameObj.node.GetComponent<Renderer>().material.color = new Color(color.r,color.g,color.b);
 			}
 			nodeGameObjList.Add(nodeGameObj);
 			node = nodeGameObj.node.GetComponent<Node>();
@@ -117,31 +107,19 @@ public class Graph : MonoBehaviour
             node.setColors(RequestModel.edgeColors, RequestModel.nodeColors);
 			allNodes.Add(node);
 			List<Arrow> arrs = new List<Arrow>();
-			foreach (Link link in nodeRequest.links)
-			{
-				NodeRequestModel nodeTarget = RequestModel.nodes.Find(n => n.id == link.target);
-				float magnitud = (float)getVectorMagnitud(nodeTarget, nodeRequest);
-				arrs = node.generateCube(new Vector3(getNumber(nodeRequest.x, nodeTarget.x, magnitud), getNumber(nodeRequest.y, nodeTarget.y, magnitud), getNumber(nodeRequest.z, nodeTarget.z, magnitud)), link.source, link.target);
-			}
-			foreach (Arrow aux in arrs)
-			{
-				arrows.Add(aux);
-			}
 		}
 
 		foreach (Node node in allNodes)
 		{
-			if (node.name == "user.controller.ts")
-			{
-				int haha = 0;
-			}
 			List<Link> links = getEdges(node.id, RequestModel);
 			if (links.Count > 0)
 			{
 				node.SetEdgePrefab(edgePrefab);
+				Vector3 scale = node.edgePrefab.transform.GetChild(0).localScale;
+				scale.z =0.0015f;
+				node.edgePrefab.transform.GetChild(0).localScale = scale;
 				setEdges(node, links, allNodes);
 			}
-			node.allArrows = arrows;
         }
         foreach (Node node in allNodes)
         {

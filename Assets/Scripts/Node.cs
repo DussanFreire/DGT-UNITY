@@ -1,14 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Input;
+using System;
 
 public class Node : MonoBehaviour
 {
 
-    public List<Arrow> allArrows { get; set; }
     public List<EdgeModel> allEdges { get; set; }
     public List<Node> allNodes { get; set; }
-    public List<Arrow> arrows;
     public int id;
     public GameObject edgePrefab;
     public GameObject node;
@@ -23,7 +22,6 @@ public class Node : MonoBehaviour
 
     public List<Node> nodeChildren = new List<Node>();
     
-
     bool clicked = false;
     GameObject textBackground;
     // Start is called before the first frame update
@@ -36,7 +34,6 @@ public class Node : MonoBehaviour
         textBackground.transform.rotation = Camera.main.transform.rotation;
         textBackground.GetComponent<MeshRenderer>().material.color = Color.black;
         transform.GetChild(0).GetComponent<TextMesh>().text = "";
-        transform.GetChild(1).GetComponent<TextMesh>().text = ""; //nodo
         startConfiguration();
         MakeChangeColorOnTouch(node);
 
@@ -52,25 +49,9 @@ public class Node : MonoBehaviour
             transform.GetChild(0).Rotate(0, 180, 0);
             textBackground.transform.LookAt(pos);
         }
-  
-
     }
-    public List<Arrow> generateCube(Vector3 position, int idSource, int idTarget)
-    {
 
-        GameObject arrowObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
 
-        arrowObject.transform.rotation = Quaternion.LookRotation(position);
-        arrowObject.transform.localPosition = position;
-        arrowObject.transform.localScale = new Vector3(0.01f, 0.01f, 0.01f);
-        arrowObject.GetComponent<MeshRenderer>().material.color = getColor(EdgeColorModel.regularEdge);
-        Arrow arr = new Arrow();
-        arr.arr = arrowObject;
-        arr.source = idSource;
-        arr.target = idTarget;
-        arrows.Add(arr);
-        return arrows;
-    }
     public void startConfiguration()
     {
         int i = 0;
@@ -84,8 +65,8 @@ public class Node : MonoBehaviour
             ls.z = Vector3.Distance(transform.position, target.transform.position);
             edge.edge.transform.localScale = ls;
             edge.edge.transform.position = new Vector3((transform.position.x + target.transform.position.x) / 2,
-                              (transform.position.y + target.transform.position.y) / 2,
-                              (transform.position.z + target.transform.position.z) / 2);
+                            (transform.position.y + target.transform.position.y) / 2,
+                            (transform.position.z + target.transform.position.z) / 2);
             i++;
         }
     }
@@ -102,8 +83,15 @@ public class Node : MonoBehaviour
 
     public void setColor(Color color)
     {
-        this.color = color;
+
+        this.color = new Color(color.r,color.g,color.b,0.25f);
     }
+    public void setColors(EdgeColorModel edgeColor, NodeColorModel nodeColor)
+    {
+        this.edgeColors = edgeColor;
+        this.nodeColors = nodeColor;
+    }
+
 
     public void setChildIds(List<int> childIds)
     {
@@ -128,12 +116,6 @@ public class Node : MonoBehaviour
     public void resetColor()
     {
         this.node.GetComponent<Renderer>().material.color = getColor(NodeColorModel.pasiveNode);
-    }
-
-    public void setColors(EdgeColorModel edgeColor, NodeColorModel nodeColor)
-    {
-        this.edgeColors = edgeColor;
-        this.nodeColors = nodeColor;
     }
 
     public EdgeModel AddEdge(Node node, int sourceId)
@@ -207,54 +189,12 @@ public class Node : MonoBehaviour
 
     }
 
-
-    /*  public bool isPaintable(int intensityOfColor)
-      {
-          return (node.GetComponent<Renderer>().material.color == color) || isValidColor(intensityOfColor);
-      } 
-
-      public void addRecursiveColor(Node currentNode, int idOrigin,int baseIntensity )
-      {
-          if (baseIntensity <= 1)
-              changeArrowColor(currentNode,getColor(EdgeColorModel.farEdge));
-          if (currentNode.GetComponent<Renderer>().material.color == getColorByIntensity(childEdge.intensityOfColor))
-              return;
-          foreach (EdgeModel childEdge in currentNode.edges)
-          {
-              if (currentNode.nodeChildren.Exists(n => n.id == childEdge.target && n.id != idOrigin && n.isPaintable(baseIntensity)))
-              {
-                  Node childNode = currentNode.nodeChildren.Find(n => n.id == childEdge.target && n.id != idOrigin && n.isPaintable(baseIntensity));
-                  childEdge.intensityOfColor = baseIntensity + 1;
-                  Color colorRequired = getColorByIntensity(childEdge.intensityOfColor);
-                  showTextLabel(childNode, colorRequired, false);
-                  childNode.node.GetComponent<Renderer>().material.color = colorRequired;
-                  childEdge.edge.GetComponent<Renderer>().material.color = colorRequired;
-                  addRecursiveColor(childNode, idOrigin, childEdge.intensityOfColor);
-              }
-          }
-
-          foreach (EdgeModel parentEdge in currentNode.edgesParent)
-           {
-              if (currentNode.nodeParent.Exists(n => n.id == parentEdge.origin && n.id != idOrigin && n.isPaintable(baseIntensity)))
-              {
-                  Node parentNode = currentNode.nodeParent.Find(n => n.id == parentEdge.origin && n.id != idOrigin && n.isPaintable(baseIntensity));
-                  parentEdge.intensityOfColor = baseIntensity + 1;
-                  Color colorRequired = getColorByIntensity(parentEdge.intensityOfColor);
-                  showTextLabel(parentNode, colorRequired, false);
-                  parentNode.node.GetComponent<Renderer>().material.color = colorRequired;
-                  parentEdge.edge.GetComponent<Renderer>().material.color = colorRequired;
-                  addRecursiveColor(parentNode, idOrigin, parentEdge.intensityOfColor);
-              }
-           }
-      }*/
     public void addRecursiveColor(Node currentNode, int idOrigin, int baseIntensity)
     {
         if (baseIntensity >= 2)
             return;
-        else
-            changeArrowColor(currentNode, getColor(EdgeColorModel.farEdge));
         foreach (EdgeModel child in currentNode.edges)
-       {
+        {
             if (currentNode.nodeChildren.Exists(n => n.id == child.target && n.id != idOrigin))
             {
                 Node childNode = currentNode.nodeChildren.Find(n => n.id == child.target);
@@ -263,6 +203,7 @@ public class Node : MonoBehaviour
                 childNode.node.GetComponent<Renderer>().material.color = colorRequired;
                 showTextLabel(childNode, colorRequired, false);
                 child.edge.GetComponent<Renderer>().material.color = colorRequired;
+                child.edge.transform.GetChild(0).GetComponent<Renderer>().material.color = colorRequired;
                 addRecursiveColor(childNode, idOrigin, child.intensityOfColor);
             }
         }
@@ -271,16 +212,19 @@ public class Node : MonoBehaviour
         {
 
             if (currentNode.nodeParent.Exists(n => n.id == parent.origin && n.id != idOrigin))
-           {
+            {
                 Node parentNode = currentNode.nodeParent.Find(n => n.id == parent.origin);
                 parent.intensityOfColor = baseIntensity + 1;
                 Color colorRequired = getColorByIntensity(parent.intensityOfColor);
                 showTextLabel(parentNode, colorRequired, false);
                 parentNode.node.GetComponent<Renderer>().material.color = colorRequired;
                 parent.edge.GetComponent<Renderer>().material.color = colorRequired;
+
+                parent.edge.transform.GetChild(0).GetComponent<Renderer>().material.color = colorRequired;
+
                 addRecursiveColor(parentNode, idOrigin, parent.intensityOfColor);
-           }
-       }
+            }
+        }
     }
 
     public void resetActiveEdgesColors(Node currentNode)
@@ -317,7 +261,6 @@ public class Node : MonoBehaviour
                     hideTextLabel(parentNode);
 
                 }
-             
             }
         }
     }
@@ -339,7 +282,7 @@ public class Node : MonoBehaviour
             hideTextLabel(CuerrentNode.allNodes[i]);
         }
     }
-
+    
 
     public void MakeChangeColorOnTouch(GameObject targetNode)
     {
@@ -349,20 +292,37 @@ public class Node : MonoBehaviour
         var pointerHandler = targetNode.AddComponent<PointerHandler>();
         pointerHandler.OnPointerDown.AddListener((e) => {
             resetAllNodes(material);
+            turnTranspAllNodes();
+            turnTranspAllEdges();
             activateNodes(material);
 
         });
-        //pointerHandler.OnPointerUp.AddListener((e) => {
-        //    resetNodes(material);
-        //});
+    }
 
+    private void turnTranspAllEdges()
+    {
+        for (int i = 0; i < this.allEdges.Count; i++)
+        {
+            Color edgeColor = getColor(EdgeColorModel.regularEdge);
+            this.allEdges[i].edge.GetComponent<Renderer>().material.color = new Color(edgeColor.r,edgeColor.g,edgeColor.b,0.5f);
+            this.allEdges[i].edge.transform.GetChild(0).GetComponent<Renderer>().material.color = new Color(edgeColor.r, edgeColor.g, edgeColor.b, 0.5f);
+        }
+    }
+
+
+
+    private void turnTranspAllNodes()
+    {
+        for (int i = 0; i < this.allNodes.Count; i++)
+        {
+            this.allNodes[i].node.GetComponent<Renderer>().material.color =  this.allNodes[i].color;
+        }
     }
 
     private void activateNodes(Material material)
     {
         material.color = getColor(NodeColorModel.activeNode);
         addRecursiveColor(this, this.id, 0);
-        changeArrowColor(this, getColor(EdgeColorModel.nearEdge));
         showTextLabel(this, Color.white);
     }
 
@@ -371,7 +331,6 @@ public class Node : MonoBehaviour
     {
         material.color = this.color;
         resetActiveEdgesColors(this);
-        resetArrowColors();
         hideTextLabel(this);
     }
 
@@ -379,35 +338,11 @@ public class Node : MonoBehaviour
     {
         material.color = this.color;
         resetAllEdges(this);
-        resetArrowColors();
         hideTextLabel(this);
     }
 
-    private void changeArrowColor(Node node,Color color)
-    {
-        foreach (Arrow arrow in node.allArrows)
-        {
-            if (node.id == arrow.source)
-            {
-                arrow.arr.GetComponent<MeshRenderer>().material.color = color;
-            }
-            if (node.id == arrow.target)
-            {
-                arrow.arr.GetComponent<MeshRenderer>().material.color = color;
-
-            }
-        }
-    }
 
 
-    private void resetArrowColors()
-    {
- 
-        foreach (Arrow arrow in allArrows)
-        {
-            arrow.arr.GetComponent<MeshRenderer>().material.color = getColor(EdgeColorModel.regularEdge);
-        }
-    }
 
     public  float getWidth(string nodoName, float characterSize)
     {
