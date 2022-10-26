@@ -5,15 +5,9 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/SampleScene.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
     path: Assets/Scenes/GraphScene.unity
     guid: ce6ce4068a71835479b153663b95561c
-  - enabled: 0
-    path: Assets/Scenes/TouchGameObjectScene.unity
-    guid: eba032571e0e7ee40a58843ad0d62a7d
   m_configObjects:
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 619c7722b932c954f91aee754120313b, type: 2}
     com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 50aab0f4ccc962445a36cb22247b58f5, type: 2}

@@ -24,16 +24,10 @@ public class Node : MonoBehaviour
     public List<Node> nodeChildren = new List<Node>();
     
     bool clicked = false;
-    GameObject textBackground;
     // Start is called before the first frame update
     void Start()
     {
-        //Assigns the transform of the first child of the Game Object and Set the text
-        textBackground = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        textBackground.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
-        textBackground.transform.localScale = new Vector3(0.0f, 0.0f, 0.0f);
-        textBackground.transform.rotation = Camera.main.transform.rotation;
-        textBackground.GetComponent<MeshRenderer>().material.color = Color.black;
+        transform.GetChild(0).GetChild(0).localScale = new Vector3(0.0f, 0.0f, 0.0f);
         transform.GetChild(0).GetComponent<TextMesh>().text = "";
         startConfiguration();
         MakeChangeColorOnTouch(node);
@@ -48,28 +42,30 @@ public class Node : MonoBehaviour
             transform.GetChild(0).LookAt(pos);
             Vector3 rotation = transform.GetChild(0).rotation.eulerAngles;
             transform.GetChild(0).Rotate(0, 180, 0);
-            textBackground.transform.LookAt(pos);
+            transform.GetChild(0).GetChild(0).transform.LookAt(pos);
         }
     }
 
 
     public void startConfiguration()
     {
-        int i = 0;
-        foreach (EdgeModel edge in edges)
+        for (int i = 0; i < edges.Count; i++)
         {
-            edge.edge.transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
-            SpringJoint sj = joints[i];
-            GameObject target = sj.connectedBody.gameObject;
-            edge.edge.transform.LookAt(target.transform);
-            Vector3 ls = edge.edge.transform.localScale;
+            GameObject target = joints[i].connectedBody.gameObject;
+            edges[i].edge.transform.LookAt(target.transform);
+            Vector3 ls = edges[i].edge.transform.localScale;
             ls.z = Vector3.Distance(transform.position, target.transform.position);
-            edge.edge.transform.localScale = ls;
-            edge.edge.transform.position = new Vector3((transform.position.x + target.transform.position.x) / 2,
-                            (transform.position.y + target.transform.position.y) / 2,
-                            (transform.position.z + target.transform.position.z) / 2);
-            i++;
+            edges[i].edge.transform.localScale = ls;
+            edges[i].edge.transform.position = calcDimPos(transform.position,target.transform.position);
+            edges[i].edge.transform.parent =transform;
         }
+    }
+
+
+    private Vector3 calcDimPos(Vector3 source, Vector3 target){
+        return new Vector3((source.x + target.x) / 2,
+                            (source.y + target.y) / 2,
+                            (source.z + target.z) / 2);
     }
 
     public void SetEdgePrefab(GameObject edgePrefab)
@@ -85,7 +81,7 @@ public class Node : MonoBehaviour
     public void setColor(Color color)
     {
 
-        this.nodeColor = new Color(color.r,color.g,color.b,0.25f);
+        this.nodeColor = new Color(color.r,color.g,color.b);
     }
 
     public void turnToSolidColor(){
@@ -94,16 +90,7 @@ public class Node : MonoBehaviour
     public void turnToTranspColor(){
         this.node.GetComponent<Renderer>().material.color = new Color(nodeColor.r,nodeColor.g,nodeColor.b,0.25f);
     }
-    public void turnEdgeToSolidColor(GameObject edgeToUpdate, Color edgeColor){
-        edgeToUpdate.GetComponent<Renderer>().material.color = edgeColor;
-        edgeToUpdate.transform.GetChild(0).GetComponent<Renderer>().material.color = edgeColor;
-    }
-
-    public void turnEdgeToTranspColor(GameObject edgeToUpdate, Color edgeColor){
-        edgeToUpdate.GetComponent<Renderer>().material.color = new Color(edgeColor.r,edgeColor.g,edgeColor.b,0.25f);
-        edgeToUpdate.transform.GetChild(0).GetComponent<Renderer>().material.color = new Color(edgeColor.r, edgeColor.g, edgeColor.b, 0.25f);
-    }
-    
+   
     
     public void setColors(EdgeColorModel edgeColor, NodeColorModel nodeColor)
     {
@@ -279,9 +266,7 @@ public class Node : MonoBehaviour
             resetAllLabels();
             turnTranspAllNodes();
             turnTranspAllEdges();
-
             changeColor(this,material);
-
         });
     }
 
@@ -300,7 +285,7 @@ public class Node : MonoBehaviour
     {
         for (int i = 0; i < this.allNodes.Count; i++)
         {
-            this.allNodes[i].node.GetComponent<Renderer>().material.color =  this.allNodes[i].nodeColor;
+            allNodes[i].turnToTranspColor();
         }
     }
 
@@ -324,28 +309,27 @@ public class Node : MonoBehaviour
     {
         float textSize = normalSize ? 0.7f: 0.5f;
         float height = normalSize ? 0.03f : 0.02f;
-        float heightAddition = normalSize ? 0.015f : 0.009f;
+        float heightAddition = 0.55f;
 
 
         nodo.transform.GetChild(0).GetComponent<TextMesh>().text = nodo.name;
         nodo.transform.GetChild(0).GetComponent<TextMesh>().characterSize = textSize;
         nodo.transform.GetChild(0).GetComponent<TextMesh>().color = textColor;
 
-        Vector3 backgroudPos = nodo.transform.GetChild(0).position;
 
-        nodo.textBackground.transform.localPosition = new Vector3(backgroudPos.x,backgroudPos.y- heightAddition, backgroudPos.z);
 
         float width = getWidth(nodo.name, textSize);
-        nodo.textBackground.transform.localScale = new Vector3(width, height, 0.001f);
-        nodo.textBackground.transform.LookAt(Camera.main.transform.position);
-        nodo.textBackground.GetComponent<MeshRenderer>().material.color = Color.black;
+        nodo.transform.GetChild(0).GetChild(0).transform.localScale = new Vector3(width*50, height*30, 0.001f);
+        nodo.transform.GetChild(0).GetChild(0).transform.LookAt(Camera.main.transform.position);
+        Color bl = Color.black;
+        nodo.transform.GetChild(0).GetChild(0).transform.GetComponent<Renderer>().material.color = new Color(bl.r,bl.g,bl.b,0.45f);
         nodo.clicked = true;
     }
     public void hideTextLabel(Node nodo)
     {
         nodo.clicked = false;
         nodo.transform.GetChild(0).GetComponent<TextMesh>().text = "";
-        nodo.textBackground.transform.localScale = new Vector3(0.0f, 0.0f, 0.0f);
+        nodo.transform.GetChild(0).GetChild(0).transform.localScale = new Vector3(0.0f, 0.0f, 0.0f);
     }
 }
 

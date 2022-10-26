@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using System.Linq;
+using Microsoft.MixedReality.Toolkit.Input;
 
 public class Graph : MonoBehaviour
 {
+	public GameObject rotationButtonPrefab;
 	public GameObject nodePrefab;
 	bool onInit =true; 
 	public GameObject edgePrefab;
@@ -18,7 +20,8 @@ public class Graph : MonoBehaviour
 
     private const string URL_INIT = "https://test-dependencies.herokuapp.com/file/restart";
     private const string URL_UPDATE = "https://test-dependencies.herokuapp.com/file/brain";
-	
+	GameObject button;
+	bool buttonPressed =false;
 	void Start()
 	{
 		currentVersion=-1;
@@ -26,11 +29,46 @@ public class Graph : MonoBehaviour
         allNodes = new List<Node>();
 		// GenerateRequest();
 		InvokeRepeating("GenerateRequest", 0.0f, 10.0f);
+		button = Instantiate(rotationButtonPrefab, new Vector3(0, 0, 0), Quaternion.Euler(new Vector3(270,0,0)));
+		MakeChangeColorOnTouch(button);
 	}
 
 	void Update(){
-		// transform.Rotate(0,0, 1, Space.World);
+		if(buttonPressed){
+			transform.Rotate(0,0.75f, 0, Space.World);
+		}
+		Vector3 pos = Camera.main.transform.position;
+		button.transform.LookAt(pos);
+		button.transform.position = pos + (Camera.main.transform.forward * 0.7f)+( new Vector3(0,0,0));
+
 	}
+
+	private void setButton(bool pressed){
+		Color buttonColor;
+		string btnText="";
+		if(pressed){
+			buttonColor = Color.blue;
+			btnText= "Stop";
+		}
+		else{
+			buttonColor = Color.red;
+			btnText= "Rotate";
+		}
+		button.transform.GetChild(0).GetComponent<Renderer>().material.color = new Color(buttonColor.r,buttonColor.g,buttonColor.b,0.90f);
+		button.transform.GetChild(2).GetComponent<TextMesh>().text = btnText;
+	}
+	public void MakeChangeColorOnTouch(GameObject targetNode)
+    {
+        var touchable = targetNode.AddComponent<NearInteractionTouchableVolume>();
+        touchable.EventsToReceive = TouchableEventType.Pointer;
+        Material material = targetNode.GetComponent<Renderer>().material;
+        var pointerHandler = targetNode.AddComponent<PointerHandler>();
+        pointerHandler.OnPointerDown.AddListener((e) => {
+            buttonPressed=!buttonPressed;
+			setButton(buttonPressed);
+        });
+	
+    }
 
 	public void GenerateRequest()
 	{
@@ -84,24 +122,6 @@ public class Graph : MonoBehaviour
 			List<Link> links = getEdges(nodeToUpdate.id, requestModel);
 			Color nodeColor = getColor(nodeRequest.color);
 			nodeToUpdate.visible = nodeRequest.visible;
-
-			foreach (Link link in links)
-			{
-				EdgeModel edgeToUpdate=  allEdges.Find(e=>e.target==link.target&& e.origin ==link.source);
-				edgeToUpdate.visible = link.visible;
-				Color edgeColor = getColor(EdgeColorModel.regularEdge);
-
-				if (!link .visible)
-				{
-					edgeToUpdate.edge.GetComponent<Renderer>().material.color = new Color(edgeColor.r,edgeColor.g,edgeColor.b,0.25f);
-					edgeToUpdate.edge.transform.GetChild(0).GetComponent<Renderer>().material.color = new Color(edgeColor.r, edgeColor.g, edgeColor.b, 0.25f);
-				}
-				else
-				{
-					edgeToUpdate.edge.GetComponent<Renderer>().material.color = new Color(edgeColor.r,edgeColor.g,edgeColor.b);
-					edgeToUpdate.edge.transform.GetChild(0).GetComponent<Renderer>().material.color = new Color(edgeColor.r, edgeColor.g, edgeColor.b);
-				}
-			}
 			nodeToUpdate.setColor(nodeColor);
 			if (nodeRequest.visible){
 				nodeToUpdate.showTextLabel(nodeToUpdate,nodeColor);
@@ -110,8 +130,46 @@ public class Graph : MonoBehaviour
 				nodeToUpdate.hideTextLabel(nodeToUpdate);
 				nodeToUpdate.turnToTranspColor();
 			}
+			foreach (Link link in links)
+			{
+				EdgeModel edgeToUpdate=  allEdges.Find(e=>e.target==link.target&& e.origin ==link.source);
+				edgeToUpdate.visible = link.visible;
+				Color edgeColor = getColor(EdgeColorModel.regularEdge);
+
+				if (!link .visible)
+				{
+					edgeToUpdate.turnEdgeToSolidColor(edgeColor);
+				}
+				else
+				{
+					edgeToUpdate.turnEdgeToTranspColor(edgeColor);
+				}
+			}
+			
 		}
     }
+
+	private Node generateNode(NodeRequestModel nodeRequest){
+			NodeGameObjModel nodeGameObj = new NodeGameObjModel();
+			Color nodeColor = getColor(nodeRequest.color);
+			nodeGameObj.node = Instantiate(nodePrefab, new Vector3(nodeRequest.x, nodeRequest.y, nodeRequest.z), Quaternion.identity);
+			nodeGameObj.id = nodeRequest.id;
+			nodeGameObj.node.transform.parent = transform;
+			nodeGameObj.node.name = nodeRequest.name;
+			filters = nodeRequest.filters;
+			Node node = nodeGameObj.node.GetComponent<Node>();
+			node.visible = nodeRequest.visible;
+			node.id = nodeGameObj.id;
+			node.setChildIds(nodeRequest.childIds);
+			node.setNode(nodeGameObj.node);
+			node.setColor(nodeColor);
+			if (nodeRequest.visible){
+				node.turnToSolidColor();
+			} else {
+				node.turnToTranspColor();
+			}
+			return node;
+	}
 
 	private void createNodesFromData(RequestModel RequestModel)
 	{
@@ -119,30 +177,7 @@ public class Graph : MonoBehaviour
 
 		foreach (NodeRequestModel nodeRequest in RequestModel.nodes)
 		{
-			NodeGameObjModel nodeGameObj = new NodeGameObjModel();
-			Node node = new Node();
-			Color color;
-			nodeGameObj.node = Instantiate(nodePrefab, new Vector3(nodeRequest.x, nodeRequest.y, nodeRequest.z), Quaternion.identity);
-			nodeGameObj.id = nodeRequest.id;
-			nodeGameObj.node.transform.parent = transform;
-			nodeGameObj.node.name = nodeRequest.name;
-			filters = nodeRequest.filters;
-
-            if (ColorUtility.TryParseHtmlString(nodeRequest.color, out color))
-			{
-				nodeGameObj.node.GetComponent<Renderer>().material.color = new Color(color.r,color.g,color.b);
-			}
-			node.visible = nodeRequest.visible;
-			node = nodeGameObj.node.GetComponent<Node>();
-			node.setNode(nodeGameObj.node);
-			if(nodeRequest.visible){
-				node.setColor(color);
-			}else{
-				nodeGameObj.node.GetComponent<Renderer>().material.color = new Color(color.r,color.g,color.b,0.25f);
-			}
-			node.id = nodeGameObj.id;
-			node.setChildIds(nodeRequest.childIds);
-            node.setColors(RequestModel.edgeColors, RequestModel.nodeColors);
+			Node node = generateNode(nodeRequest);
 			allNodes.Add(node);
 		}
 
@@ -168,17 +203,15 @@ public class Graph : MonoBehaviour
         }
 		for (int i = 0; i < this.allEdges.Count; i++)
         {
-			if (!this.allEdges[i].visible)
+			Color edgeColor = getColor(EdgeColorModel.regularEdge);
+
+			if (allEdges[i].visible)
 			{
-				Color edgeColor = getColor(EdgeColorModel.regularEdge);
-            	this.allEdges[i].edge.GetComponent<Renderer>().material.color = new Color(edgeColor.r,edgeColor.g,edgeColor.b,0.25f);
-            	this.allEdges[i].edge.transform.GetChild(0).GetComponent<Renderer>().material.color = new Color(edgeColor.r, edgeColor.g, edgeColor.b, 0.25f);
+				allEdges[i].turnEdgeToSolidColor(edgeColor);
 			}
 			else
 			{
-				Color edgeColor = getColor(EdgeColorModel.regularEdge);
-            	this.allEdges[i].edge.GetComponent<Renderer>().material.color = new Color(edgeColor.r,edgeColor.g,edgeColor.b);
-            	this.allEdges[i].edge.transform.GetChild(0).GetComponent<Renderer>().material.color = new Color(edgeColor.r, edgeColor.g, edgeColor.b);
+				allEdges[i].turnEdgeToTranspColor(edgeColor);
 			}
            
         }
@@ -194,6 +227,8 @@ public class Graph : MonoBehaviour
 			allEdges.Add(edgeAdded);
 		}
 	}
+	
+
 	
 	private Color getColor(string colorHex)
 	{
@@ -230,3 +265,5 @@ public class Graph : MonoBehaviour
         node.setNodeChildren(childrenList);
     }
 }
+
+//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

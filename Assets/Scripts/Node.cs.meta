@@ -3,7 +3,9 @@ guid: a9d84423dfb3ecb4696aef4f5aa6a154
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - edgePrefab: {instanceID: 0}
+  - node: {fileID: 1642327659481184743, guid: 2f940e57333b5a548ac7ee879817c7a5, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
