@@ -9,10 +9,10 @@ public class Node : MonoBehaviour
     public List<EdgeModel> allEdges { get; set; }
     public List<Node> allNodes { get; set; }
     public int id;
-    public bool visible;
+    public bool visible { get; set; }
     public GameObject edgePrefab;
     public GameObject node;
-    public Color color;
+    public Color nodeColor;
     public EdgeColorModel edgeColors;
     public NodeColorModel nodeColors;
     public List<int> childIds;
@@ -85,8 +85,26 @@ public class Node : MonoBehaviour
     public void setColor(Color color)
     {
 
-        this.color = new Color(color.r,color.g,color.b,0.25f);
+        this.nodeColor = new Color(color.r,color.g,color.b,0.25f);
     }
+
+    public void turnToSolidColor(){
+        this.node.GetComponent<Renderer>().material.color =  this.nodeColor;
+    }
+    public void turnToTranspColor(){
+        this.node.GetComponent<Renderer>().material.color = new Color(nodeColor.r,nodeColor.g,nodeColor.b,0.25f);
+    }
+    public void turnEdgeToSolidColor(GameObject edgeToUpdate, Color edgeColor){
+        edgeToUpdate.GetComponent<Renderer>().material.color = edgeColor;
+        edgeToUpdate.transform.GetChild(0).GetComponent<Renderer>().material.color = edgeColor;
+    }
+
+    public void turnEdgeToTranspColor(GameObject edgeToUpdate, Color edgeColor){
+        edgeToUpdate.GetComponent<Renderer>().material.color = new Color(edgeColor.r,edgeColor.g,edgeColor.b,0.25f);
+        edgeToUpdate.transform.GetChild(0).GetComponent<Renderer>().material.color = new Color(edgeColor.r, edgeColor.g, edgeColor.b, 0.25f);
+    }
+    
+    
     public void setColors(EdgeColorModel edgeColor, NodeColorModel nodeColor)
     {
         this.edgeColors = edgeColor;
@@ -282,7 +300,7 @@ public class Node : MonoBehaviour
     {
         for (int i = 0; i < this.allNodes.Count; i++)
         {
-            this.allNodes[i].node.GetComponent<Renderer>().material.color =  this.allNodes[i].color;
+            this.allNodes[i].node.GetComponent<Renderer>().material.color =  this.allNodes[i].nodeColor;
         }
     }
 

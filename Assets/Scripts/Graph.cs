@@ -29,7 +29,7 @@ public class Graph : MonoBehaviour
 	}
 
 	void Update(){
-		transform.Rotate(0,0, 1, Space.World);
+		// transform.Rotate(0,0, 1, Space.World);
 	}
 
 	public void GenerateRequest()
@@ -79,68 +79,39 @@ public class Graph : MonoBehaviour
     {
 		foreach (NodeRequestModel nodeRequest in requestModel.nodes)
 		{
-			Node nodeToUpdate = allNodes.Find(n=>n.id == nodeRequest.id);
-			Color color;
-            if (ColorUtility.TryParseHtmlString(nodeRequest.color, out color))
-			{
-				nodeToUpdate.node.GetComponent<Renderer>().material.color = new Color(color.r,color.g,color.b);
-			}
-			nodeToUpdate.visible = nodeRequest.visible;
-			if(nodeRequest.visible){
-				nodeToUpdate.setColor(color);
-				nodeToUpdate.showTextLabel(nodeToUpdate,color);
-			}else{
-				nodeToUpdate.hideTextLabel(nodeToUpdate);
-				nodeToUpdate.node.GetComponent<Renderer>().material.color = new Color(color.r,color.g,color.b,0.25f);
-			}
-		}
 
-		foreach (Node node in allNodes)
-		{
-			List<Link> links = getEdges(node.id, requestModel);
-			if (links.Count > 0)
+			Node nodeToUpdate = allNodes.Find(n=>n.id == nodeRequest.id);
+			List<Link> links = getEdges(nodeToUpdate.id, requestModel);
+			Color nodeColor = getColor(nodeRequest.color);
+			nodeToUpdate.visible = nodeRequest.visible;
+
+			foreach (Link link in links)
 			{
-				foreach (Link link in links)
+				EdgeModel edgeToUpdate=  allEdges.Find(e=>e.target==link.target&& e.origin ==link.source);
+				edgeToUpdate.visible = link.visible;
+				Color edgeColor = getColor(EdgeColorModel.regularEdge);
+
+				if (!link .visible)
 				{
-					EdgeModel edgeToUpdate=  allEdges.Find(e=>e.target==link.target&& e.origin ==link.source);
-					edgeToUpdate.visible = link.visible;
+					edgeToUpdate.edge.GetComponent<Renderer>().material.color = new Color(edgeColor.r,edgeColor.g,edgeColor.b,0.25f);
+					edgeToUpdate.edge.transform.GetChild(0).GetComponent<Renderer>().material.color = new Color(edgeColor.r, edgeColor.g, edgeColor.b, 0.25f);
+				}
+				else
+				{
+					edgeToUpdate.edge.GetComponent<Renderer>().material.color = new Color(edgeColor.r,edgeColor.g,edgeColor.b);
+					edgeToUpdate.edge.transform.GetChild(0).GetComponent<Renderer>().material.color = new Color(edgeColor.r, edgeColor.g, edgeColor.b);
 				}
 			}
-        }
-		for (int i = 0; i < this.allEdges.Count; i++)
-        {
-			if (!this.allEdges[i].visible)
-			{
-				Color edgeColor = getColor(EdgeColorModel.regularEdge);
-            	this.allEdges[i].edge.GetComponent<Renderer>().material.color = new Color(edgeColor.r,edgeColor.g,edgeColor.b,0.25f);
-            	this.allEdges[i].edge.transform.GetChild(0).GetComponent<Renderer>().material.color = new Color(edgeColor.r, edgeColor.g, edgeColor.b, 0.25f);
+			nodeToUpdate.setColor(nodeColor);
+			if (nodeRequest.visible){
+				nodeToUpdate.showTextLabel(nodeToUpdate,nodeColor);
+				nodeToUpdate.turnToSolidColor();
+			} else {
+				nodeToUpdate.hideTextLabel(nodeToUpdate);
+				nodeToUpdate.turnToTranspColor();
 			}
-			else
-			{
-				Color edgeColor = getColor(EdgeColorModel.regularEdge);
-            	this.allEdges[i].edge.GetComponent<Renderer>().material.color = new Color(edgeColor.r,edgeColor.g,edgeColor.b);
-            	this.allEdges[i].edge.transform.GetChild(0).GetComponent<Renderer>().material.color = new Color(edgeColor.r, edgeColor.g, edgeColor.b);
-			}
-        }
+		}
     }
-
-    private float getNumber(float source, float target, float magnitud)
-	{
-		float x = target - source;
-		x = (Math.Abs(x) - (Math.Abs(x) * (100 * 0.0003f) / magnitud)) * (target < source ? -1.0f : 1.0f);
-		return target - x;
-	}
-
-	private float getNumberArrow(float source, float target, float magnitud)
-	{
-		float x = target - source;
-		x = (Math.Abs(x) - (Math.Abs(x) * (100 * 0.0009f) / magnitud)) * (target < source ? -1.0f : 1.0f);
-		return target - x;
-	}
-	private double getVectorMagnitud(NodeRequestModel target, NodeRequestModel source)
-	{
-		return Math.Sqrt(Math.Pow((target.x - source.x), 2) + Math.Pow((target.y - source.y), 2) + Math.Pow((target.z - source.z), 2));
-	}
 
 	private void createNodesFromData(RequestModel RequestModel)
 	{
@@ -218,7 +189,6 @@ public class Graph : MonoBehaviour
 		foreach (Link link in links)
 		{
 			Node targetNode = getNodeById(link.target, nodeList);
-
             EdgeModel edgeAdded =  node.AddEdge(targetNode, link.source);
 			edgeAdded.visible = link.visible;
 			allEdges.Add(edgeAdded);
@@ -258,7 +228,5 @@ public class Graph : MonoBehaviour
 				n => node.childIds.Any(x => x == n.id)
 			).ToList();
         node.setNodeChildren(childrenList);
-
     }
-
 }
