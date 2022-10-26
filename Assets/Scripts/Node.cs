@@ -194,7 +194,7 @@ public class Node : MonoBehaviour
     void changeColor(Node currentNode,Material material){
         material.color = getColor(NodeColorModel.activeNode);
         showTextLabel(currentNode, Color.white);
-
+        List<Node> childrenNode = new List<Node>();
         for (int i = 0; i < this.allEdges.Count; i++)
         {
             if(allEdges[i].origin ==currentNode.id || allEdges[i].target ==currentNode.id){
@@ -207,55 +207,41 @@ public class Node : MonoBehaviour
                 Node node = this.allNodes.Find(n=>n.id==allEdges[i].target);
                 node.node.GetComponent<Renderer>().material.color =nodeColor;
                 node.showTextLabel(node,nodeColor);
+                childrenNode.Add(node);
             }
             if(allEdges[i].target ==currentNode.id ){
                 Color nodeColor = getColor(EdgeColorModel.nearEdge);
                 Node node = this.allNodes.Find(n=>n.id==allEdges[i].origin);
                 node.node.GetComponent<Renderer>().material.color =nodeColor;
                 node.showTextLabel(node,nodeColor);
+                childrenNode.Add(node);
             }
         }
 
-        
-    }
-    public void addRecursiveColor(Node currentNode, int idOrigin, int baseIntensity)
-    {
-        if (baseIntensity >= 2)
-            return;
-        foreach (EdgeModel child in currentNode.edges)
+        for (int i = 0; i < childrenNode.Count; i++)
         {
-            if (currentNode.nodeChildren.Exists(n => n.id == child.target && n.id != idOrigin))
+            List<EdgeModel> childEdges = this.allEdges.FindAll(e=> (childrenNode[i].id ==e.origin|| e.target ==childrenNode[i].id)&&(e.origin != currentNode.id &&e.target != currentNode.id));
+            for (int j = 0; j < childEdges.Count; j++)
             {
-                Node childNode = currentNode.nodeChildren.Find(n => n.id == child.target);
-                child.intensityOfColor = baseIntensity + 1;
-                Color colorRequired = getColorByIntensity(child.intensityOfColor);
-                childNode.node.GetComponent<Renderer>().material.color = colorRequired;
-                showTextLabel(childNode, colorRequired, false);
-                child.edge.GetComponent<Renderer>().material.color = colorRequired;
-                child.edge.transform.GetChild(0).GetComponent<Renderer>().material.color = colorRequired;
-                addRecursiveColor(childNode, idOrigin, child.intensityOfColor);
-            }
-        }
+                Color edgeColor = getColor(EdgeColorModel.nearEdge);
+                childEdges[j].edge.GetComponent<Renderer>().material.color = edgeColor;
+                childEdges[j].edge.transform.GetChild(0).GetComponent<Renderer>().material.color =edgeColor;
 
-        foreach (EdgeModel parent in currentNode.edgesParent)
-        {
-
-            if (currentNode.nodeParent.Exists(n => n.id == parent.origin && n.id != idOrigin))
-            {
-                Node parentNode = currentNode.nodeParent.Find(n => n.id == parent.origin);
-                parent.intensityOfColor = baseIntensity + 1;
-                Color colorRequired = getColorByIntensity(parent.intensityOfColor);
-                showTextLabel(parentNode, colorRequired, false);
-                parentNode.node.GetComponent<Renderer>().material.color = colorRequired;
-                parent.edge.GetComponent<Renderer>().material.color = colorRequired;
-
-                parent.edge.transform.GetChild(0).GetComponent<Renderer>().material.color = colorRequired;
-
-                addRecursiveColor(parentNode, idOrigin, parent.intensityOfColor);
+                if(childEdges[j].origin == childrenNode[i].id ){
+                    Color nodeColor = getColor(EdgeColorModel.farEdge);
+                    Node node = this.allNodes.Find(n=>n.id==childEdges[j].target);
+                    node.node.GetComponent<Renderer>().material.color = nodeColor;
+                    node.showTextLabel(node,nodeColor);
+                }
+                if(childEdges[j].target ==childrenNode[i].id ){
+                    Color nodeColor = getColor(EdgeColorModel.farEdge);
+                    Node node = this.allNodes.Find(n=>n.id==childEdges[j].origin);
+                    node.node.GetComponent<Renderer>().material.color =nodeColor;
+                    node.showTextLabel(node,nodeColor);
+                }
             }
         }
     }
-
     void resetAllLabels()
     {
         for (int i = 0; i < this.allNodes.Count; i++)
@@ -300,13 +286,7 @@ public class Node : MonoBehaviour
         }
     }
 
-    private void activateNodes(Material material)
-    {
-        material.color = getColor(NodeColorModel.activeNode);
-        showTextLabel(this, Color.white);
-        addRecursiveColor(this, this.id, 0);
-    }
-
+   
     public  float getWidth(string nodoName, float characterSize)
     {
         TextMesh mesh = transform.GetChild(0).GetComponent<TextMesh>();
@@ -322,7 +302,7 @@ public class Node : MonoBehaviour
         return (width * characterSize * 0.1f * mesh.transform.lossyScale.x) + 0.01f;
     }
 
-    private void showTextLabel(Node nodo, Color textColor,bool normalSize=true)
+    public void showTextLabel(Node nodo, Color textColor,bool normalSize=true)
     {
         float textSize = normalSize ? 0.7f: 0.5f;
         float height = normalSize ? 0.03f : 0.02f;
@@ -343,12 +323,11 @@ public class Node : MonoBehaviour
         nodo.textBackground.GetComponent<MeshRenderer>().material.color = Color.black;
         nodo.clicked = true;
     }
-    private void hideTextLabel(Node nodo)
+    public void hideTextLabel(Node nodo)
     {
         nodo.clicked = false;
         nodo.transform.GetChild(0).GetComponent<TextMesh>().text = "";
         nodo.textBackground.transform.localScale = new Vector3(0.0f, 0.0f, 0.0f);
     }
 }
-
 

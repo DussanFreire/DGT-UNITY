@@ -8,27 +8,29 @@ using System.Linq;
 public class Graph : MonoBehaviour
 {
 	public GameObject nodePrefab;
-	GameObject arrowObject;
-	bool onInit =true;
+	bool onInit =true; 
 	public GameObject edgePrefab;
-	public List<Arrow> arrows;
     public List<EdgeModel> allEdges { get; set; }
     public List<Node> allNodes { get; set; }
     public List<string> filters { get; set; }
+	public int currentVersion { get; set; }
+    public List<EdgeModel> edges = new List<EdgeModel>();
 
     private const string URL_INIT = "https://test-dependencies.herokuapp.com/file/restart";
     private const string URL_UPDATE = "https://test-dependencies.herokuapp.com/file/brain";
-
-	// Start is called before the first frame update
+	
 	void Start()
 	{
+		currentVersion=-1;
 		allEdges = new List<EdgeModel>();
         allNodes = new List<Node>();
-		GenerateRequest();
-		// InvokeRepeating("GenerateRequest", 0.0f, 10.0f);
+		// GenerateRequest();
+		InvokeRepeating("GenerateRequest", 0.0f, 10.0f);
 	}
 
-
+	void Update(){
+		transform.Rotate(0,0, 1, Space.World);
+	}
 
 	public void GenerateRequest()
 	{
@@ -39,8 +41,6 @@ public class Graph : MonoBehaviour
 			StartCoroutine(ProcessRequest(URL_UPDATE, ResponseCallback));
 		}
 	}
-
-
 
 	private IEnumerator ProcessRequest(string uri, Action<RequestModel> callback = null)
 	{
@@ -64,11 +64,13 @@ public class Graph : MonoBehaviour
 
 	private void ResponseCallback(RequestModel requestModel)
 	{
-		if(requestModel.version == 0){
+		if(currentVersion==-1){
+			currentVersion=0;
 			createNodesFromData(requestModel);
 		}
-		else
+		else if(requestModel.version > currentVersion)
 		{
+			currentVersion =requestModel.version;
 			updateNodesFromData(requestModel);
 		}
 	}
@@ -84,9 +86,11 @@ public class Graph : MonoBehaviour
 				nodeToUpdate.node.GetComponent<Renderer>().material.color = new Color(color.r,color.g,color.b);
 			}
 			nodeToUpdate.visible = nodeRequest.visible;
-			if(nodeToUpdate.visible){
+			if(nodeRequest.visible){
 				nodeToUpdate.setColor(color);
+				nodeToUpdate.showTextLabel(nodeToUpdate,color);
 			}else{
+				nodeToUpdate.hideTextLabel(nodeToUpdate);
 				nodeToUpdate.node.GetComponent<Renderer>().material.color = new Color(color.r,color.g,color.b,0.25f);
 			}
 		}
@@ -117,7 +121,6 @@ public class Graph : MonoBehaviour
             	this.allEdges[i].edge.GetComponent<Renderer>().material.color = new Color(edgeColor.r,edgeColor.g,edgeColor.b);
             	this.allEdges[i].edge.transform.GetChild(0).GetComponent<Renderer>().material.color = new Color(edgeColor.r, edgeColor.g, edgeColor.b);
 			}
-           
         }
     }
 
@@ -141,7 +144,6 @@ public class Graph : MonoBehaviour
 
 	private void createNodesFromData(RequestModel RequestModel)
 	{
-		List<NodeGameObjModel> nodeGameObjList = new List<NodeGameObjModel>();
 		allNodes = new List<Node>();
 
 		foreach (NodeRequestModel nodeRequest in RequestModel.nodes)
@@ -159,7 +161,6 @@ public class Graph : MonoBehaviour
 			{
 				nodeGameObj.node.GetComponent<Renderer>().material.color = new Color(color.r,color.g,color.b);
 			}
-			nodeGameObjList.Add(nodeGameObj);
 			node.visible = nodeRequest.visible;
 			node = nodeGameObj.node.GetComponent<Node>();
 			node.setNode(nodeGameObj.node);
@@ -172,7 +173,6 @@ public class Graph : MonoBehaviour
 			node.setChildIds(nodeRequest.childIds);
             node.setColors(RequestModel.edgeColors, RequestModel.nodeColors);
 			allNodes.Add(node);
-			List<Arrow> arrs = new List<Arrow>();
 		}
 
 		foreach (Node node in allNodes)
@@ -224,6 +224,7 @@ public class Graph : MonoBehaviour
 			allEdges.Add(edgeAdded);
 		}
 	}
+	
 	private Color getColor(string colorHex)
 	{
 		Color color;
