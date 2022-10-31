@@ -5,10 +5,13 @@ using UnityEngine;
 using UnityEngine.Networking;
 using System.Linq;
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit;
+using Microsoft.MixedReality.Toolkit.Utilities;
 
 public class Graph : MonoBehaviour
 {
 	public GameObject rotationButtonPrefab;
+	public GameObject HandMenuPrefab;
 	public GameObject nodePrefab;
 	bool onInit =true; 
 	public GameObject edgePrefab;
@@ -16,6 +19,30 @@ public class Graph : MonoBehaviour
     public List<Node> allNodes { get; set; }
     public List<string> filters { get; set; }
 	public int currentVersion { get; set; }
+    public bool Enabled { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+    public TrackingState TrackingState => throw new NotImplementedException();
+
+    public Handedness ControllerHandedness => throw new NotImplementedException();
+
+    public IMixedRealityInputSource InputSource => throw new NotImplementedException();
+
+    public IMixedRealityControllerVisualizer Visualizer => throw new NotImplementedException();
+
+    public bool IsPositionAvailable => throw new NotImplementedException();
+
+    public bool IsPositionApproximate => throw new NotImplementedException();
+
+    public bool IsRotationAvailable => throw new NotImplementedException();
+
+    public MixedRealityInteractionMapping[] Interactions => throw new NotImplementedException();
+
+    public Vector3 AngularVelocity => throw new NotImplementedException();
+
+    public Vector3 Velocity => throw new NotImplementedException();
+
+    public bool IsInPointingPose => throw new NotImplementedException();
+
     public List<EdgeModel> edges = new List<EdgeModel>();
 
     private const string URL_INIT = "https://test-dependencies.herokuapp.com/file/restart";
@@ -42,7 +69,17 @@ public class Graph : MonoBehaviour
 		button.transform.position = pos + (Camera.main.transform.forward * 0.7f)+( new Vector3(0,0,0));
 
 	}
-
+	public void OnSourceDetected(SourceStateEventData eventData)
+	{
+	var hand = eventData.Controller as IMixedRealityHand;
+	if (hand != null)
+	{
+		if (hand.TryGetJoint(TrackedHandJoint.IndexTip, out MixedRealityPose jointPose))
+		{
+		// ...
+		}
+	}
+	}
 	private void setButton(bool pressed){
 		Color buttonColor;
 		string btnText="";
@@ -67,6 +104,12 @@ public class Graph : MonoBehaviour
             buttonPressed=!buttonPressed;
 			setButton(buttonPressed);
         });
+	
+    }
+
+	public void MakeAccionOnPress(GameObject targetNode)
+    {
+
 	
     }
 
@@ -264,6 +307,8 @@ public class Graph : MonoBehaviour
 			).ToList();
         node.setNodeChildren(childrenList);
     }
+
+   
 }
 
 //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
