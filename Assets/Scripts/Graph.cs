@@ -10,8 +10,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 
 public class Graph : MonoBehaviour
 {
-	public GameObject rotationButtonPrefab;
-	public GameObject HandMenuPrefab;
+
 	public GameObject nodePrefab;
 	bool onInit =true; 
 	public GameObject edgePrefab;
@@ -47,8 +46,6 @@ public class Graph : MonoBehaviour
 
     private const string URL_INIT = "https://test-dependencies.herokuapp.com/file/restart";
     private const string URL_UPDATE = "https://test-dependencies.herokuapp.com/file/brain";
-	GameObject button;
-	bool buttonPressed =false;
 	void Start()
 	{
 		currentVersion=-1;
@@ -56,62 +53,18 @@ public class Graph : MonoBehaviour
         allNodes = new List<Node>();
 		// GenerateRequest();
 		InvokeRepeating("GenerateRequest", 0.0f, 10.0f);
-		button = Instantiate(rotationButtonPrefab, new Vector3(0, 0, 0), Quaternion.Euler(new Vector3(270,0,0)));
-		MakeChangeColorOnTouch(button);
+		
 	}
 
 	void Update(){
-		if(buttonPressed){
+		if(Menu.buttonPressed){
 			transform.Rotate(0,0.75f, 0, Space.World);
 		}
-		Vector3 pos = Camera.main.transform.position;
-		button.transform.LookAt(pos);
-		button.transform.position = pos + (Camera.main.transform.forward * 0.7f)+( new Vector3(0,0,0));
-
-	}
-	public void OnSourceDetected(SourceStateEventData eventData)
-	{
-	var hand = eventData.Controller as IMixedRealityHand;
-	if (hand != null)
-	{
-		if (hand.TryGetJoint(TrackedHandJoint.IndexTip, out MixedRealityPose jointPose))
-		{
-		// ...
+		if(MenuVertical.buttonPressed){
+			transform.Rotate(0.75f,0, 0, Space.World);
 		}
 	}
-	}
-	private void setButton(bool pressed){
-		Color buttonColor;
-		string btnText="";
-		if(pressed){
-			buttonColor = Color.blue;
-			btnText= "Stop";
-		}
-		else{
-			buttonColor = Color.red;
-			btnText= "Rotate";
-		}
-		button.transform.GetChild(0).GetComponent<Renderer>().material.color = new Color(buttonColor.r,buttonColor.g,buttonColor.b,0.90f);
-		button.transform.GetChild(2).GetComponent<TextMesh>().text = btnText;
-	}
-	public void MakeChangeColorOnTouch(GameObject targetNode)
-    {
-        var touchable = targetNode.AddComponent<NearInteractionTouchableVolume>();
-        touchable.EventsToReceive = TouchableEventType.Pointer;
-        Material material = targetNode.GetComponent<Renderer>().material;
-        var pointerHandler = targetNode.AddComponent<PointerHandler>();
-        pointerHandler.OnPointerDown.AddListener((e) => {
-            buttonPressed=!buttonPressed;
-			setButton(buttonPressed);
-        });
-	
-    }
 
-	public void MakeAccionOnPress(GameObject targetNode)
-    {
-
-	
-    }
 
 	public void GenerateRequest()
 	{
