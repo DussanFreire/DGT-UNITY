@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Input;
-using System;
 
-public class Node : MonoBehaviour
+public class Node : MonoBehaviour,IMixedRealityFocusHandler
 {
 
     public List<EdgeModel> allEdges { get; set; }
@@ -20,7 +19,8 @@ public class Node : MonoBehaviour
     public List<EdgeModel> edgesParent = new List<EdgeModel>();
     public List<SpringJoint> joints = new List<SpringJoint>();
     public List<Node> nodeParent = new List<Node>();
-
+    public bool colorChangedByTest =false;
+    public bool colorChangedByHover =false;
     public List<Node> nodeChildren = new List<Node>();
     
     bool clicked = false;
@@ -37,7 +37,7 @@ public class Node : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (clicked) {
+        if (clicked || colorChangedByHover||colorChangedByHover) {
             Vector3 pos = Camera.main.transform.position;
             transform.GetChild(0).LookAt(pos);
             Vector3 rotation = transform.GetChild(0).rotation.eulerAngles;
@@ -262,12 +262,27 @@ public class Node : MonoBehaviour
         touchable.EventsToReceive = TouchableEventType.Pointer;
         Material material = targetNode.GetComponent<Renderer>().material;
         var pointerHandler = targetNode.AddComponent<PointerHandler>();
+        var focusHandler = targetNode.AddComponent<FocusHandler>();
         pointerHandler.OnPointerDown.AddListener((e) => {
-            resetAllLabels();
-            turnTranspAllNodes();
-            turnTranspAllEdges();
-            changeColor(this,material);
+            if(Tests.currentTest ==-1){
+                resetAllLabels();
+                turnTranspAllNodes();
+                turnTranspAllEdges();
+                changeColor(this,material);
+            }
+            else{
+                if(!colorChangedByTest){
+                    colorChangedByTest=true;
+                    material.color = getColor(NodeColorModel.activeNode);
+                    showTextLabel(this, Color.white);
+                }else{
+                    colorChangedByTest=false;
+                    hideTextLabel(this);
+                    turnToSolidColor();
+                }
+            }
         });
+
     }
 
     private void turnTranspAllEdges()
@@ -285,11 +300,12 @@ public class Node : MonoBehaviour
     {
         for (int i = 0; i < this.allNodes.Count; i++)
         {
+            allNodes[i].colorChangedByTest =false;
+            allNodes[i].colorChangedByHover =false;
             allNodes[i].turnToTranspColor();
         }
     }
 
-   
     public  float getWidth(string nodoName, float characterSize)
     {
         TextMesh mesh = transform.GetChild(0).GetComponent<TextMesh>();
@@ -309,7 +325,6 @@ public class Node : MonoBehaviour
     {
         float textSize = normalSize ? 0.7f: 0.5f;
         float height = normalSize ? 0.03f : 0.02f;
-        float heightAddition = 0.55f;
 
 
         nodo.transform.GetChild(0).GetComponent<TextMesh>().text = nodo.name;
@@ -330,6 +345,25 @@ public class Node : MonoBehaviour
         nodo.clicked = false;
         nodo.transform.GetChild(0).GetComponent<TextMesh>().text = "";
         nodo.transform.GetChild(0).GetChild(0).transform.localScale = new Vector3(0.0f, 0.0f, 0.0f);
+    }
+
+    public void OnFocusEnter(FocusEventData eventData)
+    {
+        Debug.Log("0");
+        if(!colorChangedByHover && !clicked && !colorChangedByTest){
+            Debug.Log("1");
+            showTextLabel(this, Color.white);
+            clicked = false;
+            colorChangedByHover=true;
+        }
+    }
+
+    public void OnFocusExit(FocusEventData eventData)
+    {
+        if(colorChangedByHover && !clicked && !colorChangedByTest){
+            colorChangedByHover=false;
+            hideTextLabel(this);
+        }
     }
 }
 

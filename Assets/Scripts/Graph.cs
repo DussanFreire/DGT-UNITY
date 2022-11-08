@@ -52,7 +52,7 @@ public class Graph : MonoBehaviour
 		allEdges = new List<EdgeModel>();
         allNodes = new List<Node>();
 		// GenerateRequest();
-		InvokeRepeating("GenerateRequest", 0.0f, 10.0f);
+		InvokeRepeating("GenerateRequest", 0.0f, 3.0f);
 		
 	}
 
@@ -120,7 +120,7 @@ public class Graph : MonoBehaviour
 			nodeToUpdate.visible = nodeRequest.visible;
 			nodeToUpdate.setColor(nodeColor);
 			if (nodeRequest.visible){
-				nodeToUpdate.showTextLabel(nodeToUpdate,nodeColor);
+				// nodeToUpdate.showTextLabel(nodeToUpdate,nodeColor);
 				nodeToUpdate.turnToSolidColor();
 			} else {
 				nodeToUpdate.hideTextLabel(nodeToUpdate);

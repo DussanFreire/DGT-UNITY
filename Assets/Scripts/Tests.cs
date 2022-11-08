@@ -6,7 +6,7 @@ using UnityEngine;
 public class Tests : MonoBehaviour
 {
     TextMeshPro textMeshPro;
-    public static int currentTest= 0;
+    public static int currentTest= -1;
     static bool updated =true;
     void Start()
     {
@@ -36,17 +36,17 @@ public class Tests : MonoBehaviour
         switch (currentTest)
         {
             case 0:
-                return "Encontrar cuantos y cuales archivos podrían ser afectadas de form directa si se realiza algún cambio en el archivo “employee.entity.ts”";
+                return "Encuentre cuantos y cuales archivos podrían ser afectados de forma  directa si se realiza algún cambio en el archivo “employee.entity.ts”";
             case 1:
-                return "Encontrar el apartado de los archivos '.enum' que tengan una relacion con algun archivo '.entity'";
+                return "Encuentre el apartado de archivos '.enum' que tengan una relacion con algun archivo '.entity'";
             case 2:
-                return "Definir que nodo con mayor numero de dependencias";
+                return "Definir qué nodo tiene el mayor número de dependencias";
             case 3:
-                return "Encontrar el grupo de archivos que se enceuntre en menor cantidad dentro del proyecto";
+                return "Encontrar el grupo de archivos que se encuentre en menor cantidad dentro del proyecto";
             case 4:
-                return "Encontrar los nodos que no dependan de ningun otro";
+                return "Encontrar los nodos que no dependan de ningún otro";
             default:
-                return "Observar el grafo";
+                return "Seleccione un test para continuar ...";
         }
 
     }

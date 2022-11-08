@@ -16,6 +16,10 @@ public class TestManager : MonoBehaviour
         
     }
 
+    public  void setNormal(){
+        Tests.setCurrentValue(-1);
+    }
+
     public  void setFirstOption(){
         Tests.setCurrentValue(0);
     }
