@@ -676,6 +676,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HandMenu
       objectReference: {fileID: 0}
+    - target: {fileID: 5944114331771702703, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5944114332358614049, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: m_Mesh
       value: 
