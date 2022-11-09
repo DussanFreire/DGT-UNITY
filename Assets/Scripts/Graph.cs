@@ -120,7 +120,7 @@ public class Graph : MonoBehaviour
 			nodeToUpdate.visible = nodeRequest.visible;
 			nodeToUpdate.setColor(nodeColor);
 			if (nodeRequest.visible){
-				// nodeToUpdate.showTextLabel(nodeToUpdate,nodeColor);
+				nodeToUpdate.showTextLabel(nodeToUpdate,nodeColor);
 				nodeToUpdate.turnToSolidColor();
 			} else {
 				nodeToUpdate.hideTextLabel(nodeToUpdate);
@@ -132,7 +132,7 @@ public class Graph : MonoBehaviour
 				edgeToUpdate.visible = link.visible;
 				Color edgeColor = getColor(EdgeColorModel.regularEdge);
 
-				if (!link .visible)
+				if (link .visible)
 				{
 					edgeToUpdate.turnEdgeToSolidColor(edgeColor);
 				}
@@ -261,7 +261,6 @@ public class Graph : MonoBehaviour
         node.setNodeChildren(childrenList);
     }
 
-   
 }
 
 //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

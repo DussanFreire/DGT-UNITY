@@ -6,7 +6,7 @@ using UnityEngine;
 public class Tests : MonoBehaviour
 {
     TextMeshPro textMeshPro;
-    public static int currentTest= -1;
+    public static int currentTest= 0;
     static bool updated =true;
     void Start()
     {
