@@ -29,6 +29,8 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
         transform.GetChild(0).GetComponent<TextMesh>().text = "";
         startConfiguration();
         MakeChangeColorOnTouch(node);
+        
+        PointerUtils.SetGazePointerBehavior(PointerBehavior.AlwaysOn);
 
     }
 
@@ -183,53 +185,17 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
 
 
     void changeColor(Node currentNode,Material material){
-        material.color = getColor(NodeColorModel.activeNode);
-        showTextLabel(currentNode, Color.white);
+        currentNode.turnToSolidColor();
+        showTextLabel(currentNode, currentNode.nodeColor);
         List<Node> childrenNode = new List<Node>();
         for (int i = 0; i < this.allEdges.Count; i++)
         {
-            if(allEdges[i].origin ==currentNode.id || allEdges[i].target ==currentNode.id){
-                Color edgeColor = getColor(NodeColorModel.activeNode);
-                this.allEdges[i].edge.GetComponent<Renderer>().material.color = edgeColor;
-                this.allEdges[i].edge.transform.GetChild(0).GetComponent<Renderer>().material.color =edgeColor;
-            }
-            if(allEdges[i].origin ==currentNode.id ){
-                Color nodeColor = getColor(EdgeColorModel.nearEdge);
+            if(allEdges[i].origin ==currentNode.id){
+                this.allEdges[i].edge.GetComponent<Renderer>().material.color = currentNode.nodeColor;
+                this.allEdges[i].edge.transform.GetChild(0).GetComponent<Renderer>().material.color =currentNode.nodeColor;
                 Node node = this.allNodes.Find(n=>n.id==allEdges[i].target);
-                node.node.GetComponent<Renderer>().material.color =nodeColor;
-                node.showTextLabel(node,nodeColor);
-                childrenNode.Add(node);
-            }
-            if(allEdges[i].target ==currentNode.id ){
-                Color nodeColor = getColor(EdgeColorModel.nearEdge);
-                Node node = this.allNodes.Find(n=>n.id==allEdges[i].origin);
-                node.node.GetComponent<Renderer>().material.color =nodeColor;
-                node.showTextLabel(node,nodeColor);
-                childrenNode.Add(node);
-            }
-        }
-
-        for (int i = 0; i < childrenNode.Count; i++)
-        {
-            List<EdgeModel> childEdges = this.allEdges.FindAll(e=> (childrenNode[i].id ==e.origin|| e.target ==childrenNode[i].id)&&(e.origin != currentNode.id &&e.target != currentNode.id));
-            for (int j = 0; j < childEdges.Count; j++)
-            {
-                Color edgeColor = getColor(EdgeColorModel.nearEdge);
-                childEdges[j].edge.GetComponent<Renderer>().material.color = edgeColor;
-                childEdges[j].edge.transform.GetChild(0).GetComponent<Renderer>().material.color =edgeColor;
-
-                if(childEdges[j].origin == childrenNode[i].id ){
-                    Color nodeColor = getColor(EdgeColorModel.farEdge);
-                    Node node = this.allNodes.Find(n=>n.id==childEdges[j].target);
-                    node.node.GetComponent<Renderer>().material.color = nodeColor;
-                    node.showTextLabel(node,nodeColor);
-                }
-                if(childEdges[j].target ==childrenNode[i].id ){
-                    Color nodeColor = getColor(EdgeColorModel.farEdge);
-                    Node node = this.allNodes.Find(n=>n.id==childEdges[j].origin);
-                    node.node.GetComponent<Renderer>().material.color =nodeColor;
-                    node.showTextLabel(node,nodeColor);
-                }
+                node.turnToSolidColor();
+                node.showTextLabel(node,node.nodeColor);
             }
         }
     }
@@ -241,34 +207,36 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
         }
     }
     
-
     public void MakeChangeColorOnTouch(GameObject targetNode)
     {
         var touchable = targetNode.AddComponent<NearInteractionTouchableVolume>();
         touchable.EventsToReceive = TouchableEventType.Pointer;
         Material material = targetNode.GetComponent<Renderer>().material;
         var pointerHandler = targetNode.AddComponent<PointerHandler>();
+        var touchHandler = targetNode.AddComponent<TouchHandler>();
         var focusHandler = targetNode.AddComponent<FocusHandler>();
         pointerHandler.OnPointerDown.AddListener((e) => {
-            if(Tests.currentTest ==-1){
-                resetAllLabels();
-                turnTranspAllNodes();
-                turnTranspAllEdges();
-                changeColor(this,material);
-            }
-            else{
-                if(!colorChangedByTest){
-                    colorChangedByTest=true;
-                    material.color = getColor(NodeColorModel.activeNode);
-                    showTextLabel(this, Color.white);
-                }else{
-                    colorChangedByTest=false;
-                    hideTextLabel(this);
-                    turnToSolidColor();
+            resetAllLabels();
+            turnTranspAllNodes();
+            turnTranspAllEdges();
+            changeColor(this,material); 
+            foreach(GameObject gameObj in GameObject.FindObjectsOfType<GameObject>())
+            {
+                if(gameObj.name == "Cylinder")
+                {
+                    Material thisObj = gameObj.GetComponent<Renderer>().material;
+                    Color objColor =thisObj.color;
+                    float tranpsDensity= 0.25f;
+                    thisObj.color = new Color(objColor.r,objColor.g,objColor.b, tranpsDensity);
                 }
             }
         });
-
+        touchHandler.OnTouchCompleted.AddListener((e) => {
+            resetAllLabels();
+            turnTranspAllNodes();
+            turnTranspAllEdges();
+            changeColor(this,material);
+        });
     }
 
     private void turnTranspAllEdges()
@@ -336,7 +304,7 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
     public void OnFocusEnter(FocusEventData eventData)
     {
         if(!colorChangedByHover && !clicked && !colorChangedByTest){
-            showTextLabel(this, Color.white);
+            showTextLabel(this, this.nodeColor);
             clicked = false;
             colorChangedByHover=true;
         }

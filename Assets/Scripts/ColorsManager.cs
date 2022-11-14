@@ -14,16 +14,12 @@ public class ColorsManager : MonoBehaviour
     public GameObject seventhColor;
     public GameObject eigthColor;
 
-    // Start is called before the first frame update
     void Start()
     {
         
     }
-    void onAwake(){}
     void ResponseCallback(){}
 
-    // Update is called once per frame
-  
     private IEnumerator ProcessRequest(string uri)
 	{
 		using (UnityWebRequest request = UnityWebRequest.Get(uri))
@@ -51,59 +47,102 @@ public class ColorsManager : MonoBehaviour
         thisObj.color = new Color(objColor.r,objColor.g,objColor.b, tranpsDensity);
     }
 
+    public bool allTransparent(){
+        Color first = firstColor.GetComponent<Renderer>().material.color;
+        Color second = secondColor.GetComponent<Renderer>().material.color;
+        Color third = thirdColor.GetComponent<Renderer>().material.color;
+        Color forth = forthColor.GetComponent<Renderer>().material.color;
+        Color fifth = fifthColor.GetComponent<Renderer>().material.color;
+        Color sixth = sixthColor.GetComponent<Renderer>().material.color;
+        Color seventh = seventhColor.GetComponent<Renderer>().material.color;
+        Color eicht = seventhColor.GetComponent<Renderer>().material.color;
+        return first.a !=1 && second.a !=1 && third.a !=1 && forth.a !=1 && fifth.a !=1 && sixth.a !=1 && seventh.a !=1 && eicht.a !=1;
+    }
+
     public void tranpColor(Material thisObj){
         Color objColor =thisObj.color;
         float tranpsDensity = 0.25f;
         thisObj.color = new Color(objColor.r,objColor.g,objColor.b, tranpsDensity);
     }
     public  void setFirstOption(GameObject thisObj){
+        if(allTransparent()){
+            StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/src"));
+        }else{
+            StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/toggle/src"));
+        }
         toggleColor(thisObj.GetComponent<Renderer>().material);
-        StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/toggle/src"));
     }
     public void setSecondOption(GameObject thisObj){
+        if(allTransparent()){
+            StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/controller"));
+        }else{
+            StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/toggle/controller"));
+        }
         toggleColor(thisObj.GetComponent<Renderer>().material);
-        StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/toggle/controller"));
-
     }
 
     public void setThirdOption(GameObject thisObj){
+        if(allTransparent()){
+            StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/service"));
+        }else{
+            StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/toggle/service"));
+        }
         toggleColor(thisObj.GetComponent<Renderer>().material);
-
-        StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/toggle/service"));
-
     }
 
     public void setForthOption(GameObject thisObj){
+        if(allTransparent()){
+            StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/decorator"));
+        }else{
+            StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/toggle/decorator"));
+        }
         toggleColor(thisObj.GetComponent<Renderer>().material);
-
-        StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/toggle/decorator"));
     }
 
     public void setFifthOption(GameObject thisObj){
+        if(allTransparent()){
+            StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/dto"));
+        }else{
+            StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/toggle/dto"));
+        }
         toggleColor(thisObj.GetComponent<Renderer>().material);
-
-        StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/toggle/dto"));
     }
 
     public void setSixthOption(GameObject thisObj){
+        if(allTransparent()){
+            StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/enum"));
+        }else{
+            StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/toggle/enum"));
+        }
         toggleColor(thisObj.GetComponent<Renderer>().material);
-
-        StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/toggle/enum"));
     }
 
     public void setSeventhOption(GameObject thisObj){
+        if(allTransparent()){
+            StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/guard"));
+        }else{
+            StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/toggle/guard"));
+        }
         toggleColor(thisObj.GetComponent<Renderer>().material);
-
-        StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/toggle/guard"));
     }
 
     public void setEigthOption(GameObject thisObj){
+        if(allTransparent()){
+            StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/persistence"));
+        }else{
+            StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/toggle/persistence"));
+        }
         toggleColor(thisObj.GetComponent<Renderer>().material);
-
-        StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/toggle/persistence"));
     }
 
-    public void setTranspOption(){
+    public void setTranspOption()
+    {
+        transpAll();
+        StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/transparent"));
+    }
+
+    public void transpAll()
+    {
         tranpColor(firstColor.GetComponent<Renderer>().material);
         tranpColor(secondColor.GetComponent<Renderer>().material);
         tranpColor(thirdColor.GetComponent<Renderer>().material);
@@ -112,6 +151,5 @@ public class ColorsManager : MonoBehaviour
         tranpColor(sixthColor.GetComponent<Renderer>().material);
         tranpColor(seventhColor.GetComponent<Renderer>().material);
         tranpColor(eigthColor.GetComponent<Renderer>().material);
-        StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/transparent"));
     }
 }

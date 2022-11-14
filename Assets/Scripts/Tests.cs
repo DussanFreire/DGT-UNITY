@@ -36,9 +36,9 @@ public class Tests : MonoBehaviour
         switch (currentTest)
         {
             case 0:
-                return "Encuentre cuantos y cuales archivos podrían ser afectados de forma  directa si se realiza algún cambio en el archivo “employee.entity.ts”";
+                return "Encuentre que archivos podrían ser afectados de forma  directa si se realiza algún cambio en el archivo “employee.entity.ts”";
             case 1:
-                return "Encuentre el apartado de archivos '.enum' que tengan una relacion con algun archivo '.entity'";
+                return "Encuentre el apartado de archivos '.enum' que tengan una relacion con algun archivo '.entity' (Persistence)";
             case 2:
                 return "Definir qué nodo tiene el mayor número de dependencias";
             case 3:

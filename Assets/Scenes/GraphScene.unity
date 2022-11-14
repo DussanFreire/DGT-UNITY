@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657815, g: 0.49641192, b: 0.57481617, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -257,6 +257,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 631979671833083603, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5933
+      objectReference: {fileID: 0}
     - target: {fileID: 719866775505035676, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -349,6 +353,14 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 1580793493976582745, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1580793493976582746, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.0065
+      objectReference: {fileID: 0}
     - target: {fileID: 1580793494982991176, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: m_RootOrder
       value: 15
@@ -359,7 +371,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1696008354033831859, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.00803
+      value: -0.01227
       objectReference: {fileID: 0}
     - target: {fileID: 1719620724971381307, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.size
@@ -437,9 +449,21 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0.023800015
       objectReference: {fileID: 0}
+    - target: {fileID: 2265902784101777203, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.045216
+      objectReference: {fileID: 0}
     - target: {fileID: 2265902785058808124, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: m_Mesh
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265902785058808129, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.00627
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265902785058808130, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2368830901152940719, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: m_LocalPosition.y
@@ -483,7 +507,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2974254075324316970, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.015449988
+      value: 0.0049999994
       objectReference: {fileID: 0}
     - target: {fileID: 2974254075324316970, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -525,6 +549,18 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 3038670346688362724, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
+      propertyPath: m_margin.z
+      value: 0.004805004
+      objectReference: {fileID: 0}
+    - target: {fileID: 3038670346688362724, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3038670346688362727, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.0021
+      objectReference: {fileID: 0}
     - target: {fileID: 3038670347828457461, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: m_RootOrder
       value: 20
@@ -532,6 +568,18 @@ PrefabInstance:
     - target: {fileID: 3038670347828457461, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0.023800015
+      objectReference: {fileID: 0}
+    - target: {fileID: 3132276017131274260, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.0083
+      objectReference: {fileID: 0}
+    - target: {fileID: 3132276017131274263, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
+      propertyPath: m_margin.z
+      value: 0.015239125
+      objectReference: {fileID: 0}
+    - target: {fileID: 3132276017131274263, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3132276017131274345, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: m_Mesh
@@ -551,7 +599,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3502725127867321540, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.3813
+      value: 0.3899
       objectReference: {fileID: 0}
     - target: {fileID: 3502725127867321540, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: m_LocalPosition.z
@@ -559,7 +607,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3502725127899014792, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.01545
+      value: 0.005
       objectReference: {fileID: 0}
     - target: {fileID: 3502725127899014792, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: m_LocalPosition.y
@@ -569,9 +617,17 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3502725128118764964, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.0420192
+      objectReference: {fileID: 0}
     - target: {fileID: 3502725129007356843, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: m_Mesh
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3502725129007356885, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3502725129007356886, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: m_LocalScale.x
@@ -583,11 +639,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3502725129007356886, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.0365
+      value: 0.026100012
       objectReference: {fileID: 0}
     - target: {fileID: 3502725129007356886, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.00741
+      value: -0.00658
       objectReference: {fileID: 0}
     - target: {fileID: 3652814352240210871, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.size
@@ -651,7 +707,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4382113458403309448, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.015449988
+      value: 0.0049999994
       objectReference: {fileID: 0}
     - target: {fileID: 4382113458403309448, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: m_LocalPosition.y
@@ -763,7 +819,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4822693483595478856, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.00797
+      value: 0.0042
+      objectReference: {fileID: 0}
+    - target: {fileID: 4822693483595478859, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
+      propertyPath: m_margin.z
+      value: 0.005117869
+      objectReference: {fileID: 0}
+    - target: {fileID: 4822693483595478859, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5210433966051344724, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: m_LocalPosition.y
@@ -772,6 +836,14 @@ PrefabInstance:
     - target: {fileID: 5223572737935625011, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: m_Mesh
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5223572737935625037, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5223572737935625038, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.00641
       objectReference: {fileID: 0}
     - target: {fileID: 5223572738943081564, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: m_RootOrder
@@ -845,6 +917,10 @@ PrefabInstance:
       propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.GameObject, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 5436866926988375704, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.060848
+      objectReference: {fileID: 0}
     - target: {fileID: 5436866927172616184, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: m_RootOrder
       value: 21
@@ -856,6 +932,14 @@ PrefabInstance:
     - target: {fileID: 5436866928180062359, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: m_Mesh
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5436866928180062441, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5436866928180062442, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.0025
       objectReference: {fileID: 0}
     - target: {fileID: 5623048458476839086, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: m_LocalPosition.y
@@ -924,6 +1008,10 @@ PrefabInstance:
     - target: {fileID: 5944114332358614049, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: m_Mesh
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6145441920249806791, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.8014
       objectReference: {fileID: 0}
     - target: {fileID: 6331820829408846982, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: Dimensions
