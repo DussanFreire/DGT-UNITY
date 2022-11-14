@@ -18,32 +18,7 @@ public class Graph : MonoBehaviour
     public List<Node> allNodes { get; set; }
     public List<string> filters { get; set; }
 	public int currentVersion { get; set; }
-    public bool Enabled { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-    public TrackingState TrackingState => throw new NotImplementedException();
-
-    public Handedness ControllerHandedness => throw new NotImplementedException();
-
-    public IMixedRealityInputSource InputSource => throw new NotImplementedException();
-
-    public IMixedRealityControllerVisualizer Visualizer => throw new NotImplementedException();
-
-    public bool IsPositionAvailable => throw new NotImplementedException();
-
-    public bool IsPositionApproximate => throw new NotImplementedException();
-
-    public bool IsRotationAvailable => throw new NotImplementedException();
-
-    public MixedRealityInteractionMapping[] Interactions => throw new NotImplementedException();
-
-    public Vector3 AngularVelocity => throw new NotImplementedException();
-
-    public Vector3 Velocity => throw new NotImplementedException();
-
-    public bool IsInPointingPose => throw new NotImplementedException();
-
-    public List<EdgeModel> edges = new List<EdgeModel>();
-
+    
     private const string URL_INIT = "https://test-dependencies.herokuapp.com/file/restart";
     private const string URL_UPDATE = "https://test-dependencies.herokuapp.com/file/brain";
 	void Start()
@@ -209,7 +184,6 @@ public class Graph : MonoBehaviour
 			{
 				allEdges[i].turnEdgeToTranspColor(edgeColor);
 			}
-           
         }
     }
 
@@ -262,5 +236,3 @@ public class Graph : MonoBehaviour
     }
 
 }
-
-//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

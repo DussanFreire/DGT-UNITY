@@ -12,8 +12,6 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
     public GameObject edgePrefab;
     public GameObject node;
     public Color nodeColor;
-    public EdgeColorModel edgeColors;
-    public NodeColorModel nodeColors;
     public List<int> childIds;
     public List<EdgeModel> edges = new List<EdgeModel>();
     public List<EdgeModel> edgesParent = new List<EdgeModel>();
@@ -90,15 +88,7 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
     public void turnToTranspColor(){
         this.node.GetComponent<Renderer>().material.color = new Color(nodeColor.r,nodeColor.g,nodeColor.b,0.25f);
     }
-   
     
-    public void setColors(EdgeColorModel edgeColor, NodeColorModel nodeColor)
-    {
-        this.edgeColors = edgeColor;
-        this.nodeColors = nodeColor;
-    }
-
-
     public void setChildIds(List<int> childIds)
     {
         this.childIds = childIds;
@@ -119,10 +109,6 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
         this.edgesParent = edges;
     }
 
-    public void resetColor()
-    {
-        this.node.GetComponent<Renderer>().material.color = getColor(NodeColorModel.pasiveNode);
-    }
 
     public EdgeModel AddEdge(Node node, int sourceId)
     {
@@ -349,9 +335,7 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
 
     public void OnFocusEnter(FocusEventData eventData)
     {
-        Debug.Log("0");
         if(!colorChangedByHover && !clicked && !colorChangedByTest){
-            Debug.Log("1");
             showTextLabel(this, Color.white);
             clicked = false;
             colorChangedByHover=true;
