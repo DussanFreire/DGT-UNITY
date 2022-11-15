@@ -36,15 +36,20 @@ public class Tests : MonoBehaviour
         switch (currentTest)
         {
             case 0:
-                return "Encuentre que archivos podrían ser afectados de forma  directa si se realiza algún cambio en el archivo “employee.entity.ts”";
+                return "¿Cuáles son los archivos que podrían ser afectados de forma directa si se realiza algún cambio en el archivo 'company.controller.ts'?;";
+                // company.controller.spec.ts | employee.service.spec.ts | controller.module.ts
             case 1:
-                return "Encuentre el apartado de archivos '.enum' que tengan una relacion con algun archivo '.entity' (Persistence)";
+                return "¿Cuáles son los archivos dentro la categoría de archivos 'dto' que tienen alguna relación con archivos dentro la categoría 'service'?";
+                // company.dto.ts | dependencies.dto | employee.dto.ts
             case 2:
-                return "Definir qué nodo tiene el mayor número de dependencias";
+                return "¿Cuáles son los 3 nodos que ha simple vista tienen mayor numero de dependencias'?";
+                // employee.service.scpec.ts | user.services.spec.ts | company.controllet.spec.ts
             case 3:
-                return "Encontrar el grupo de archivos que se encuentre en menor cantidad dentro del proyecto";
+                return "¿Cuál es la categoría de archivos que se encuentra en menor cantidad dentro del proyecto?";
+                // enum
             case 4:
-                return "Encontrar los nodos que no dependan de ningún otro";
+                return "¿Cuáles son los nodos que no dependen de ningún otro en la categoría de archivos 'src'?";
+                // app.service.ts | app.controller.ts | main.ts
             default:
                 return "Seleccione un test para continuar ...";
         }

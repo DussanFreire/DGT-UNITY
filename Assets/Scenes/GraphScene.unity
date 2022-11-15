@@ -201,6 +201,10 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 13
       objectReference: {fileID: 0}
+    - target: {fileID: 354545834086303541, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
+      propertyPath: m_text
+      value: "Rotaci\xF3n vertical"
+      objectReference: {fileID: 0}
     - target: {fileID: 354545834086303563, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -345,6 +349,14 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -0.00223
       objectReference: {fileID: 0}
+    - target: {fileID: 1157890000731241331, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
+      propertyPath: m_text
+      value: "Categor\xEDa de archivos y colores:"
+      objectReference: {fileID: 0}
+    - target: {fileID: 1157890000731241331, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
+      propertyPath: m_margin.z
+      value: -0.00225305
+      objectReference: {fileID: 0}
     - target: {fileID: 1455259076344456887, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -472,6 +484,10 @@ PrefabInstance:
     - target: {fileID: 2667913570172466080, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: startDimensionIndex
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2830647647077600509, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
+      propertyPath: m_text
+      value: "Descripci\xF3n del test: "
       objectReference: {fileID: 0}
     - target: {fileID: 2884217093081256070, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.size
@@ -624,6 +640,18 @@ PrefabInstance:
     - target: {fileID: 3502725129007356843, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: m_Mesh
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3502725129007356885, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
+      propertyPath: m_text
+      value: Deseleccionar
+      objectReference: {fileID: 0}
+    - target: {fileID: 3502725129007356885, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
+      propertyPath: m_margin.x
+      value: -0.040240202
+      objectReference: {fileID: 0}
+    - target: {fileID: 3502725129007356885, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
+      propertyPath: m_margin.z
+      value: 0.0022117663
       objectReference: {fileID: 0}
     - target: {fileID: 3502725129007356885, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: m_HorizontalAlignment
@@ -1013,6 +1041,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.x
       value: 1.8014
       objectReference: {fileID: 0}
+    - target: {fileID: 6270607349953093956, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
+      propertyPath: m_text
+      value: 'Acciones:'
+      objectReference: {fileID: 0}
     - target: {fileID: 6331820829408846982, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: Dimensions
       value: 2
@@ -1164,6 +1196,10 @@ PrefabInstance:
     - target: {fileID: 6444140680952708435, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: m_Mesh
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6444140681529089443, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
+      propertyPath: m_text
+      value: "Rotaci\xF3n horizontal"
       objectReference: {fileID: 0}
     - target: {fileID: 6444140681529089501, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: m_Mesh

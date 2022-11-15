@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
 
 public class Node : MonoBehaviour,IMixedRealityFocusHandler
 {
@@ -30,14 +31,14 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
         startConfiguration();
         MakeChangeColorOnTouch(node);
         
-        PointerUtils.SetGazePointerBehavior(PointerBehavior.AlwaysOn);
+        PointerUtils.SetGazePointerBehavior(PointerBehavior.Default);
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (clicked || colorChangedByHover||colorChangedByHover) {
+        if (clicked || colorChangedByHover) {
             Vector3 pos = Camera.main.transform.position;
             transform.GetChild(0).LookAt(pos);
             Vector3 rotation = transform.GetChild(0).rotation.eulerAngles;
@@ -45,6 +46,7 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
             transform.GetChild(0).GetChild(0).transform.LookAt(pos);
         }
     }
+
 
 
     public void startConfiguration()
