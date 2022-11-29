@@ -26,6 +26,21 @@ public class Graph : MonoBehaviour
 		currentVersion=-1;
 		allEdges = new List<EdgeModel>();
         allNodes = new List<Node>();
+		Metrics.verticalRotationUsed = 0;
+		Metrics.horizontalRotationUsed = 0;
+		Metrics.hoverUsed = 0;
+		Metrics.touchUsed = 0;
+		Metrics.pointerUsed = 0;
+		Metrics.srcFilterUsed=0;
+		Metrics.controllerFilterUsed=0;
+		Metrics.serviceFilterUsed=0;
+		Metrics.transpFilterUsed=0;
+		Metrics.decoratorFilterUsed=0;
+		Metrics.dtoFilterUsed=0;
+		Metrics.enumFilterUsed=0;
+		Metrics.guardFilterUsed=0;
+		Metrics.persistenceFilterUsed=0;
+        Metrics.currentTest = 1;
 		// GenerateRequest();
 		InvokeRepeating("GenerateRequest", 0.0f, 3.0f);
 		
@@ -44,16 +59,52 @@ public class Graph : MonoBehaviour
 	public void GenerateRequest()
 	{
 		if(onInit){
-			StartCoroutine(ProcessRequest(URL_INIT, ResponseCallback));
+			StartCoroutine(ProcessRequestGet(URL_INIT, ResponseCallback));
 			onInit=false;
 		}else{
-			StartCoroutine(ProcessRequest(URL_UPDATE, ResponseCallback));
+			StartCoroutine(ProcessRequestPost(URL_UPDATE, ResponseCallback));
 		}
 	}
 
-	private IEnumerator ProcessRequest(string uri, Action<RequestModel> callback = null)
+	private IEnumerator ProcessRequestGet(string uri, Action<RequestModel> callback = null)
 	{
 		using (UnityWebRequest request = UnityWebRequest.Get(uri))
+		{
+			yield return request.SendWebRequest();
+
+			if (request.isNetworkError)
+			{
+				Debug.Log(request.error);
+			}
+			else
+			{
+				var data = request.downloadHandler.text;
+				RequestModel RequestModel = JsonUtility.FromJson<RequestModel>(data);
+				if (callback != null)
+					callback(RequestModel);
+			}
+		}
+	}	private IEnumerator ProcessRequestPost(string uri, Action<RequestModel> callback = null)
+	{
+		WWWForm form = new WWWForm();
+		form.AddField("verticalRotationUsed", Metrics.verticalRotationUsed);
+		form.AddField("horizontalRotationUsed", Metrics.horizontalRotationUsed);
+		form.AddField("hoverUsed", Metrics.hoverUsed);
+		form.AddField("touchUsed", Metrics.touchUsed);
+		form.AddField("pointerUsed", Metrics.pointerUsed);
+		form.AddField("srcFilterUsed", Metrics.srcFilterUsed);
+		form.AddField("controllerFilterUsed", Metrics.controllerFilterUsed);
+		form.AddField("serviceFilterUsed", Metrics.serviceFilterUsed);
+		form.AddField("decoratorFilterUsed", Metrics.decoratorFilterUsed);
+		form.AddField("dtoFilterUsed", Metrics.dtoFilterUsed);
+		form.AddField("enumFilterUsed", Metrics.enumFilterUsed);
+		form.AddField("guardFilterUsed", Metrics.guardFilterUsed);
+		form.AddField("persistenceFilterUsed", Metrics.persistenceFilterUsed);
+		form.AddField("transpFilterUsed", Metrics.transpFilterUsed);
+		form.AddField("currentTime", DateTime.Now.ToString());
+		form.AddField("currentTest", Metrics.currentTest);
+
+		using (UnityWebRequest request = UnityWebRequest.Post(uri,form))
 		{
 			yield return request.SendWebRequest();
 

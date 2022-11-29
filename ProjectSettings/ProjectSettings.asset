@@ -143,6 +143,12 @@ PlayerSettings:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 3913821078919465157, guid: 50aab0f4ccc962445a36cb22247b58f5, type: 2}
   - {fileID: -3662003323193351676, guid: 619c7722b932c954f91aee754120313b, type: 2}
   metroInputSource: 0
@@ -627,7 +633,7 @@ PlayerSettings:
   m_MobileRenderingPath: 1
   metroPackageName: Template3D
   metroPackageVersion: 1.0.0.0
-  metroCertificatePath: Assets\WSATestCertificate.pfx
+  metroCertificatePath: C:\Users\internet\Desktop\graphAux\graph1-unity\Assets\WSATestCertificate.pfx
   metroCertificatePassword: 
   metroCertificateSubject: DefaultCompany
   metroCertificateIssuer: DefaultCompany
