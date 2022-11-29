@@ -66,71 +66,71 @@ public class ColorsManager : MonoBehaviour
     }
     public  void setFirstOption(GameObject thisObj){
         if(allTransparent()){
-            StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/src"));
+            StartCoroutine(ProcessRequest("https://dependency-graph-z42n.vercel.app/file/brain/src"));
         }else{
-            StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/toggle/src"));
+            StartCoroutine(ProcessRequest("https://dependency-graph-z42n.vercel.app/file/brain/toggle/src"));
         }
         toggleColor(thisObj.GetComponent<Renderer>().material);
     }
     public void setSecondOption(GameObject thisObj){
         if(allTransparent()){
-            StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/controller"));
+            StartCoroutine(ProcessRequest("https://dependency-graph-z42n.vercel.app/file/brain/controller"));
         }else{
-            StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/toggle/controller"));
+            StartCoroutine(ProcessRequest("https://dependency-graph-z42n.vercel.app/file/brain/toggle/controller"));
         }
         toggleColor(thisObj.GetComponent<Renderer>().material);
     }
 
     public void setThirdOption(GameObject thisObj){
         if(allTransparent()){
-            StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/service"));
+            StartCoroutine(ProcessRequest("https://dependency-graph-z42n.vercel.app/file/brain/service"));
         }else{
-            StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/toggle/service"));
+            StartCoroutine(ProcessRequest("https://dependency-graph-z42n.vercel.app/file/brain/toggle/service"));
         }
         toggleColor(thisObj.GetComponent<Renderer>().material);
     }
 
     public void setForthOption(GameObject thisObj){
         if(allTransparent()){
-            StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/decorator"));
+            StartCoroutine(ProcessRequest("https://dependency-graph-z42n.vercel.app/file/brain/decorator"));
         }else{
-            StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/toggle/decorator"));
+            StartCoroutine(ProcessRequest("https://dependency-graph-z42n.vercel.app/file/brain/toggle/decorator"));
         }
         toggleColor(thisObj.GetComponent<Renderer>().material);
     }
 
     public void setFifthOption(GameObject thisObj){
         if(allTransparent()){
-            StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/dto"));
+            StartCoroutine(ProcessRequest("https://dependency-graph-z42n.vercel.app/file/brain/dto"));
         }else{
-            StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/toggle/dto"));
+            StartCoroutine(ProcessRequest("https://dependency-graph-z42n.vercel.app/file/brain/toggle/dto"));
         }
         toggleColor(thisObj.GetComponent<Renderer>().material);
     }
 
     public void setSixthOption(GameObject thisObj){
         if(allTransparent()){
-            StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/enum"));
+            StartCoroutine(ProcessRequest("https://dependency-graph-z42n.vercel.app/file/brain/enum"));
         }else{
-            StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/toggle/enum"));
+            StartCoroutine(ProcessRequest("https://dependency-graph-z42n.vercel.app/file/brain/toggle/enum"));
         }
         toggleColor(thisObj.GetComponent<Renderer>().material);
     }
 
     public void setSeventhOption(GameObject thisObj){
         if(allTransparent()){
-            StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/guard"));
+            StartCoroutine(ProcessRequest("https://dependency-graph-z42n.vercel.app/file/brain/guard"));
         }else{
-            StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/toggle/guard"));
+            StartCoroutine(ProcessRequest("https://dependency-graph-z42n.vercel.app/file/brain/toggle/guard"));
         }
         toggleColor(thisObj.GetComponent<Renderer>().material);
     }
 
     public void setEigthOption(GameObject thisObj){
         if(allTransparent()){
-            StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/persistence"));
+            StartCoroutine(ProcessRequest("https://dependency-graph-z42n.vercel.app/file/brain/persistence"));
         }else{
-            StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/brain/toggle/persistence"));
+            StartCoroutine(ProcessRequest("https://dependency-graph-z42n.vercel.app/file/brain/toggle/persistence"));
         }
         toggleColor(thisObj.GetComponent<Renderer>().material);
     }
@@ -138,7 +138,7 @@ public class ColorsManager : MonoBehaviour
     public void setTranspOption()
     {
         transpAll();
-        StartCoroutine(ProcessRequest("https://test-dependencies.herokuapp.com/file/transparent"));
+        StartCoroutine(ProcessRequest("https://dependency-graph-z42n.vercel.app/file/transparent"));
     }
 
     public void transpAll()

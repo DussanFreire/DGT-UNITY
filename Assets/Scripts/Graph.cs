@@ -19,8 +19,8 @@ public class Graph : MonoBehaviour
     public List<string> filters { get; set; }
 	public int currentVersion { get; set; }
     
-    private const string URL_INIT = "https://test-dependencies.herokuapp.com/file/restart";
-    private const string URL_UPDATE = "https://test-dependencies.herokuapp.com/file/brain";
+    private const string URL_INIT = "https://dependency-graph-z42n.vercel.app/file/restart";
+    private const string URL_UPDATE = "https://dependency-graph-z42n.vercel.app/file/brain";
 	void Start()
 	{
 		currentVersion=-1;
