@@ -12,11 +12,11 @@ public class Menu : MonoBehaviour
     {
         
     }
-
-    //Output the new state of the Toggle into Text
     public void myAction()
     {
             buttonPressed=!buttonPressed;
+            if(buttonPressed)
+                Metrics.horizontalRotationUsed++;
 
     }
 }

@@ -17,6 +17,8 @@ public class MenuVertical : MonoBehaviour
     public void myAction()
     {
             buttonPressed=!buttonPressed;
+            if(buttonPressed)
+                Metrics.verticalRotationUsed++;
 
     }
 }
