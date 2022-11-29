@@ -19,4 +19,14 @@ public class Menu : MonoBehaviour
                 Metrics.horizontalRotationUsed++;
 
     }
+
+    public static void myActionFromHttp(bool update)
+    {   
+            if(update==buttonPressed)
+                return;
+            buttonPressed=!buttonPressed;
+            if(buttonPressed)
+                Metrics.horizontalRotationUsed++;
+
+    }
 }

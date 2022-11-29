@@ -5,9 +5,9 @@ using System.Collections.Generic;
 public class RequestModel
 {
 	public int version;
+	public float size;
 	public string graphName;
+	public Actions actions;
 	public List<Filter> filters;
-    public EdgeColorModel edgeColors;
-	public NodeColorModel nodeColors;
 	public List<NodeRequestModel> nodes;
 }

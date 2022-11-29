@@ -18,6 +18,7 @@ public class Graph : MonoBehaviour
     public List<Node> allNodes { get; set; }
     public List<string> filters { get; set; }
 	public int currentVersion { get; set; }
+	public float size { get; set; }
     
     private const string URL_INIT = "https://dependency-graph-z42n.vercel.app/file/restart";
     private const string URL_UPDATE = "https://dependency-graph-z42n.vercel.app/file/brain";
@@ -48,10 +49,10 @@ public class Graph : MonoBehaviour
 
 	void Update(){
 		if(Menu.buttonPressed){
-			transform.Rotate(0,0.75f, 0, Space.World);
+			transform.Rotate(0,0.75f, 0, Space.Self);
 		}
 		if(MenuVertical.buttonPressed){
-			transform.Rotate(0.75f,0, 0, Space.World);
+			transform.Rotate(0.75f,0, 0, Space.Self);
 		}
 	}
 
@@ -84,7 +85,8 @@ public class Graph : MonoBehaviour
 					callback(RequestModel);
 			}
 		}
-	}	private IEnumerator ProcessRequestPost(string uri, Action<RequestModel> callback = null)
+	}	
+	private IEnumerator ProcessRequestPost(string uri, Action<RequestModel> callback = null)
 	{
 		WWWForm form = new WWWForm();
 		form.AddField("verticalRotationUsed", Metrics.verticalRotationUsed);
@@ -131,6 +133,11 @@ public class Graph : MonoBehaviour
 		else if(requestModel.version > currentVersion)
 		{
 			currentVersion =requestModel.version;
+			if(size!=requestModel.size){
+				deleteObj();
+				createNodesFromData(requestModel);
+			}
+			else
 			updateNodesFromData(requestModel);
 		}
 	}
@@ -145,6 +152,10 @@ public class Graph : MonoBehaviour
 			Color nodeColor = getColor(nodeRequest.color);
 			nodeToUpdate.visible = nodeRequest.visible;
 			nodeToUpdate.setColor(nodeColor);
+			if(requestModel.actions.rotateV) Debug.Log("requestModel.actions.rotateV");
+			if(requestModel.actions.rotateH) Debug.Log("requestModel.actions.rotateH");
+			MenuVertical.myActionFromHttp(requestModel.actions.rotateV);
+			Menu.myActionFromHttp(requestModel.actions.rotateH);
 			if (nodeRequest.visible){
 				nodeToUpdate.showTextLabel(nodeToUpdate,nodeColor);
 				nodeToUpdate.turnToSolidColor();
@@ -169,6 +180,10 @@ public class Graph : MonoBehaviour
 			}
 			
 		}
+		
+		moveXPosition(requestModel.actions.xBackward,requestModel.actions.xForward);
+		moveYPosition(requestModel.actions.yBackward,requestModel.actions.yForward);
+		moveZPosition(requestModel.actions.zBackward,requestModel.actions.zForward);
     }
 
 	private Node generateNode(NodeRequestModel nodeRequest){
@@ -196,7 +211,7 @@ public class Graph : MonoBehaviour
 	private void createNodesFromData(RequestModel RequestModel)
 	{
 		allNodes = new List<Node>();
-
+		size =RequestModel.size;
 		foreach (NodeRequestModel nodeRequest in RequestModel.nodes)
 		{
 			Node node = generateNode(nodeRequest);
@@ -237,6 +252,19 @@ public class Graph : MonoBehaviour
 			}
         }
     }
+	void deleteObj(){
+	
+		
+		allNodes.ForEach(n=>{
+			Destroy(n.node);
+			n.allEdges = new List<EdgeModel>();
+			n.allNodes =new List<Node>();
+		});
+		allNodes = new List<Node>();
+		allEdges = new List<EdgeModel>();
+
+	}
+	
 
 	private void setEdges(Node node, List<Link> links, List<Node> nodeList)
 	{
@@ -285,5 +313,35 @@ public class Graph : MonoBehaviour
 			).ToList();
         node.setNodeChildren(childrenList);
     }
+
+
+	private void moveXPosition(bool backward, bool forward){
+		if(!backward && !forward)
+			return;
+		float movement = 0.5f;
+		if(backward) movement*=-1;
+		Vector3 pos = transform.localPosition;
+		pos += new Vector3(movement,0,0);
+		transform.localPosition =pos;
+	}
+	private void moveYPosition(bool backward, bool forward){
+		if(!backward && !forward)
+			return;
+		float movement = 0.5f;
+		if(backward) movement*=-1;
+		Vector3 pos = transform.localPosition;
+		pos += new Vector3(0,movement,0);
+		transform.localPosition =pos;
+	}
+	private void moveZPosition(bool backward, bool forward){
+		if(!backward && !forward)
+			return;
+		float movement = 0.5f;
+		if(backward) movement*=-1;
+		Vector3 pos = transform.localPosition;
+		pos += new Vector3(0,0,movement);
+		transform.localPosition =pos;
+	}
+
 
 }

@@ -21,4 +21,14 @@ public class MenuVertical : MonoBehaviour
                 Metrics.verticalRotationUsed++;
 
     }
+
+    public static void myActionFromHttp(bool update)
+    {   
+            if(update==buttonPressed)
+                return;
+            buttonPressed=!buttonPressed;
+            if(buttonPressed)
+                Metrics.verticalRotationUsed++;
+
+    }
 }
