@@ -1025,6 +1025,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HandMenu
       objectReference: {fileID: 0}
+    - target: {fileID: 5842008468435884931, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5944114331217529678, guid: 385adee8b37524f179b1636e7d297ba7, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.0595
@@ -1409,7 +1413,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &359145491
 Transform:
   m_ObjectHideFlags: 0
@@ -1589,7 +1593,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &805872389
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1640,7 +1644,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &815789024
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2222,7 +2226,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1947169497
 MonoBehaviour:
   m_ObjectHideFlags: 0

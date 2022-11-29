@@ -36,7 +36,7 @@ public class Tests : MonoBehaviour
         switch (currentTest)
         {
             case 0:
-                return "¿Cuáles son los archivos que podrían ser afectados de forma directa si se realiza algún cambio en el archivo 'company.controller.ts'?;";
+                return "¿Cuáles son los archivos que podrían ser afectados de forma directa si se realiza algún cambio en el archivo 'company.controller.ts'?";
                 // company.controller.spec.ts | employee.service.spec.ts | controller.module.ts
             case 1:
                 return "¿Cuáles son los archivos dentro la categoría de archivos 'dto' que tienen alguna relación con archivos dentro la categoría 'service'?";
@@ -53,6 +53,5 @@ public class Tests : MonoBehaviour
             default:
                 return "Seleccione un test para continuar ...";
         }
-
     }
 }
