@@ -7,6 +7,7 @@ using System.Linq;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System.Threading.Tasks;
 
 public class Graph : MonoBehaviour
 {
@@ -19,12 +20,22 @@ public class Graph : MonoBehaviour
     public List<string> filters { get; set; }
 	public int currentVersion { get; set; }
 	public float size { get; set; }
-    
+	public float speed;
+	public bool movingX;
+	public Vector3 posXTarget;
+	public bool movingY;
+	public Vector3 posYTarget;
+	public bool movingZ;
+	public Vector3 posZTarget;
     private const string URL_INIT = "https://dependency-graph-z42n.vercel.app/file/restart";
     private const string URL_UPDATE = "https://dependency-graph-z42n.vercel.app/file/brain";
 	void Start()
 	{
+		movingX =false;
+		movingY =false;
+		movingZ =false;
 		currentVersion=-1;
+		speed = 0.1f;
 		allEdges = new List<EdgeModel>();
         allNodes = new List<Node>();
 		Metrics.verticalRotationUsed = 0;
@@ -53,6 +64,18 @@ public class Graph : MonoBehaviour
 		}
 		if(MenuVertical.buttonPressed){
 			transform.Rotate(0.75f,0, 0, Space.Self);
+		}
+		if(movingX){
+			float step = speed * Time.deltaTime;
+ 			transform.position = Vector3.MoveTowards(transform.position, posXTarget, step);
+		}
+		if(movingY){
+			float step = speed * Time.deltaTime;
+ 			transform.position = Vector3.MoveTowards(transform.position, posYTarget, step);
+		}
+		if(movingZ){
+			float step = speed * Time.deltaTime;
+ 			transform.position = Vector3.MoveTowards(transform.position, posZTarget, step);
 		}
 	}
 
@@ -320,27 +343,46 @@ public class Graph : MonoBehaviour
 			return;
 		float movement = 0.5f;
 		if(backward) movement*=-1;
-		Vector3 pos = transform.localPosition;
-		pos += new Vector3(movement,0,0);
-		transform.localPosition =pos;
+		posXTarget = transform.position;
+		posXTarget += new Vector3(movement,0,0);
+		var timeToWait = 15000; //ms
+		movingX = true;
+		Task.Run(async () =>
+		{
+			await Task.Delay(timeToWait);
+			//do your timed task i.e. --
+			movingX=false;
+		});
 	}
 	private void moveYPosition(bool backward, bool forward){
 		if(!backward && !forward)
 			return;
 		float movement = 0.5f;
 		if(backward) movement*=-1;
-		Vector3 pos = transform.localPosition;
-		pos += new Vector3(0,movement,0);
-		transform.localPosition =pos;
+		posYTarget = transform.position;
+		posYTarget += new Vector3(0,movement,0);
+		var timeToWait = 15000; //ms
+		movingY = true;
+		Task.Run(async () =>
+		{
+			await Task.Delay(timeToWait);
+			movingY=false;
+		});
 	}
 	private void moveZPosition(bool backward, bool forward){
 		if(!backward && !forward)
 			return;
 		float movement = 0.5f;
 		if(backward) movement*=-1;
-		Vector3 pos = transform.localPosition;
-		pos += new Vector3(0,0,movement);
-		transform.localPosition =pos;
+		posZTarget = transform.position;
+		posZTarget += new Vector3(0,movement,0);
+		var timeToWait = 15000; //ms
+		movingZ = true;
+		Task.Run(async () =>
+		{
+			await Task.Delay(timeToWait);
+			movingZ=false;
+		});
 	}
 
 
