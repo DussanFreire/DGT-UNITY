@@ -6,7 +6,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 public class Node : MonoBehaviour,IMixedRealityFocusHandler
 {
 
-    public List<EdgeModel> allEdges { get; set; }
+    public List<EdgeGameObjModel> allEdges { get; set; }
     public List<Node> allNodes { get; set; }
     public int id;
     public bool visible { get; set; }
@@ -14,8 +14,8 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
     public GameObject node;
     public Color nodeColor;
     public List<int> childIds;
-    public List<EdgeModel> edges = new List<EdgeModel>();
-    public List<EdgeModel> edgesParent = new List<EdgeModel>();
+    public List<EdgeGameObjModel> edges = new List<EdgeGameObjModel>();
+    public List<EdgeGameObjModel> edgesParent = new List<EdgeGameObjModel>();
     public List<SpringJoint> joints = new List<SpringJoint>();
     public List<Node> nodeParent = new List<Node>();
     public bool colorChangedByTest =false;
@@ -48,7 +48,23 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
     }
 
 
+    public void OnFocusEnter(FocusEventData eventData)
+    {
+        if(!colorChangedByHover && !clicked && !colorChangedByTest){
+            MetricsManager.hoverUsed++;
+            showTextLabel(this, this.nodeColor);
+            clicked = false;
+            colorChangedByHover=true;
+        }
+    }
 
+    public void OnFocusExit(FocusEventData eventData)
+    {
+        if(colorChangedByHover && !clicked && !colorChangedByTest){
+            colorChangedByHover=false;
+            hideTextLabel(this);
+        }
+    }
     public void startConfiguration()
     {
         for (int i = 0; i < edges.Count; i++)
@@ -108,13 +124,13 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
         this.nodeChildren = node;
     }
 
-    public void setEdgestoParents(List<EdgeModel> edges)
+    public void setEdgestoParents(List<EdgeGameObjModel> edges)
     {
         this.edgesParent = edges;
     }
 
 
-    public EdgeModel AddEdge(Node node, int sourceId)
+    public EdgeGameObjModel AddEdge(Node node, int sourceId)
     {
         //Adds fixed joint to the game object 
         SpringJoint SpringJoint = gameObject.AddComponent<SpringJoint>();
@@ -130,7 +146,7 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
         SpringJoint.connectedBody = node.GetComponent<Rigidbody>();
         //Clones the object original and returns the clone.object, posotion for the new object,quaternion corresponds to "no rotation" the object is perfectly aligned with parent axes.
         GameObject edge = Instantiate(this.edgePrefab, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity);
-        EdgeModel edgeModel = new EdgeModel();
+        EdgeGameObjModel edgeModel = new EdgeGameObjModel();
         edgeModel.origin = sourceId;
         edgeModel.target = node.id;
         edgeModel.edge = edge;
@@ -139,54 +155,14 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
         return edgeModel;
     }
 
-    private Color getColor(string colorHex)
+    void resetAllLabels()
     {
-        Color color;
-        ColorUtility.TryParseHtmlString(colorHex, out color);
-        return color;
-    }
-
-
-    public Color getColorByIntensity(int intensity)
-    {
-        switch (intensity)
+        for (int i = 0; i < this.allNodes.Count; i++)
         {
-            case 1:
-                return getColor(EdgeColorModel.nearEdge);
-            case 2:
-                return getColor(EdgeColorModel.farEdge);
-            default:
-                return getColor(EdgeColorModel.farAwayEdge);
+            hideTextLabel(this.allNodes[i]);
         }
     }
-
-    public bool isValidColor(int intensityOfColor)
-    {
-        Color currentColor = node.GetComponent<Renderer>().material.color;
-        Color possibleColor = getColorByIntensity(intensityOfColor+1);
-        int currentColorValue = getColorValue(currentColor);
-        int possibleColorValue = getColorValue(possibleColor);
-        return possibleColorValue <= currentColorValue;
-
-    }
-    public int  getColorValue(Color possibleColor)
-    {
-        Color firstColor = getColorByIntensity(1);
-        Color secondColor = getColorByIntensity(2);
-        Color thirdColor = getColorByIntensity(3);
-        if (firstColor == possibleColor)
-            return 1;
-        if (secondColor == possibleColor)
-            return 2;
-        if (thirdColor == possibleColor)
-            return 3;
-
-        return 0;
-
-    }
-
-
-    void changeColor(Node currentNode,Material material){
+    public void changeColor(Node currentNode,Material material){
         currentNode.turnToSolidColor();
         showTextLabel(currentNode, currentNode.nodeColor);
         List<Node> childrenNode = new List<Node>();
@@ -199,13 +175,6 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
                 node.turnToSolidColor();
                 node.showTextLabel(node,node.nodeColor);
             }
-        }
-    }
-    void resetAllLabels()
-    {
-        for (int i = 0; i < this.allNodes.Count; i++)
-        {
-            hideTextLabel(this.allNodes[i]);
         }
     }
     
@@ -248,7 +217,7 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
         for (int i = 0; i < this.allEdges.Count; i++)
         {
             this.allEdges[i].intensityOfColor = 0;
-            Color edgeColor = getColor(EdgeColorModel.regularEdge);
+            Color edgeColor = ColorsManager.getColor(EdgeColorModel.regularEdge);
             this.allEdges[i].edge.GetComponent<Renderer>().material.color = new Color(edgeColor.r,edgeColor.g,edgeColor.b,0.25f);
             this.allEdges[i].edge.transform.GetChild(0).GetComponent<Renderer>().material.color = new Color(edgeColor.r, edgeColor.g, edgeColor.b, 0.25f);
         }
@@ -303,24 +272,6 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
         nodo.clicked = false;
         nodo.transform.GetChild(0).GetComponent<TextMesh>().text = "";
         nodo.transform.GetChild(0).GetChild(0).transform.localScale = new Vector3(0.0f, 0.0f, 0.0f);
-    }
-
-    public void OnFocusEnter(FocusEventData eventData)
-    {
-        if(!colorChangedByHover && !clicked && !colorChangedByTest){
-            MetricsManager.hoverUsed++;
-            showTextLabel(this, this.nodeColor);
-            clicked = false;
-            colorChangedByHover=true;
-        }
-    }
-
-    public void OnFocusExit(FocusEventData eventData)
-    {
-        if(colorChangedByHover && !clicked && !colorChangedByTest){
-            colorChangedByHover=false;
-            hideTextLabel(this);
-        }
     }
 }
 

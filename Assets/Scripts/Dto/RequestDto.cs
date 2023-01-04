@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 
 [Serializable]
-public class RequestModel
+public class RequestDto
 {
 	public int version;
 	public float size;
 	public string graphName;
-	public Actions actions;
-	public List<Filter> filters;
-	public List<NodeRequestModel> nodes;
+	public ActionsDto actions;
+	public List<FilterDto> filters;
+	public List<NodeRequestDto> nodes;
 }

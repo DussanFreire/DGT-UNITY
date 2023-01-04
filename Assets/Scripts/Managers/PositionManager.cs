@@ -13,7 +13,7 @@ public class PositionManager
 
    
 
-    public static void  setMovementListener(Transform graphTransform){
+    public static void  setMovementListeners(Transform graphTransform){
         if(movingX){
             graphTransform.position = Vector3.MoveTowards(graphTransform.position, posXTarget, Enviroment.MOVEMENT_STEP);
         }

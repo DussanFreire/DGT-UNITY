@@ -5,10 +5,8 @@ using UnityEngine.Networking;
 
 public class RequestsManager 
 {
-	private static bool onInit =true; 
-
  
-   	public static  IEnumerator ProcessRequestGet(string uri, Action<RequestModel> callback = null)
+   	public static  IEnumerator ProcessRequestGet(string uri, Action<RequestDto> callback = null)
 	{
 		using (UnityWebRequest request = UnityWebRequest.Get(uri))
 		{
@@ -21,13 +19,13 @@ public class RequestsManager
 			else
 			{
 				var data = request.downloadHandler.text;
-				RequestModel RequestModel = JsonUtility.FromJson<RequestModel>(data);
+				RequestDto RequestModel = JsonUtility.FromJson<RequestDto>(data);
 				if (callback != null)
 					callback(RequestModel);
 			}
 		}
 	}	
-	public static IEnumerator ProcessRequestPost(string uri, Action<RequestModel> callback = null)
+	public static IEnumerator ProcessRequestPost(string uri, Action<RequestDto> callback = null)
 	{
 		Vector3 pos = Camera.main.transform.position;
 
@@ -63,7 +61,7 @@ public class RequestsManager
 			else
 			{
 				var data = request.downloadHandler.text;
-				RequestModel RequestModel = JsonUtility.FromJson<RequestModel>(data);
+				RequestDto RequestModel = JsonUtility.FromJson<RequestDto>(data);
 				if (callback != null)
 					callback(RequestModel);
 			}

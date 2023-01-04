@@ -1,7 +1,7 @@
 using System;
 
 [Serializable]
-public class Link 
+public class LinkDto 
 {
     public int source;
     public int target;

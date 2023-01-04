@@ -12,7 +12,7 @@ public class Graph : MonoBehaviour
 	public GameObject nodePrefab;
 	bool graphBuilded =false; 
 	public GameObject edgePrefab;
-    public List<EdgeModel> allEdges { get; set; }
+    public List<EdgeGameObjModel> allEdges { get; set; }
     public List<Node> allNodes { get; set; }
     public List<string> filters { get; set; }
 	public int currentVersion { get; set; }
@@ -21,19 +21,14 @@ public class Graph : MonoBehaviour
 	void Start()
 	{
 		currentVersion=-1;
-		allEdges = new List<EdgeModel>();
+		allEdges = new List<EdgeGameObjModel>();
         allNodes = new List<Node>();
 		InvokeRepeating("GenerateRequest", 0.0f, 3.0f);
 	}
 
 	void Update(){
-		if(Menu.buttonPressed){
-			transform.Rotate(0,0.75f, 0, Space.Self);
-		}
-		if(MenuVertical.buttonPressed){
-			transform.Rotate(0.75f,0, 0, Space.Self);
-		}
-		PositionManager.setMovementListener(transform);
+		RorationManager.setRotationListeners(transform);
+		PositionManager.setMovementListeners(transform);
 	}
 
 
@@ -47,12 +42,7 @@ public class Graph : MonoBehaviour
 		}
 	}
 
-
-
-	
-	
-
-	private void ResponseCallback(RequestModel requestModel)
+	private void ResponseCallback(RequestDto requestModel)
 	{
 		if(currentVersion==-1){
 			currentVersion=0;
@@ -62,7 +52,7 @@ public class Graph : MonoBehaviour
 		{
 			currentVersion =requestModel.version;
 			if(size!=requestModel.size){
-				deleteObj();
+				deleteGraph();
 				createNodesFromData(requestModel);
 			}
 			else
@@ -70,20 +60,17 @@ public class Graph : MonoBehaviour
 		}
 	}
 
-    private void updateNodesFromData(RequestModel requestModel)
+    private void updateNodesFromData(RequestDto requestModel)
     {
-		foreach (NodeRequestModel nodeRequest in requestModel.nodes)
+		foreach (NodeRequestDto nodeRequest in requestModel.nodes)
 		{
-
 			Node nodeToUpdate = allNodes.Find(n=>n.id == nodeRequest.id);
-			List<Link> links = getEdges(nodeToUpdate.id, requestModel);
-			Color nodeColor = getColor(nodeRequest.color);
+			List<LinkDto> links = getEdges(nodeToUpdate.id, requestModel);
+			Color nodeColor = ColorsManager.getColor(nodeRequest.color);
 			nodeToUpdate.visible = nodeRequest.visible;
 			nodeToUpdate.setColor(nodeColor);
-			if(requestModel.actions.rotateV) Debug.Log("requestModel.actions.rotateV");
-			if(requestModel.actions.rotateH) Debug.Log("requestModel.actions.rotateH");
-			MenuVertical.myActionFromHttp(requestModel.actions.rotateV);
-			Menu.myActionFromHttp(requestModel.actions.rotateH);
+			RorationManager.changeVerticalRotation(requestModel.actions.rotateV);
+			RorationManager.changeHorizontalRotation(requestModel.actions.rotateH);
 			if (nodeRequest.visible){
 				nodeToUpdate.showTextLabel(nodeToUpdate,nodeColor);
 				nodeToUpdate.turnToSolidColor();
@@ -91,11 +78,11 @@ public class Graph : MonoBehaviour
 				nodeToUpdate.hideTextLabel(nodeToUpdate);
 				nodeToUpdate.turnToTranspColor();
 			}
-			foreach (Link link in links)
+			foreach (LinkDto link in links)
 			{
-				EdgeModel edgeToUpdate=  allEdges.Find(e=>e.target==link.target&& e.origin ==link.source);
+				EdgeGameObjModel edgeToUpdate=  allEdges.Find(e=>e.target==link.target&& e.origin ==link.source);
 				edgeToUpdate.visible = link.visible;
-				Color edgeColor = getColor(EdgeColorModel.regularEdge);
+				Color edgeColor = ColorsManager.getColor(EdgeColorModel.regularEdge);
 
 				if (link .visible)
 				{
@@ -114,9 +101,9 @@ public class Graph : MonoBehaviour
 		PositionManager.moveZPosition(requestModel.actions.zBackward,requestModel.actions.zForward, transform);
     }
 
-	private Node generateNode(NodeRequestModel nodeRequest){
+	private Node generateNode(NodeRequestDto nodeRequest){
 			NodeGameObjModel nodeGameObj = new NodeGameObjModel();
-			Color nodeColor = getColor(nodeRequest.color);
+			Color nodeColor = ColorsManager.getColor(nodeRequest.color);
 			nodeGameObj.node = Instantiate(nodePrefab, new Vector3(nodeRequest.x, nodeRequest.y, nodeRequest.z), Quaternion.identity);
 			nodeGameObj.id = nodeRequest.id;
 			nodeGameObj.node.transform.parent = transform;
@@ -136,11 +123,11 @@ public class Graph : MonoBehaviour
 			return node;
 	}
 
-	private void createNodesFromData(RequestModel RequestModel)
+	private void createNodesFromData(RequestDto RequestModel)
 	{
 		allNodes = new List<Node>();
 		size =RequestModel.size;
-		foreach (NodeRequestModel nodeRequest in RequestModel.nodes)
+		foreach (NodeRequestDto nodeRequest in RequestModel.nodes)
 		{
 			Node node = generateNode(nodeRequest);
 			allNodes.Add(node);
@@ -148,7 +135,7 @@ public class Graph : MonoBehaviour
 
 		foreach (Node node in allNodes)
 		{
-			List<Link> links = getEdges(node.id, RequestModel);
+			List<LinkDto> links = getEdges(node.id, RequestModel);
 			if (links.Count > 0)
 			{
 				node.SetEdgePrefab(edgePrefab);
@@ -168,7 +155,7 @@ public class Graph : MonoBehaviour
         }
 		for (int i = 0; i < this.allEdges.Count; i++)
         {
-			Color edgeColor = getColor(EdgeColorModel.regularEdge);
+			Color edgeColor = ColorsManager.getColor(EdgeColorModel.regularEdge);
 
 			if (allEdges[i].visible)
 			{
@@ -180,36 +167,31 @@ public class Graph : MonoBehaviour
 			}
         }
     }
-	void deleteObj(){
+	void deleteGraph(){
 	
 		
 		allNodes.ForEach(n=>{
 			Destroy(n.node);
-			n.allEdges = new List<EdgeModel>();
+			n.allEdges = new List<EdgeGameObjModel>();
 			n.allNodes =new List<Node>();
 		});
 		allNodes = new List<Node>();
-		allEdges = new List<EdgeModel>();
+		allEdges = new List<EdgeGameObjModel>();
 
 	}
 	
 
-	private void setEdges(Node node, List<Link> links, List<Node> nodeList)
+	private void setEdges(Node node, List<LinkDto> links, List<Node> nodeList)
 	{
-		foreach (Link link in links)
+		foreach (LinkDto link in links)
 		{
 			Node targetNode = getNodeById(link.target, nodeList);
-            EdgeModel edgeAdded =  node.AddEdge(targetNode, link.source);
+            EdgeGameObjModel edgeAdded =  node.AddEdge(targetNode, link.source);
 			edgeAdded.visible = link.visible;
 			allEdges.Add(edgeAdded);
 		}
 	}
-	private Color getColor(string colorHex)
-	{
-		Color color;
-		ColorUtility.TryParseHtmlString(colorHex, out color);
-		return color;
-	}
+
 
 	private Node getNodeById(int id, List<Node> nodeList)
 	{
@@ -217,16 +199,16 @@ public class Graph : MonoBehaviour
 		return result;
 	}
 
-	private List<Link> getEdges(int source, RequestModel RequestModel)
+	private List<LinkDto> getEdges(int source, RequestDto RequestModel)
 	{
-		List<Link> linkResult = RequestModel.nodes.Find(l => l.id == source).links;
+		List<LinkDto> linkResult = RequestModel.nodes.Find(l => l.id == source).links;
 		return linkResult;
 	}
 
     private void setNodeParents(Node node, List<Node> nodeList)
     {
 		List<Node> nodeParentsList = nodeList.Where(x => x.childIds.Contains(node.id)).ToList();
-        List<EdgeModel> nodeEdgesToParents = nodeParentsList.Select(n => n.edges.Where(edge => edge.target == node.id).FirstOrDefault()).ToList();
+        List<EdgeGameObjModel> nodeEdgesToParents = nodeParentsList.Select(n => n.edges.Where(edge => edge.target == node.id).FirstOrDefault()).ToList();
         node.setEdgestoParents(nodeEdgesToParents);
         node.addNodeParents(nodeParentsList);
     }
@@ -238,9 +220,5 @@ public class Graph : MonoBehaviour
 			).ToList();
         node.setNodeChildren(childrenList);
     }
-
-
-	
-
 
 }

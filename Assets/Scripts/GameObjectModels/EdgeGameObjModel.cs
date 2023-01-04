@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EdgeModel
+public class EdgeGameObjModel
 {
     public GameObject edge;
     public int origin;
@@ -8,7 +8,7 @@ public class EdgeModel
     public int intensityOfColor { get; set; }
     public bool visible { get; set; }
 
-    public EdgeModel()
+    public EdgeGameObjModel()
     {
         this.intensityOfColor = 0;
 

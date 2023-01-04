@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 
 [Serializable]
-public class Actions 
+public class ActionsDto 
 {
     public bool rotateH;
     public bool rotateV;
