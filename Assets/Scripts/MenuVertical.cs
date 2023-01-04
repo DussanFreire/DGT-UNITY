@@ -18,7 +18,7 @@ public class MenuVertical : MonoBehaviour
     {
             buttonPressed=!buttonPressed;
             if(buttonPressed)
-                Metrics.verticalRotationUsed++;
+                MetricsManager.verticalRotationUsed++;
 
     }
 
@@ -28,7 +28,7 @@ public class MenuVertical : MonoBehaviour
                 return;
             buttonPressed=!buttonPressed;
             if(buttonPressed)
-                Metrics.verticalRotationUsed++;
+                MetricsManager.verticalRotationUsed++;
 
     }
 }

@@ -2,10 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Metrics : MonoBehaviour
+public class MetricsManager
 {
-    // Start is called before the first frame update
-
     static public int currentTest = 1;
     static public int verticalRotationUsed = 0;
     static public int horizontalRotationUsed = 0;
@@ -21,14 +19,21 @@ public class Metrics : MonoBehaviour
     static public int enumFilterUsed=0;
     static public int guardFilterUsed=0;
     static public int persistenceFilterUsed=0;
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    static public void staticInitMetric(){
+        verticalRotationUsed = 0;
+		horizontalRotationUsed = 0;
+		hoverUsed = 0;
+		touchUsed = 0;
+		pointerUsed = 0;
+		srcFilterUsed = 0;
+		controllerFilterUsed = 0;
+		serviceFilterUsed = 0;
+		transpFilterUsed = 0;
+		decoratorFilterUsed = 0;
+		dtoFilterUsed = 0;
+		enumFilterUsed = 0;
+		guardFilterUsed = 0;
+		persistenceFilterUsed = 0;
     }
 }

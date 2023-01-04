@@ -2,60 +2,28 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 using System.Linq;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System.Threading.Tasks;
 
 public class Graph : MonoBehaviour
 {
-
 	public GameObject nodePrefab;
-	bool onInit =true; 
+	bool graphBuilded =false; 
 	public GameObject edgePrefab;
     public List<EdgeModel> allEdges { get; set; }
     public List<Node> allNodes { get; set; }
     public List<string> filters { get; set; }
 	public int currentVersion { get; set; }
 	public float size { get; set; }
-	public float speed;
-	public bool movingX;
-	public Vector3 posXTarget;
-	public bool movingY;
-	public Vector3 posYTarget;
-	public bool movingZ;
-	public Vector3 posZTarget;
-    private const string URL_INIT = "https://dependency-graph-z42n.vercel.app/file/restart";
-    private const string URL_UPDATE = "https://dependency-graph-z42n.vercel.app/file/brain";
+
 	void Start()
 	{
-		movingX =false;
-		movingY =false;
-		movingZ =false;
 		currentVersion=-1;
-		speed = 0.1f;
 		allEdges = new List<EdgeModel>();
         allNodes = new List<Node>();
-		Metrics.verticalRotationUsed = 0;
-		Metrics.horizontalRotationUsed = 0;
-		Metrics.hoverUsed = 0;
-		Metrics.touchUsed = 0;
-		Metrics.pointerUsed = 0;
-		Metrics.srcFilterUsed=0;
-		Metrics.controllerFilterUsed=0;
-		Metrics.serviceFilterUsed=0;
-		Metrics.transpFilterUsed=0;
-		Metrics.decoratorFilterUsed=0;
-		Metrics.dtoFilterUsed=0;
-		Metrics.enumFilterUsed=0;
-		Metrics.guardFilterUsed=0;
-		Metrics.persistenceFilterUsed=0;
-        Metrics.currentTest = 1;
-		// GenerateRequest();
 		InvokeRepeating("GenerateRequest", 0.0f, 3.0f);
-		
 	}
 
 	void Update(){
@@ -65,87 +33,24 @@ public class Graph : MonoBehaviour
 		if(MenuVertical.buttonPressed){
 			transform.Rotate(0.75f,0, 0, Space.Self);
 		}
-		if(movingX){
-			float step = speed * Time.deltaTime;
- 			transform.position = Vector3.MoveTowards(transform.position, posXTarget, step);
-		}
-		if(movingY){
-			float step = speed * Time.deltaTime;
- 			transform.position = Vector3.MoveTowards(transform.position, posYTarget, step);
-		}
-		if(movingZ){
-			float step = speed * Time.deltaTime;
- 			transform.position = Vector3.MoveTowards(transform.position, posZTarget, step);
-		}
+		PositionManager.setMovementListener(transform);
 	}
 
 
 	public void GenerateRequest()
 	{
-		if(onInit){
-			StartCoroutine(ProcessRequestGet(URL_INIT, ResponseCallback));
-			onInit=false;
+		if(!graphBuilded){
+			StartCoroutine(RequestsManager.ProcessRequestGet(Enviroment.URL_INIT, ResponseCallback));
+			graphBuilded=true;
 		}else{
-			StartCoroutine(ProcessRequestPost(URL_UPDATE, ResponseCallback));
+			StartCoroutine(RequestsManager.ProcessRequestPost(Enviroment.URL_UPDATE, ResponseCallback));
 		}
 	}
 
-	private IEnumerator ProcessRequestGet(string uri, Action<RequestModel> callback = null)
-	{
-		using (UnityWebRequest request = UnityWebRequest.Get(uri))
-		{
-			yield return request.SendWebRequest();
 
-			if (request.isNetworkError)
-			{
-				Debug.Log(request.error);
-			}
-			else
-			{
-				var data = request.downloadHandler.text;
-				RequestModel RequestModel = JsonUtility.FromJson<RequestModel>(data);
-				if (callback != null)
-					callback(RequestModel);
-			}
-		}
-	}	
-	private IEnumerator ProcessRequestPost(string uri, Action<RequestModel> callback = null)
-	{
-		WWWForm form = new WWWForm();
-		form.AddField("verticalRotationUsed", Metrics.verticalRotationUsed);
-		form.AddField("horizontalRotationUsed", Metrics.horizontalRotationUsed);
-		form.AddField("hoverUsed", Metrics.hoverUsed);
-		form.AddField("touchUsed", Metrics.touchUsed);
-		form.AddField("pointerUsed", Metrics.pointerUsed);
-		form.AddField("srcFilterUsed", Metrics.srcFilterUsed);
-		form.AddField("controllerFilterUsed", Metrics.controllerFilterUsed);
-		form.AddField("serviceFilterUsed", Metrics.serviceFilterUsed);
-		form.AddField("decoratorFilterUsed", Metrics.decoratorFilterUsed);
-		form.AddField("dtoFilterUsed", Metrics.dtoFilterUsed);
-		form.AddField("enumFilterUsed", Metrics.enumFilterUsed);
-		form.AddField("guardFilterUsed", Metrics.guardFilterUsed);
-		form.AddField("persistenceFilterUsed", Metrics.persistenceFilterUsed);
-		form.AddField("transpFilterUsed", Metrics.transpFilterUsed);
-		form.AddField("currentTime", DateTime.Now.ToString());
-		form.AddField("currentTest", Metrics.currentTest);
 
-		using (UnityWebRequest request = UnityWebRequest.Post(uri,form))
-		{
-			yield return request.SendWebRequest();
-
-			if (request.isNetworkError)
-			{
-				Debug.Log(request.error);
-			}
-			else
-			{
-				var data = request.downloadHandler.text;
-				RequestModel RequestModel = JsonUtility.FromJson<RequestModel>(data);
-				if (callback != null)
-					callback(RequestModel);
-			}
-		}
-	}
+	
+	
 
 	private void ResponseCallback(RequestModel requestModel)
 	{
@@ -204,9 +109,9 @@ public class Graph : MonoBehaviour
 			
 		}
 		
-		moveXPosition(requestModel.actions.xBackward,requestModel.actions.xForward);
-		moveYPosition(requestModel.actions.yBackward,requestModel.actions.yForward);
-		moveZPosition(requestModel.actions.zBackward,requestModel.actions.zForward);
+		PositionManager.moveXPosition(requestModel.actions.xBackward,requestModel.actions.xForward, transform);
+		PositionManager.moveYPosition(requestModel.actions.yBackward,requestModel.actions.yForward, transform);
+		PositionManager.moveZPosition(requestModel.actions.zBackward,requestModel.actions.zForward, transform);
     }
 
 	private Node generateNode(NodeRequestModel nodeRequest){
@@ -299,9 +204,6 @@ public class Graph : MonoBehaviour
 			allEdges.Add(edgeAdded);
 		}
 	}
-	
-
-	
 	private Color getColor(string colorHex)
 	{
 		Color color;
@@ -338,52 +240,7 @@ public class Graph : MonoBehaviour
     }
 
 
-	private void moveXPosition(bool backward, bool forward){
-		if(!backward && !forward)
-			return;
-		float movement = 0.5f;
-		if(backward) movement*=-1;
-		posXTarget = transform.position;
-		posXTarget += new Vector3(movement,0,0);
-		var timeToWait = 15000; //ms
-		movingX = true;
-		Task.Run(async () =>
-		{
-			await Task.Delay(timeToWait);
-			//do your timed task i.e. --
-			movingX=false;
-		});
-	}
-	private void moveYPosition(bool backward, bool forward){
-		if(!backward && !forward)
-			return;
-		float movement = 0.5f;
-		if(backward) movement*=-1;
-		posYTarget = transform.position;
-		posYTarget += new Vector3(0,movement,0);
-		var timeToWait = 15000; //ms
-		movingY = true;
-		Task.Run(async () =>
-		{
-			await Task.Delay(timeToWait);
-			movingY=false;
-		});
-	}
-	private void moveZPosition(bool backward, bool forward){
-		if(!backward && !forward)
-			return;
-		float movement = 0.5f;
-		if(backward) movement*=-1;
-		posZTarget = transform.position;
-		posZTarget += new Vector3(0,movement,0);
-		var timeToWait = 15000; //ms
-		movingZ = true;
-		Task.Run(async () =>
-		{
-			await Task.Delay(timeToWait);
-			movingZ=false;
-		});
-	}
+	
 
 
 }

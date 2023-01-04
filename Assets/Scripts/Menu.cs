@@ -16,7 +16,7 @@ public class Menu : MonoBehaviour
     {
             buttonPressed=!buttonPressed;
             if(buttonPressed)
-                Metrics.horizontalRotationUsed++;
+                MetricsManager.horizontalRotationUsed++;
 
     }
 
@@ -26,7 +26,7 @@ public class Menu : MonoBehaviour
                 return;
             buttonPressed=!buttonPressed;
             if(buttonPressed)
-                Metrics.horizontalRotationUsed++;
+                MetricsManager.horizontalRotationUsed++;
 
     }
 }

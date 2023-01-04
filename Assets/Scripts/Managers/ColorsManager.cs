@@ -65,7 +65,7 @@ public class ColorsManager : MonoBehaviour
         thisObj.color = new Color(objColor.r,objColor.g,objColor.b, tranpsDensity);
     }
     public  void setFirstOption(GameObject thisObj){
-        Metrics.srcFilterUsed++;
+        MetricsManager.srcFilterUsed++;
         if(allTransparent()){
             StartCoroutine(ProcessRequest("https://dependency-graph-z42n.vercel.app/file/brain/src"));
         }else{
@@ -74,7 +74,7 @@ public class ColorsManager : MonoBehaviour
         toggleColor(thisObj.GetComponent<Renderer>().material);
     }
     public void setSecondOption(GameObject thisObj){
-        Metrics.controllerFilterUsed++;
+        MetricsManager.controllerFilterUsed++;
         if(allTransparent()){
             StartCoroutine(ProcessRequest("https://dependency-graph-z42n.vercel.app/file/brain/controller"));
         }else{
@@ -84,7 +84,7 @@ public class ColorsManager : MonoBehaviour
     }
 
     public void setThirdOption(GameObject thisObj){
-        Metrics.serviceFilterUsed++;
+        MetricsManager.serviceFilterUsed++;
         if(allTransparent()){
             StartCoroutine(ProcessRequest("https://dependency-graph-z42n.vercel.app/file/brain/service"));
         }else{
@@ -94,7 +94,7 @@ public class ColorsManager : MonoBehaviour
     }
 
     public void setForthOption(GameObject thisObj){
-        Metrics.decoratorFilterUsed++;
+        MetricsManager.decoratorFilterUsed++;
         if(allTransparent()){
             StartCoroutine(ProcessRequest("https://dependency-graph-z42n.vercel.app/file/brain/decorator"));
         }else{
@@ -104,7 +104,7 @@ public class ColorsManager : MonoBehaviour
     }
 
     public void setFifthOption(GameObject thisObj){
-        Metrics.dtoFilterUsed++;
+        MetricsManager.dtoFilterUsed++;
         if(allTransparent()){
             StartCoroutine(ProcessRequest("https://dependency-graph-z42n.vercel.app/file/brain/dto"));
         }else{
@@ -114,7 +114,7 @@ public class ColorsManager : MonoBehaviour
     }
 
     public void setSixthOption(GameObject thisObj){
-        Metrics.enumFilterUsed++;
+        MetricsManager.enumFilterUsed++;
         if(allTransparent()){
             StartCoroutine(ProcessRequest("https://dependency-graph-z42n.vercel.app/file/brain/enum"));
         }else{
@@ -124,7 +124,7 @@ public class ColorsManager : MonoBehaviour
     }
 
     public void setSeventhOption(GameObject thisObj){
-        Metrics.guardFilterUsed++;
+        MetricsManager.guardFilterUsed++;
         if(allTransparent()){
             StartCoroutine(ProcessRequest("https://dependency-graph-z42n.vercel.app/file/brain/guard"));
         }else{
@@ -134,7 +134,7 @@ public class ColorsManager : MonoBehaviour
     }
 
     public void setEigthOption(GameObject thisObj){
-        Metrics.persistenceFilterUsed++;
+        MetricsManager.persistenceFilterUsed++;
         if(allTransparent()){
             StartCoroutine(ProcessRequest("https://dependency-graph-z42n.vercel.app/file/brain/persistence"));
         }else{
@@ -145,7 +145,7 @@ public class ColorsManager : MonoBehaviour
 
     public void setTranspOption()
     {
-        Metrics.transpFilterUsed++;
+        MetricsManager.transpFilterUsed++;
         transpAll();
         StartCoroutine(ProcessRequest("https://dependency-graph-z42n.vercel.app/file/transparent"));
     }

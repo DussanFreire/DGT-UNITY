@@ -221,7 +221,7 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
             resetAllLabels();
             turnTranspAllNodes();
             turnTranspAllEdges();
-            Metrics.pointerUsed++;
+            MetricsManager.pointerUsed++;
             changeColor(this,material); 
             foreach(GameObject gameObj in GameObject.FindObjectsOfType<GameObject>())
             {
@@ -235,7 +235,7 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
             }
         });
         touchHandler.OnTouchCompleted.AddListener((e) => {
-            Metrics.touchUsed++;
+            MetricsManager.touchUsed++;
             resetAllLabels();
             turnTranspAllNodes();
             turnTranspAllEdges();
@@ -308,7 +308,7 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
     public void OnFocusEnter(FocusEventData eventData)
     {
         if(!colorChangedByHover && !clicked && !colorChangedByTest){
-            Metrics.hoverUsed++;
+            MetricsManager.hoverUsed++;
             showTextLabel(this, this.nodeColor);
             clicked = false;
             colorChangedByHover=true;
