@@ -2,9 +2,9 @@ using UnityEngine;
 using System.Collections;
 
 [RequireComponent(typeof(MeshFilter))]
-public class ConeGameObjModel : MonoBehaviour
+public class Cone : MonoBehaviour
 {
-    public ConeGameObjModel(int subdivisions =10, float radius=1f, float height = 2f)
+    public Cone(int subdivisions =10, float radius=1f, float height = 2f)
     {
 		this.subdivisions = subdivisions;
 		this.radius = radius;

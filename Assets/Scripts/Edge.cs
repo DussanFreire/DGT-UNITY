@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EdgeGameObjModel
+public class Edge
 {
     public GameObject edge;
     public int origin;
@@ -8,7 +8,7 @@ public class EdgeGameObjModel
     public int intensityOfColor { get; set; }
     public bool visible { get; set; }
 
-    public EdgeGameObjModel()
+    public Edge()
     {
         this.intensityOfColor = 0;
 
@@ -20,7 +20,7 @@ public class EdgeGameObjModel
     }
 
     public void turnEdgeToTranspColor(Color edgeColor){
-        this.edge.GetComponent<Renderer>().material.color = new Color(edgeColor.r,edgeColor.g,edgeColor.b,0.25f);
-        this.edge.transform.GetChild(0).GetComponent<Renderer>().material.color = new Color(edgeColor.r, edgeColor.g, edgeColor.b, 0.10f);
+        this.edge.GetComponent<Renderer>().material.color = new Color(edgeColor.r,edgeColor.g,edgeColor.b, Enviroment.TRANSP_DENSITY);
+        this.edge.transform.GetChild(0).GetComponent<Renderer>().material.color = new Color(edgeColor.r, edgeColor.g, edgeColor.b, Enviroment.TRANSP_DENSITY);
     }
 }

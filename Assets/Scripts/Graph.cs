@@ -12,8 +12,6 @@ public class Graph : MonoBehaviour
 	public GameObject nodePrefab;
 	bool graphBuilded =false; 
 	public GameObject edgePrefab;
-    public List<EdgeGameObjModel> allEdges { get; set; }
-    public List<Node> allNodes { get; set; }
     public List<string> filters { get; set; }
 	public int currentVersion { get; set; }
 	public float size { get; set; }
@@ -21,8 +19,8 @@ public class Graph : MonoBehaviour
 	void Start()
 	{
 		currentVersion=-1;
-		allEdges = new List<EdgeGameObjModel>();
-        allNodes = new List<Node>();
+        NodesManager.AllNodes = new List<Node>();
+        EdgesManager.AllEdges = new List<Edge>();
 		InvokeRepeating("GenerateRequest", 0.0f, 3.0f);
 	}
 
@@ -64,7 +62,7 @@ public class Graph : MonoBehaviour
     {
 		foreach (NodeRequestDto nodeRequest in requestModel.nodes)
 		{
-			Node nodeToUpdate = allNodes.Find(n=>n.id == nodeRequest.id);
+			Node nodeToUpdate = NodesManager.AllNodes.Find(n=>n.id == nodeRequest.id);
 			List<LinkDto> links = getEdges(nodeToUpdate.id, requestModel);
 			Color nodeColor = ColorsManager.getColor(nodeRequest.color);
 			nodeToUpdate.visible = nodeRequest.visible;
@@ -75,14 +73,14 @@ public class Graph : MonoBehaviour
 				nodeToUpdate.showTextLabel(nodeToUpdate,nodeColor);
 				nodeToUpdate.turnToSolidColor();
 			} else {
-				nodeToUpdate.hideTextLabel(nodeToUpdate);
+				nodeToUpdate.hideTextLabel();
 				nodeToUpdate.turnToTranspColor();
 			}
 			foreach (LinkDto link in links)
 			{
-				EdgeGameObjModel edgeToUpdate=  allEdges.Find(e=>e.target==link.target&& e.origin ==link.source);
+				Edge edgeToUpdate=  EdgesManager.AllEdges.Find(e=>e.target==link.target&& e.origin ==link.source);
 				edgeToUpdate.visible = link.visible;
-				Color edgeColor = ColorsManager.getColor(EdgeColorModel.regularEdge);
+				Color edgeColor = ColorsManager.getColor(Enviroment.REGULAR_EDGE_COLOR);
 
 				if (link .visible)
 				{
@@ -102,18 +100,16 @@ public class Graph : MonoBehaviour
     }
 
 	private Node generateNode(NodeRequestDto nodeRequest){
-			NodeGameObjModel nodeGameObj = new NodeGameObjModel();
 			Color nodeColor = ColorsManager.getColor(nodeRequest.color);
-			nodeGameObj.node = Instantiate(nodePrefab, new Vector3(nodeRequest.x, nodeRequest.y, nodeRequest.z), Quaternion.identity);
-			nodeGameObj.id = nodeRequest.id;
-			nodeGameObj.node.transform.parent = transform;
-			nodeGameObj.node.name = nodeRequest.name;
+			GameObject nodeGameObj = Instantiate(nodePrefab, new Vector3(nodeRequest.x, nodeRequest.y, nodeRequest.z), Quaternion.identity);
+			nodeGameObj.transform.parent = transform;
+			nodeGameObj.name = nodeRequest.name;
 			filters = nodeRequest.filters;
-			Node node = nodeGameObj.node.GetComponent<Node>();
+			Node node = nodeGameObj.GetComponent<Node>();
 			node.visible = nodeRequest.visible;
-			node.id = nodeGameObj.id;
+			node.id = nodeRequest.id;
 			node.setChildIds(nodeRequest.childIds);
-			node.setNode(nodeGameObj.node);
+			node.setNode(nodeGameObj);
 			node.setColor(nodeColor);
 			if (nodeRequest.visible){
 				node.turnToSolidColor();
@@ -125,15 +121,14 @@ public class Graph : MonoBehaviour
 
 	private void createNodesFromData(RequestDto RequestModel)
 	{
-		allNodes = new List<Node>();
 		size =RequestModel.size;
 		foreach (NodeRequestDto nodeRequest in RequestModel.nodes)
 		{
 			Node node = generateNode(nodeRequest);
-			allNodes.Add(node);
+			NodesManager.AllNodes.Add(node);
 		}
 
-		foreach (Node node in allNodes)
+		foreach (Node node in NodesManager.AllNodes)
 		{
 			List<LinkDto> links = getEdges(node.id, RequestModel);
 			if (links.Count > 0)
@@ -142,56 +137,49 @@ public class Graph : MonoBehaviour
 				Vector3 scale = node.edgePrefab.transform.GetChild(0).localScale;
 				scale.z =0.0015f;
 				node.edgePrefab.transform.GetChild(0).localScale = scale;
-				setEdges(node, links, allNodes);
+				setEdges(node, links, NodesManager.AllNodes);
 			}
         }
-        foreach (Node node in allNodes)
+        foreach (Node node in NodesManager.AllNodes)
         {
 
-            setNodeParents(node, allNodes);
-            setNodeChildren(node, allNodes);
-			node.allEdges = allEdges;
-			node.allNodes = allNodes;
+            setNodeParents(node, NodesManager.AllNodes);
+            setNodeChildren(node, NodesManager.AllNodes);
         }
-		for (int i = 0; i < this.allEdges.Count; i++)
+		for (int i = 0; i < EdgesManager.AllEdges.Count; i++)
         {
-			Color edgeColor = ColorsManager.getColor(EdgeColorModel.regularEdge);
+			Color edgeColor = ColorsManager.getColor(Enviroment.REGULAR_EDGE_COLOR);
 
-			if (allEdges[i].visible)
+			if (EdgesManager.AllEdges[i].visible)
 			{
-				allEdges[i].turnEdgeToSolidColor(edgeColor);
+				EdgesManager.AllEdges[i].turnEdgeToSolidColor(edgeColor);
 			}
 			else
 			{
-				allEdges[i].turnEdgeToTranspColor(edgeColor);
+				EdgesManager.AllEdges[i].turnEdgeToTranspColor(edgeColor);
 			}
         }
     }
 	void deleteGraph(){
 	
 		
-		allNodes.ForEach(n=>{
-			Destroy(n.node);
-			n.allEdges = new List<EdgeGameObjModel>();
-			n.allNodes =new List<Node>();
+		NodesManager.AllNodes.ForEach(n=>{
+			Destroy(n.nodeGameObject);
 		});
-		allNodes = new List<Node>();
-		allEdges = new List<EdgeGameObjModel>();
+		NodesManager.AllNodes = new List<Node>();
+		EdgesManager.AllEdges = new List<Edge>();
 
 	}
-	
-
 	private void setEdges(Node node, List<LinkDto> links, List<Node> nodeList)
 	{
 		foreach (LinkDto link in links)
 		{
 			Node targetNode = getNodeById(link.target, nodeList);
-            EdgeGameObjModel edgeAdded =  node.AddEdge(targetNode, link.source);
+            Edge edgeAdded =  node.AddEdge(targetNode, link.source);
 			edgeAdded.visible = link.visible;
-			allEdges.Add(edgeAdded);
+			EdgesManager.AllEdges.Add(edgeAdded);
 		}
 	}
-
 
 	private Node getNodeById(int id, List<Node> nodeList)
 	{
@@ -208,7 +196,7 @@ public class Graph : MonoBehaviour
     private void setNodeParents(Node node, List<Node> nodeList)
     {
 		List<Node> nodeParentsList = nodeList.Where(x => x.childIds.Contains(node.id)).ToList();
-        List<EdgeGameObjModel> nodeEdgesToParents = nodeParentsList.Select(n => n.edges.Where(edge => edge.target == node.id).FirstOrDefault()).ToList();
+        List<Edge> nodeEdgesToParents = nodeParentsList.Select(n => n.edges.Where(edge => edge.target == node.id).FirstOrDefault()).ToList();
         node.setEdgestoParents(nodeEdgesToParents);
         node.addNodeParents(nodeParentsList);
     }

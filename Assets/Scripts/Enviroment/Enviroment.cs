@@ -16,4 +16,8 @@ public class Enviroment
 
     public static float ROTATION_SPEED = 0.55f;
 
+   // EDGE COLORS ENV
+    public static string REGULAR_EDGE_COLOR  = "#000000";
+    public static float TRANSP_DENSITY  = 0.25f;
+
 }

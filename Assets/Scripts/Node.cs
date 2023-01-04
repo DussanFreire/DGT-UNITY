@@ -5,17 +5,14 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 
 public class Node : MonoBehaviour,IMixedRealityFocusHandler
 {
-
-    public List<EdgeGameObjModel> allEdges { get; set; }
-    public List<Node> allNodes { get; set; }
     public int id;
     public bool visible { get; set; }
     public GameObject edgePrefab;
-    public GameObject node;
+    public GameObject nodeGameObject;
     public Color nodeColor;
     public List<int> childIds;
-    public List<EdgeGameObjModel> edges = new List<EdgeGameObjModel>();
-    public List<EdgeGameObjModel> edgesParent = new List<EdgeGameObjModel>();
+    public List<Edge> edges = new List<Edge>();
+    public List<Edge> parentEdges = new List<Edge>();
     public List<SpringJoint> joints = new List<SpringJoint>();
     public List<Node> nodeParent = new List<Node>();
     public bool colorChangedByTest =false;
@@ -23,19 +20,15 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
     public List<Node> nodeChildren = new List<Node>();
     
     bool clicked = false;
-    // Start is called before the first frame update
     void Start()
     {
         transform.GetChild(0).GetChild(0).localScale = new Vector3(0.0f, 0.0f, 0.0f);
         transform.GetChild(0).GetComponent<TextMesh>().text = "";
         startConfiguration();
-        MakeChangeColorOnTouch(node);
-        
+        MakeChangeColorOnTouch(nodeGameObject);
         PointerUtils.SetGazePointerBehavior(PointerBehavior.Default);
-
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (clicked || colorChangedByHover) {
@@ -46,8 +39,6 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
             transform.GetChild(0).GetChild(0).transform.LookAt(pos);
         }
     }
-
-
     public void OnFocusEnter(FocusEventData eventData)
     {
         if(!colorChangedByHover && !clicked && !colorChangedByTest){
@@ -62,7 +53,7 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
     {
         if(colorChangedByHover && !clicked && !colorChangedByTest){
             colorChangedByHover=false;
-            hideTextLabel(this);
+            this.hideTextLabel();
         }
     }
     public void startConfiguration()
@@ -78,8 +69,6 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
             edges[i].edge.transform.parent =transform;
         }
     }
-
-
     private Vector3 calcDimPos(Vector3 source, Vector3 target){
         return new Vector3((source.x + target.x) / 2,
                             (source.y + target.y) / 2,
@@ -93,7 +82,7 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
 
     public void setNode(GameObject node)
     {
-        this.node = node;
+        this.nodeGameObject = node;
     }
 
     public void setColor(Color color)
@@ -103,10 +92,10 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
     }
 
     public void turnToSolidColor(){
-        this.node.GetComponent<Renderer>().material.color =  this.nodeColor;
+        this.nodeGameObject.GetComponent<Renderer>().material.color =  this.nodeColor;
     }
     public void turnToTranspColor(){
-        this.node.GetComponent<Renderer>().material.color = new Color(nodeColor.r,nodeColor.g,nodeColor.b,0.25f);
+        this.nodeGameObject.GetComponent<Renderer>().material.color = new Color(nodeColor.r,nodeColor.g,nodeColor.b,Enviroment.TRANSP_DENSITY);
     }
     
     public void setChildIds(List<int> childIds)
@@ -124,13 +113,12 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
         this.nodeChildren = node;
     }
 
-    public void setEdgestoParents(List<EdgeGameObjModel> edges)
+    public void setEdgestoParents(List<Edge> edges)
     {
-        this.edgesParent = edges;
+        this.parentEdges = edges;
     }
 
-
-    public EdgeGameObjModel AddEdge(Node node, int sourceId)
+    public Edge AddEdge(Node node, int sourceId)
     {
         //Adds fixed joint to the game object 
         SpringJoint SpringJoint = gameObject.AddComponent<SpringJoint>();
@@ -146,7 +134,7 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
         SpringJoint.connectedBody = node.GetComponent<Rigidbody>();
         //Clones the object original and returns the clone.object, posotion for the new object,quaternion corresponds to "no rotation" the object is perfectly aligned with parent axes.
         GameObject edge = Instantiate(this.edgePrefab, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity);
-        EdgeGameObjModel edgeModel = new EdgeGameObjModel();
+        Edge edgeModel = new Edge();
         edgeModel.origin = sourceId;
         edgeModel.target = node.id;
         edgeModel.edge = edge;
@@ -155,23 +143,16 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
         return edgeModel;
     }
 
-    void resetAllLabels()
-    {
-        for (int i = 0; i < this.allNodes.Count; i++)
-        {
-            hideTextLabel(this.allNodes[i]);
-        }
-    }
     public void changeColor(Node currentNode,Material material){
         currentNode.turnToSolidColor();
         showTextLabel(currentNode, currentNode.nodeColor);
         List<Node> childrenNode = new List<Node>();
-        for (int i = 0; i < this.allEdges.Count; i++)
+        for (int i = 0; i < EdgesManager.AllEdges.Count; i++)
         {
-            if(allEdges[i].origin ==currentNode.id){
-                this.allEdges[i].edge.GetComponent<Renderer>().material.color = currentNode.nodeColor;
-                this.allEdges[i].edge.transform.GetChild(0).GetComponent<Renderer>().material.color =currentNode.nodeColor;
-                Node node = this.allNodes.Find(n=>n.id==allEdges[i].target);
+            if(EdgesManager.AllEdges[i].origin ==currentNode.id){
+                EdgesManager.AllEdges[i].edge.GetComponent<Renderer>().material.color = currentNode.nodeColor;
+                EdgesManager.AllEdges[i].edge.transform.GetChild(0).GetComponent<Renderer>().material.color =currentNode.nodeColor;
+                Node node = NodesManager.AllNodes.Find(n=>n.id==EdgesManager.AllEdges[i].target);
                 node.turnToSolidColor();
                 node.showTextLabel(node,node.nodeColor);
             }
@@ -187,9 +168,9 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
         var touchHandler = targetNode.AddComponent<TouchHandler>();
         var focusHandler = targetNode.AddComponent<FocusHandler>();
         pointerHandler.OnPointerDown.AddListener((e) => {
-            resetAllLabels();
-            turnTranspAllNodes();
-            turnTranspAllEdges();
+            NodesManager.resetAllLabels();
+            NodesManager.turnTranspAllNodes();
+            EdgesManager.turnTranspAllEdges();   
             MetricsManager.pointerUsed++;
             changeColor(this,material); 
             foreach(GameObject gameObj in GameObject.FindObjectsOfType<GameObject>())
@@ -198,41 +179,21 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
                 {
                     Material thisObj = gameObj.GetComponent<Renderer>().material;
                     Color objColor =thisObj.color;
-                    float tranpsDensity= 0.25f;
+                    float tranpsDensity= Enviroment.TRANSP_DENSITY;
                     thisObj.color = new Color(objColor.r,objColor.g,objColor.b, tranpsDensity);
                 }
             }
         });
         touchHandler.OnTouchCompleted.AddListener((e) => {
             MetricsManager.touchUsed++;
-            resetAllLabels();
-            turnTranspAllNodes();
-            turnTranspAllEdges();
+            NodesManager.resetAllLabels();
+            NodesManager.turnTranspAllNodes();
+            EdgesManager.turnTranspAllEdges();
             changeColor(this,material);
         });
     }
 
-    private void turnTranspAllEdges()
-    {
-        for (int i = 0; i < this.allEdges.Count; i++)
-        {
-            this.allEdges[i].intensityOfColor = 0;
-            Color edgeColor = ColorsManager.getColor(EdgeColorModel.regularEdge);
-            this.allEdges[i].edge.GetComponent<Renderer>().material.color = new Color(edgeColor.r,edgeColor.g,edgeColor.b,0.25f);
-            this.allEdges[i].edge.transform.GetChild(0).GetComponent<Renderer>().material.color = new Color(edgeColor.r, edgeColor.g, edgeColor.b, 0.25f);
-        }
-    }
-
-    private void turnTranspAllNodes()
-    {
-        for (int i = 0; i < this.allNodes.Count; i++)
-        {
-            allNodes[i].colorChangedByTest =false;
-            allNodes[i].colorChangedByHover =false;
-            allNodes[i].turnToTranspColor();
-        }
-    }
-
+    
     public  float getWidth(string nodoName, float characterSize)
     {
         TextMesh mesh = transform.GetChild(0).GetComponent<TextMesh>();
@@ -267,11 +228,11 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
         nodo.transform.GetChild(0).GetChild(0).transform.GetComponent<Renderer>().material.color = new Color(bl.r,bl.g,bl.b,0.45f);
         nodo.clicked = true;
     }
-    public void hideTextLabel(Node nodo)
+    public void hideTextLabel()
     {
-        nodo.clicked = false;
-        nodo.transform.GetChild(0).GetComponent<TextMesh>().text = "";
-        nodo.transform.GetChild(0).GetChild(0).transform.localScale = new Vector3(0.0f, 0.0f, 0.0f);
+        this.clicked = false;
+        this.transform.GetChild(0).GetComponent<TextMesh>().text = "";
+        this.transform.GetChild(0).GetChild(0).transform.localScale = new Vector3(0.0f, 0.0f, 0.0f);
     }
 }
 
