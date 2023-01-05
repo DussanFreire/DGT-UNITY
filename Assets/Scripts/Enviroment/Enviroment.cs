@@ -19,5 +19,7 @@ public class Enviroment
    // EDGE COLORS ENV
     public static string REGULAR_EDGE_COLOR  = "#000000";
     public static float TRANSP_DENSITY  = 0.25f;
-
+    // TEXT ENV
+    static public float TEXT_SIZE =0.7f;
+    static public float TEXT_BG_HEIGHT =0.03f ;
 }

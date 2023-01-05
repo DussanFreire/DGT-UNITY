@@ -17,7 +17,6 @@ public class NodesManager
     {
         for (int i = 0; i < AllNodes.Count; i++)
         {
-            AllNodes[i].colorChangedByTest =false;
             AllNodes[i].colorChangedByHover =false;
             AllNodes[i].turnToTranspColor();
         }

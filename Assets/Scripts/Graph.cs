@@ -70,7 +70,7 @@ public class Graph : MonoBehaviour
 			RorationManager.changeVerticalRotation(requestModel.actions.rotateV);
 			RorationManager.changeHorizontalRotation(requestModel.actions.rotateH);
 			if (nodeRequest.visible){
-				nodeToUpdate.showTextLabel(nodeToUpdate,nodeColor);
+				nodeToUpdate.showTextLabel();
 				nodeToUpdate.turnToSolidColor();
 			} else {
 				nodeToUpdate.hideTextLabel();

@@ -12,7 +12,7 @@ public class RequestsManager
 		{
 			yield return request.SendWebRequest();
 
-			if (request.isNetworkError)
+			if (request.result!= UnityWebRequest.Result.Success)
 			{
 				Debug.Log(request.error);
 			}
@@ -54,7 +54,7 @@ public class RequestsManager
 		{
 			yield return request.SendWebRequest();
 
-			if (request.isNetworkError)
+			if (request.result!= UnityWebRequest.Result.Success)
 			{
 				Debug.Log(request.error);
 			}
