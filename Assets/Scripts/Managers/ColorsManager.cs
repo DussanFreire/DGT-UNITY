@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
+using UnityEngine.EventSystems;
+
 public class ColorsManager 
 {
     public static Color getColor(string colorHex)
@@ -32,7 +34,6 @@ public class ColorsManager
         Material material = targetNode.GetComponent<Renderer>().material;
         var pointerHandler = targetNode.AddComponent<PointerHandler>();
         var touchHandler = targetNode.AddComponent<TouchHandler>();
-        var focusHandler = targetNode.AddComponent<FocusHandler>();
         pointerHandler.OnPointerDown.AddListener((e) => {
             NodesManager.resetAllLabels();
             NodesManager.turnTranspAllNodes();
@@ -49,4 +50,4 @@ public class ColorsManager
         });
     }
     
-}
+}  

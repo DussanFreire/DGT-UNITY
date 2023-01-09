@@ -6,6 +6,7 @@ public class RequestDto
 {
 	public int version;
 	public float size;
+	public float taskId;
 	public string graphName;
 	public ActionsDto actions;
 	public List<FilterDto> filters;

@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 
 public class Node : MonoBehaviour,IMixedRealityFocusHandler
 {
+    public Transform graphtransf { get; set; }
     public int id;
     public bool visible { get; set; }
     public GameObject edgePrefab;
@@ -24,7 +25,6 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
         transform.GetChild(0).GetComponent<TextMesh>().text = "";
         startConfiguration();
         ColorsManager.SetColorsListener(this, nodeGameObject);
-        PointerUtils.SetGazePointerBehavior(PointerBehavior.Default);
     }
     void Update()
     {
@@ -63,7 +63,8 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
             ls.z = Vector3.Distance(transform.position, target.transform.position);
             edges[i].edge.transform.localScale = ls;
             edges[i].edge.transform.position = calcDimPos(transform.position,target.transform.position);
-            edges[i].edge.transform.parent =transform;
+            edges[i].edge.transform.parent =graphtransf;
+            
         }
     }
     private Vector3 calcDimPos(Vector3 source, Vector3 target){
@@ -109,20 +110,22 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
     }
     public Edge AddEdge(Node node, int sourceId)
     {
-        SpringJoint SpringJoint = gameObject.AddComponent<SpringJoint>();
-        SpringJoint.autoConfigureConnectedAnchor = false;
-        SpringJoint.anchor = new Vector3(0, 0.0005f, 0);
-        SpringJoint.connectedAnchor = new Vector3(0, 0, 0);
-        SpringJoint.enableCollision = true;
-        SpringJoint.connectedBody = node.GetComponent<Rigidbody>();
+        SpringJoint springJoint = gameObject.AddComponent<SpringJoint>();
+        springJoint.autoConfigureConnectedAnchor = false;
+        springJoint.anchor = new Vector3(0, 0.0005f, 0);
+        springJoint.connectedAnchor = new Vector3(0, 0, 0);
+        springJoint.enableCollision = true;
+        springJoint.connectedBody = node.GetComponent<Rigidbody>();
         GameObject edge = Instantiate(this.edgePrefab, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity);
-        Edge edgeModel = new Edge();
-        edgeModel.origin = sourceId;
-        edgeModel.target = node.id;
-        edgeModel.edge = edge;
-        edges.Add(edgeModel);
-        joints.Add(SpringJoint);
-        return edgeModel;
+        Edge currentEdge = new Edge();
+        currentEdge.origin = sourceId;
+        currentEdge.target = node.id;
+        currentEdge.edge = edge;
+        // springJoint.transform.parent =graphtransf;
+        // currentEdge.edge.transform.parent =graphtransf;
+        edges.Add(currentEdge);
+        joints.Add(springJoint);
+        return currentEdge;
     }
     public  float getWidth(string nodoName, float characterSize)
     {
@@ -144,7 +147,7 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
         this.transform.GetChild(0).GetComponent<TextMesh>().characterSize = Enviroment.TEXT_SIZE;
         this.transform.GetChild(0).GetComponent<TextMesh>().color = this.nodeColor;
         float width = getWidth(this.name, Enviroment.TEXT_SIZE);
-        this.transform.GetChild(0).GetChild(0).transform.localScale = new Vector3(width*50, Enviroment.TEXT_BG_HEIGHT*30, 0.001f);
+        this.transform.GetChild(0).GetChild(0).transform.localScale = new Vector3(width*60*(2-NodesManager.NodeSize), Enviroment.TEXT_BG_HEIGHT*30, 0.001f);
         this.transform.GetChild(0).GetChild(0).transform.LookAt(Camera.main.transform.position);
         Color bl = Color.black;
         this.transform.GetChild(0).GetChild(0).transform.GetComponent<Renderer>().material.color = new Color(bl.r,bl.g,bl.b,0.80f);

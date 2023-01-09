@@ -14,17 +14,21 @@ public class Graph : MonoBehaviour
 	public GameObject edgePrefab;
     public List<string> filters { get; set; }
 	public int currentVersion { get; set; }
-	public float size { get; set; }
+	public int currentTask { get; set; }
+
 
 	void Start()
 	{
+	
 		currentVersion=-1;
         NodesManager.AllNodes = new List<Node>();
         EdgesManager.AllEdges = new List<Edge>();
 		InvokeRepeating("GenerateRequest", 0.0f, 3.0f);
+
 	}
 
 	void Update(){
+
 		RorationManager.setRotationListeners(transform);
 		PositionManager.setMovementListeners(transform);
 	}
@@ -33,28 +37,36 @@ public class Graph : MonoBehaviour
 	public void GenerateRequest()
 	{
 		if(!graphBuilded){
-			StartCoroutine(RequestsManager.ProcessRequestGet(Enviroment.URL_INIT, ResponseCallback));
+			StartCoroutine(RequestsManager.GetGraphData(Enviroment.URL_INIT, ResponseCallback));
 			graphBuilded=true;
 		}else{
-			StartCoroutine(RequestsManager.ProcessRequestPost(Enviroment.URL_UPDATE, ResponseCallback));
+			StartCoroutine(RequestsManager.GetGraphData(Enviroment.URL_UPDATE, ResponseCallback));
 		}
+	
 	}
 
 	private void ResponseCallback(RequestDto requestModel)
 	{
 		if(currentVersion==-1){
 			currentVersion=0;
+			GameObject.Find("GraphPrefab(Clone)").SetActive(false);
 			createNodesFromData(requestModel);
+			PositionManager.moveInitPosition(transform);
+			Debug.Log(NodesManager.GraphPos);
 		}
 		else if(requestModel.version > currentVersion)
 		{
 			currentVersion =requestModel.version;
-			if(size!=requestModel.size){
+			if(NodesManager.NodeSize!=requestModel.size){
 				deleteGraph();
 				createNodesFromData(requestModel);
+				Debug.Log(NodesManager.GraphPos);
 			}
 			else
 			updateNodesFromData(requestModel);
+		}
+		if(currentTask!=requestModel.taskId){
+			RequestsManager.SendMetricsDataPost(Enviroment.URL_UPDATE, ResponseCallback);
 		}
 	}
 
@@ -111,6 +123,7 @@ public class Graph : MonoBehaviour
 			node.setChildIds(nodeRequest.childIds);
 			node.setNode(nodeGameObj);
 			node.setColor(nodeColor);
+			node.graphtransf = transform;
 			if (nodeRequest.visible){
 				node.turnToSolidColor();
 			} else {
@@ -121,10 +134,11 @@ public class Graph : MonoBehaviour
 
 	private void createNodesFromData(RequestDto RequestModel)
 	{
-		size =RequestModel.size;
+		NodesManager.NodeSize =RequestModel.size;
 		foreach (NodeRequestDto nodeRequest in RequestModel.nodes)
 		{
 			Node node = generateNode(nodeRequest);
+			node.nodeGameObject.transform.localScale=Enviroment.NODE_LOCAL_SCALE* NodesManager.NodeSize*10;
 			NodesManager.AllNodes.Add(node);
 		}
 
@@ -149,7 +163,9 @@ public class Graph : MonoBehaviour
 		for (int i = 0; i < EdgesManager.AllEdges.Count; i++)
         {
 			Color edgeColor = ColorsManager.getColor(Enviroment.REGULAR_EDGE_COLOR);
-
+			Vector3 localScaleEdge = EdgesManager.AllEdges[i].edge.transform.localScale;
+			Vector3 auxScaleEdge = Enviroment.EDGE_LOCAL_SCALE* NodesManager.NodeSize;
+			EdgesManager.AllEdges[i].edge.transform.localScale= new Vector3(auxScaleEdge.x,auxScaleEdge.y,localScaleEdge.z); 
 			if (EdgesManager.AllEdges[i].visible)
 			{
 				EdgesManager.AllEdges[i].turnEdgeToSolidColor(edgeColor);
@@ -159,12 +175,18 @@ public class Graph : MonoBehaviour
 				EdgesManager.AllEdges[i].turnEdgeToTranspColor(edgeColor);
 			}
         }
+
+
     }
 	void deleteGraph(){
 	
 		
 		NodesManager.AllNodes.ForEach(n=>{
 			Destroy(n.nodeGameObject);
+		});
+		
+		EdgesManager.AllEdges.ForEach(n=>{
+			Destroy(n.edge);
 		});
 		NodesManager.AllNodes = new List<Node>();
 		EdgesManager.AllEdges = new List<Edge>();

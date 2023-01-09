@@ -152,8 +152,15 @@ PlayerSettings:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 3913821078919465157, guid: 50aab0f4ccc962445a36cb22247b58f5, type: 2}
   - {fileID: -3662003323193351676, guid: 619c7722b932c954f91aee754120313b, type: 2}
+  - {fileID: 0}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -640,9 +647,10 @@ PlayerSettings:
   metroCertificatePassword: 
   metroCertificateSubject: DefaultCompany
   metroCertificateIssuer: DefaultCompany
-  metroCertificateNotAfter: 8044c8cea0fbd801
+  metroCertificateNotAfter: 009d8aec0541da01
   metroApplicationDescription: Template_3D
-  wsaImages: {}
+  wsaImages:
+    65936: Assets/graph.png
   metroTileShortName: Graph by DF
   metroTileShowName: 0
   metroMediumTileShowName: 0

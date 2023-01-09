@@ -7,6 +7,7 @@ public class PositionManager
 	private static bool movingX=false;
 	private static bool movingY =false;
 	private static bool movingZ =false;
+	private static bool initPosMov =false;
 	private static Vector3 posXTarget;
 	private static Vector3 posYTarget;
 	private static Vector3 posZTarget;
@@ -22,6 +23,9 @@ public class PositionManager
         }
         if(movingZ){
             graphTransform.position = Vector3.MoveTowards(graphTransform.position, posZTarget, Enviroment.MOVEMENT_STEP);
+        }
+		if(initPosMov){
+            graphTransform.position = NodesManager.GraphPos;
         }
     }
     public static void moveXPosition(bool backward, bool forward, Transform graphTransform){
@@ -64,6 +68,16 @@ public class PositionManager
 		{
 			await Task.Delay(Enviroment.MOVEMENT_TIME);
 			movingZ=false;
+		});
+	}
+
+	public static void moveInitPosition(Transform graphTransform){
+        float movement = Enviroment.MOVEMENT_SPEED;
+		initPosMov = true;
+		Task.Run(async () =>
+		{
+			await Task.Delay(Enviroment.MOVEMENT_TIME);
+			initPosMov=false;
 		});
 	}
 }

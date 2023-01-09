@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class NodesManager
 {
+	static public Vector3 GraphPos { get; set; }
     static public List<Node> AllNodes { get; set; }
+	static public float NodeSize { get; set; }
 
     static public void resetAllLabels()
     {

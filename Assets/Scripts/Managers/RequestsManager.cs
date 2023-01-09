@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 public class RequestsManager 
 {
  
-   	public static  IEnumerator ProcessRequestGet(string uri, Action<RequestDto> callback = null)
+   	public static  IEnumerator GetGraphData(string uri, Action<RequestDto> callback = null)
 	{
 		using (UnityWebRequest request = UnityWebRequest.Get(uri))
 		{
@@ -25,7 +25,7 @@ public class RequestsManager
 			}
 		}
 	}	
-	public static IEnumerator ProcessRequestPost(string uri, Action<RequestDto> callback = null)
+	public static IEnumerator SendMetricsDataPost(string uri, Action<RequestDto> callback = null)
 	{
 		Vector3 pos = Camera.main.transform.position;
 
@@ -68,4 +68,7 @@ public class RequestsManager
 		}
 		MetricsManager.staticInitMetric();
 	}
+
+
+
 }
