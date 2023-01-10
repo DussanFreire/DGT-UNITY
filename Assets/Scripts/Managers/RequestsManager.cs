@@ -2,7 +2,6 @@ using System.Collections;
 using UnityEngine;
 using System;
 using UnityEngine.Networking;
-
 public class RequestsManager 
 {
  
@@ -27,7 +26,8 @@ public class RequestsManager
 	}	
 	public static IEnumerator SendMetricsDataPost(string uri)
 	{
-		Debug.Log("post done");
+		HeadMetricsDto mets = new HeadMetricsDto();
+		mets.setCoords(MetricsManager.headCoords);
 		Vector3 pos = Camera.main.transform.position;
 		WWWForm form = new WWWForm();
 		form.AddField("posX", pos.x.ToString());
@@ -47,9 +47,13 @@ public class RequestsManager
 		form.AddField("guardFilterUsed", MetricsManager.guardFilterUsed);
 		form.AddField("persistenceFilterUsed", MetricsManager.persistenceFilterUsed);
 		form.AddField("transpFilterUsed", MetricsManager.transpFilterUsed);
+		
+
+		form.AddField("headMetrics",JsonUtility.ToJson(mets,false));
+
+
 		form.AddField("currentTime", DateTime.Now.ToString());
 		form.AddField("id", MetricsManager.currentTest);
-		Debug.Log(uri);
 		using (UnityWebRequest request = UnityWebRequest.Post(uri,form))
 		{
 			yield return request.SendWebRequest();

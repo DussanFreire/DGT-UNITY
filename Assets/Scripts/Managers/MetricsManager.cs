@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+    [Serializable]
 
 public class MetricsManager
 {
+
     static public int currentTest = 1;
     static public int verticalRotationUsed = 0;
     static public int horizontalRotationUsed = 0;
@@ -19,6 +22,7 @@ public class MetricsManager
     static public int enumFilterUsed=0;
     static public int guardFilterUsed=0;
     static public int persistenceFilterUsed=0;
+    static public List<Vector3> headCoords;
 
     static public void staticInitMetric(){
         verticalRotationUsed = 0;

@@ -121,8 +121,6 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
         currentEdge.origin = sourceId;
         currentEdge.target = node.id;
         currentEdge.edge = edge;
-        // springJoint.transform.parent =graphtransf;
-        // currentEdge.edge.transform.parent =graphtransf;
         edges.Add(currentEdge);
         joints.Add(springJoint);
         return currentEdge;

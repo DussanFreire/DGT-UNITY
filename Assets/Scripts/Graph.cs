@@ -24,15 +24,25 @@ public class Graph : MonoBehaviour
         NodesManager.AllNodes = new List<Node>();
         EdgesManager.AllEdges = new List<Edge>();
 		InvokeRepeating("GenerateRequest", 0.0f, 3.0f);
+		InvokeRepeating("getHeadCoords", 0.0f, 1.0f);
+		MetricsManager.headCoords= new List<Vector3>();
 
 	}
 
 	void Update(){
-
 		RorationManager.setRotationListeners(transform);
 		PositionManager.setMovementListeners(transform);
 	}
 
+	public void getHeadCoords(){
+		Vector3 camPos = Camera.main.transform.position;
+		Vector3 coord = new Vector3();
+		coord.x=camPos.x;
+		coord.y=camPos.y;
+		coord.z=camPos.z;
+		MetricsManager.headCoords.Add(coord);
+		Vector3 a =MetricsManager.headCoords.LastOrDefault();
+	}
 
 	public void GenerateRequest()
 	{
@@ -63,12 +73,9 @@ public class Graph : MonoBehaviour
 			else
 				updateNodesFromData(requestModel);
 		}
-		Debug.Log("Task id recibido:" +requestModel.taskId);
-		Debug.Log("Task id anterior:" +currentTask);
 		if(currentTask != requestModel.taskId){
-			Debug.Log("Post 1");
 			StartCoroutine(	RequestsManager.SendMetricsDataPost(Enviroment.URL_UPDATE));
-			Debug.Log("Post 1.1");
+			MetricsManager.headCoords= new List<Vector3>();
 			currentTask= requestModel.taskId;
 		}
 	}
