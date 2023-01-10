@@ -7,17 +7,45 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Utilities;
 
-public class Graph : MonoBehaviour
+public class Graph : MonoBehaviour 
 {
 	public GameObject nodePrefab;
 	bool graphBuilded =false; 
 	public GameObject edgePrefab;
+	public DateTime RightHandTime;
+	public DateTime LeftHandtime;
     public List<string> filters { get; set; }
 	public int currentVersion { get; set; }
 	public int currentTask { get; set; }
+	bool rightHandUsed { get; set; }
+	bool leftHandUsed { get; set; }
+    public bool Enabled { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
+    public TrackingState TrackingState => throw new NotImplementedException();
 
-	void Start()
+    public Handedness ControllerHandedness => throw new NotImplementedException();
+
+    public IMixedRealityInputSource InputSource => throw new NotImplementedException();
+
+    public IMixedRealityControllerVisualizer Visualizer => throw new NotImplementedException();
+
+    public bool IsPositionAvailable => throw new NotImplementedException();
+
+    public bool IsPositionApproximate => throw new NotImplementedException();
+
+    public bool IsRotationAvailable => throw new NotImplementedException();
+
+    public MixedRealityInteractionMapping[] Interactions => throw new NotImplementedException();
+
+    public Vector3 AngularVelocity => throw new NotImplementedException();
+
+    public Vector3 Velocity => throw new NotImplementedException();
+
+    public bool IsInPointingPose => throw new NotImplementedException();
+
+  	MixedRealityPose pose;
+
+    void Start()
 	{
 		currentTask=0;
 		currentVersion=-1;
@@ -26,12 +54,40 @@ public class Graph : MonoBehaviour
 		InvokeRepeating("GenerateRequest", 0.0f, 3.0f);
 		InvokeRepeating("getHeadCoords", 0.0f, 1.0f);
 		MetricsManager.headCoords= new List<Vector3>();
+		MetricsManager.leftHandDateTime= new List<string>();
+		MetricsManager.rightHandDateTime= new List<string>();
+		rightHandUsed =false;
+		leftHandUsed =false;
 
 	}
 
 	void Update(){
 		RorationManager.setRotationListeners(transform);
 		PositionManager.setMovementListeners(transform);
+		if (!rightHandUsed && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Right, out pose))
+        {
+			RightHandTime = DateTime.Now;
+            rightHandUsed =true;
+        }
+		if(rightHandUsed && !HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Right, out pose)){
+			DateTime aux=DateTime.Now ;
+			TimeSpan span = aux- RightHandTime;
+			MetricsManager.rightHandDateTime.Add(span.Seconds.ToString());
+			rightHandUsed =false;
+		}
+
+		if (!leftHandUsed && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Left, out pose))
+        {
+			LeftHandtime = DateTime.Now;
+            leftHandUsed =true;
+        }
+		if(leftHandUsed && !HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Left, out pose)){
+			DateTime aux=DateTime.Now ;
+			TimeSpan span = aux- LeftHandtime;
+			MetricsManager.leftHandDateTime.Add(span.Seconds.ToString());
+			leftHandUsed =false;
+		}
+
 	}
 
 	public void getHeadCoords(){
@@ -240,5 +296,4 @@ public class Graph : MonoBehaviour
 			).ToList();
         node.setNodeChildren(childrenList);
     }
-
 }

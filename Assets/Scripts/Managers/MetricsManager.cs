@@ -23,6 +23,8 @@ public class MetricsManager
     static public int guardFilterUsed=0;
     static public int persistenceFilterUsed=0;
     static public List<Vector3> headCoords;
+    static public List<string> rightHandDateTime;
+    static public List<string> leftHandDateTime;
 
     static public void staticInitMetric(){
         verticalRotationUsed = 0;

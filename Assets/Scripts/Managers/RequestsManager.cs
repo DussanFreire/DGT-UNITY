@@ -26,8 +26,11 @@ public class RequestsManager
 	}	
 	public static IEnumerator SendMetricsDataPost(string uri)
 	{
-		HeadMetricsDto mets = new HeadMetricsDto();
-		mets.setCoords(MetricsManager.headCoords);
+		HeadMetricsDto headMets = new HeadMetricsDto();
+		headMets.setCoords(MetricsManager.headCoords);
+
+		HandMetricsDto handMets = new HandMetricsDto();
+		handMets.setHandData(MetricsManager.rightHandDateTime,MetricsManager.leftHandDateTime);
 		Vector3 pos = Camera.main.transform.position;
 		WWWForm form = new WWWForm();
 		form.AddField("posX", pos.x.ToString());
@@ -49,7 +52,9 @@ public class RequestsManager
 		form.AddField("transpFilterUsed", MetricsManager.transpFilterUsed);
 		
 
-		form.AddField("headMetrics",JsonUtility.ToJson(mets,false));
+		form.AddField("headMetrics",JsonUtility.ToJson(headMets,false));
+		form.AddField("handMetricsInSeconds",JsonUtility.ToJson(handMets,false));
+
 
 
 		form.AddField("currentTime", DateTime.Now.ToString());
