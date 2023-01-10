@@ -25,10 +25,10 @@ public class RequestsManager
 			}
 		}
 	}	
-	public static IEnumerator SendMetricsDataPost(string uri, Action<RequestDto> callback = null)
+	public static IEnumerator SendMetricsDataPost(string uri)
 	{
+		Debug.Log("post done");
 		Vector3 pos = Camera.main.transform.position;
-
 		WWWForm form = new WWWForm();
 		form.AddField("posX", pos.x.ToString());
 		form.AddField("posY", pos.y.ToString());
@@ -49,7 +49,7 @@ public class RequestsManager
 		form.AddField("transpFilterUsed", MetricsManager.transpFilterUsed);
 		form.AddField("currentTime", DateTime.Now.ToString());
 		form.AddField("id", MetricsManager.currentTest);
-
+		Debug.Log(uri);
 		using (UnityWebRequest request = UnityWebRequest.Post(uri,form))
 		{
 			yield return request.SendWebRequest();
@@ -62,8 +62,6 @@ public class RequestsManager
 			{
 				var data = request.downloadHandler.text;
 				RequestDto RequestModel = JsonUtility.FromJson<RequestDto>(data);
-				if (callback != null)
-					callback(RequestModel);
 			}
 		}
 		MetricsManager.staticInitMetric();

@@ -19,7 +19,7 @@ public class Graph : MonoBehaviour
 
 	void Start()
 	{
-	
+		currentTask=0;
 		currentVersion=-1;
         NodesManager.AllNodes = new List<Node>();
         EdgesManager.AllEdges = new List<Edge>();
@@ -52,7 +52,6 @@ public class Graph : MonoBehaviour
 			GameObject.Find("GraphPrefab(Clone)").SetActive(false);
 			createNodesFromData(requestModel);
 			PositionManager.moveInitPosition(transform);
-			Debug.Log(NodesManager.GraphPos);
 		}
 		else if(requestModel.version > currentVersion)
 		{
@@ -60,13 +59,17 @@ public class Graph : MonoBehaviour
 			if(NodesManager.NodeSize!=requestModel.size){
 				deleteGraph();
 				createNodesFromData(requestModel);
-				Debug.Log(NodesManager.GraphPos);
 			}
 			else
-			updateNodesFromData(requestModel);
+				updateNodesFromData(requestModel);
 		}
-		if(currentTask!=requestModel.taskId){
-			RequestsManager.SendMetricsDataPost(Enviroment.URL_UPDATE, ResponseCallback);
+		Debug.Log("Task id recibido:" +requestModel.taskId);
+		Debug.Log("Task id anterior:" +currentTask);
+		if(currentTask != requestModel.taskId){
+			Debug.Log("Post 1");
+			StartCoroutine(	RequestsManager.SendMetricsDataPost(Enviroment.URL_UPDATE));
+			Debug.Log("Post 1.1");
+			currentTask= requestModel.taskId;
 		}
 	}
 
