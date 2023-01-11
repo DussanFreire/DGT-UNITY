@@ -47,6 +47,6 @@ public class TapToPlaceInputExample : MonoBehaviour
 
     void Update()
     {
-        logoGraphGameObj.transform.GetChild(0).Rotate(0, 0,0.2f, Space.Self);
+        logoGraphGameObj.transform.GetChild(0).Rotate(0, 0, 0.4f, Space.Self);
     }
 }
