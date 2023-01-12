@@ -40,6 +40,7 @@ public class ColorsManager
             NodesManager.turnTranspAllNodes();
             EdgesManager.turnTranspAllEdges();   
             MetricsManager.pointerUsed++;
+            node.addAction("Pointed");
             changeChildrenColors(node, material); 
         });
         touchHandler.OnTouchCompleted.AddListener((e) => {
@@ -48,6 +49,7 @@ public class ColorsManager
             NodesManager.turnTranspAllNodes();
             EdgesManager.turnTranspAllEdges();
             changeChildrenColors(node, material);
+            node.addAction("Touched");
         });
     }
     

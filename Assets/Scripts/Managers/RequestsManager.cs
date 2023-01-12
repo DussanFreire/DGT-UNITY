@@ -31,6 +31,10 @@ public class RequestsManager
 
 		HandMetricsDto handMets = new HandMetricsDto();
 		handMets.setHandData(MetricsManager.rightHandDateTime,MetricsManager.leftHandDateTime);
+
+		NodesActionsDto actionsMets = new NodesActionsDto();
+		actionsMets.setActionsDone(MetricsManager.actionsDone);
+
 		Vector3 pos = Camera.main.transform.position;
 		WWWForm form = new WWWForm();
 		form.AddField("posX", pos.x.ToString());
@@ -54,6 +58,7 @@ public class RequestsManager
 
 		form.AddField("headMetrics",JsonUtility.ToJson(headMets,false));
 		form.AddField("handMetricsInSeconds",JsonUtility.ToJson(handMets,false));
+		form.AddField("actionsDone",JsonUtility.ToJson(actionsMets,false));
 
 
 

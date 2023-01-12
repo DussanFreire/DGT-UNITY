@@ -56,6 +56,7 @@ public class Graph : MonoBehaviour
 		MetricsManager.headCoords= new List<Vector3>();
 		MetricsManager.leftHandDateTime= new List<string>();
 		MetricsManager.rightHandDateTime= new List<string>();
+		MetricsManager.actionsDone= new List<NodeActionDto>();
 		rightHandUsed =false;
 		leftHandUsed =false;
 
@@ -132,6 +133,9 @@ public class Graph : MonoBehaviour
 		if(currentTask != requestModel.taskId){
 			StartCoroutine(	RequestsManager.SendMetricsDataPost(Enviroment.URL_UPDATE));
 			MetricsManager.headCoords= new List<Vector3>();
+			MetricsManager.actionsDone= new List<NodeActionDto>();
+			MetricsManager.leftHandDateTime= new List<string>();
+			MetricsManager.rightHandDateTime= new List<string>();
 			currentTask= requestModel.taskId;
 		}
 	}

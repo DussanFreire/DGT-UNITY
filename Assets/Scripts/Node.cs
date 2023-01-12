@@ -18,7 +18,7 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
     public List<Node> nodeParent = new List<Node>();
     public bool colorChangedByHover =false;
     public List<Node> nodeChildren = new List<Node>();
-    bool clicked = false;
+    public bool clicked = false;
     void Start()
     {
         transform.GetChild(0).GetChild(0).localScale = new Vector3(0.0f, 0.0f, 0.0f);
@@ -41,9 +41,24 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
         if(!colorChangedByHover && !clicked){
             MetricsManager.hoverUsed++;
             this.showTextLabel();
+
+            addAction("Hover");
             clicked = false;
             colorChangedByHover=true;
         }
+    }
+
+    public void addAction(string action){
+        if(!MetricsManager.actionsDone.Exists(a=> {return a.fileName==this.name && a.action==action;})){
+            NodeActionDto aux = new NodeActionDto();
+            aux.setData(this.name,action,1);
+            MetricsManager.actionsDone.Add(aux);
+        }else{
+            if(MetricsManager.actionsDone.Exists(a=> {return a.fileName==this.name && a.action==action;})){
+                NodeActionDto aux = MetricsManager.actionsDone.Find(a=> {return a.fileName==this.name && a.action==action;});
+                aux.qty++;
+            }
+        };
     }
 
     public void OnFocusExit(FocusEventData eventData)
