@@ -23,6 +23,7 @@ public class ColorsManager
                 EdgesManager.AllEdges[i].edge.transform.GetChild(0).GetComponent<Renderer>().material.color =currentNode.nodeColor;
                 Node node = NodesManager.AllNodes.Find(n=>n.id==EdgesManager.AllEdges[i].target);
                 node.turnToSolidColor();
+                node.showTextLabel();
             }
         }
     }
