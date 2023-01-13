@@ -73,16 +73,22 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
         for (int i = 0; i < edges.Count; i++)
         {
             GameObject target = joints[i].connectedBody.gameObject;
-            edges[i].edge.transform.LookAt(target.transform);
             Vector3 ls = edges[i].edge.transform.localScale;
-            ls.z = Vector3.Distance(transform.position, target.transform.position)-0.02f;
+            ls.z = Vector3.Distance(transform.position, target.transform.position)-0.018f;
             edges[i].edge.transform.localScale = ls;
-            edges[i].edge.transform.position = calcDimPos(transform.position,target.transform.position);
-            edges[i].edge.transform.parent =graphtransf;
             Vector3 localScale =  edges[i].edge.transform.GetChild(0).transform.localScale;
             Vector3 lossyScale =  edges[i].edge.transform.GetChild(0).transform.lossyScale;
-            localScale.z= getArrowSize(localScale.z,lossyScale.z) ;
+            float arrowSize= getArrowSize(localScale.z,lossyScale.z) ;
+            localScale.z=arrowSize;
             edges[i].edge.transform.GetChild(0).transform.localScale = localScale;
+            Vector3 pos = edges[i].edge.transform.GetChild(0).transform.position; 
+            pos.z+=0.007f;
+            edges[i].edge.transform.GetChild(0).transform.position=pos; 
+            edges[i].edge.transform.LookAt(target.transform);
+
+            edges[i].edge.transform.position = calcDimPos(transform.position,target.transform.position);
+            edges[i].edge.transform.parent =graphtransf;
+            
             
         }
     }
