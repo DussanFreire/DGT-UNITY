@@ -75,12 +75,21 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
             GameObject target = joints[i].connectedBody.gameObject;
             edges[i].edge.transform.LookAt(target.transform);
             Vector3 ls = edges[i].edge.transform.localScale;
-            ls.z = Vector3.Distance(transform.position, target.transform.position);
+            ls.z = Vector3.Distance(transform.position, target.transform.position)-0.02f;
             edges[i].edge.transform.localScale = ls;
             edges[i].edge.transform.position = calcDimPos(transform.position,target.transform.position);
             edges[i].edge.transform.parent =graphtransf;
+            Vector3 localScale =  edges[i].edge.transform.GetChild(0).transform.localScale;
+            Vector3 lossyScale =  edges[i].edge.transform.GetChild(0).transform.lossyScale;
+            localScale.z= getArrowSize(localScale.z,lossyScale.z) ;
+            edges[i].edge.transform.GetChild(0).transform.localScale = localScale;
             
         }
+    }
+
+    float getArrowSize(float currLocal,float currLossy){
+        float lossyExpected = 0.0005f;
+        return (lossyExpected * currLocal) / currLossy;
     }
     private Vector3 calcDimPos(Vector3 source, Vector3 target){
         return new Vector3((source.x + target.x) / 2,
