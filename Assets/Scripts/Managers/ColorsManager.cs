@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 
 public class ColorsManager 
 {
+    static public AudioSource audioData { get; set; }
     public static Color getColor(string colorHex)
     {
         Color color;
@@ -42,6 +43,7 @@ public class ColorsManager
             MetricsManager.pointerUsed++;
             node.addAction("Pointed");
             changeChildrenColors(node, material); 
+            audioData.Play(0);
         });
         touchHandler.OnTouchCompleted.AddListener((e) => {
             MetricsManager.touchUsed++;
@@ -50,6 +52,7 @@ public class ColorsManager
             EdgesManager.turnTranspAllEdges();
             changeChildrenColors(node, material);
             node.addAction("Touched");
+            audioData.Play(0);
         });
     }
     

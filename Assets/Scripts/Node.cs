@@ -18,12 +18,14 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
     public List<Node> nodeParent = new List<Node>();
     public bool colorChangedByHover =false;
     public List<Node> nodeChildren = new List<Node>();
+
     public bool clicked = false;
     void Start()
     {
         transform.GetChild(0).GetChild(0).localScale = new Vector3(0.0f, 0.0f, 0.0f);
         transform.GetChild(0).GetComponent<TextMesh>().text = "";
         startConfiguration();
+
         ColorsManager.SetColorsListener(this, nodeGameObject);
     }
     void Update()
@@ -31,13 +33,12 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
         if (clicked || colorChangedByHover) {
             Vector3 pos = Camera.main.transform.position;
             transform.LookAt(pos);
-            // transform.GetChild(0).Rotate(0, 180, 0);
-            // transform.GetChild(0).GetChild(0).transform.LookAt(pos);
         }
     }
     public void OnFocusEnter(FocusEventData eventData)
     {
-        if(!colorChangedByHover && !clicked){
+        
+        if(eventData.Pointer.PointerName!="Gaze Pointer" && !colorChangedByHover && !clicked){
             MetricsManager.hoverUsed++;
             this.showTextLabel();
 
@@ -163,7 +164,7 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
         this.transform.GetChild(0).GetChild(0).transform.localScale = new Vector3(width*80*(2-NodesManager.NodeSize), Enviroment.TEXT_BG_HEIGHT*30, 0.01f);
         Color bl = Color.black;
         this.transform.GetChild(0).GetChild(0).transform.GetComponent<Renderer>().material.color = new Color(bl.r,bl.g,bl.b,0.80f);
-        
+
         this.clicked = true;
     }
     public void hideTextLabel()

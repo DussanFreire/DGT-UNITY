@@ -44,6 +44,7 @@ public class Graph : MonoBehaviour
     public bool IsInPointingPose => throw new NotImplementedException();
 
   	MixedRealityPose pose;
+    AudioSource audioData;
 
     void Start()
 	{
@@ -57,10 +58,10 @@ public class Graph : MonoBehaviour
 		MetricsManager.leftHandDateTime= new List<string>();
 		MetricsManager.rightHandDateTime= new List<string>();
 		MetricsManager.actionsDone= new List<NodeActionDto>();
-		rightHandUsed =false;
 		leftHandUsed =false;
-	
-
+		rightHandUsed =false;
+        audioData = GetComponent<AudioSource>();
+		ColorsManager.audioData = audioData;
 	}
 
 	void Update(){

@@ -12,6 +12,7 @@ public class TapToPlaceInputExample : MonoBehaviour
     private GameObject graph;
     private TapToPlace tapToPlace;
     GameObject cursorFocus ;
+    AudioSource audioData;
     void Start()
     {
         graph = FindInActiveObjectByName("HandleGraph");
@@ -29,6 +30,9 @@ public class TapToPlaceInputExample : MonoBehaviour
         cursorFocus.GetComponent<MeshRenderer>().materials=mats;
 
         cursorFocus = FindInActiveObjectByName("CursorPress");
+        cursorFocus.GetComponent<MeshRenderer>().materials=mats;
+
+        cursorFocus = FindInActiveObjectByName("CursorRest");
         cursorFocus.GetComponent<MeshRenderer>().materials=mats;
 	
     }
@@ -50,6 +54,8 @@ public class TapToPlaceInputExample : MonoBehaviour
     
     public void SetColorsListener( )
     {
+        audioData = GetComponent<AudioSource>();
+        audioData.Play(0);
         NodesManager.GraphPos = logoGraphGameObj.transform.position;
         logoGraphGameObj.transform.GetChild(1).transform.GetComponent<TextMesh>().text = "Loading Graph ...";
         graph.SetActive(true);
