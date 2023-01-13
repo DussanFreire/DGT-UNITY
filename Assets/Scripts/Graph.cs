@@ -59,6 +59,7 @@ public class Graph : MonoBehaviour
 		MetricsManager.actionsDone= new List<NodeActionDto>();
 		rightHandUsed =false;
 		leftHandUsed =false;
+	
 
 	}
 

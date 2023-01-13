@@ -672,6 +672,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2addcaa25b1f11444bd78d64535c530f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mat: {fileID: 2100000, guid: 195e8cf54852ab6429825d0bf4665f5b, type: 2}
+  mat1: {fileID: 2100000, guid: 195e8cf54852ab6429825d0bf4665f5b, type: 2}
   graphPrefab: {fileID: 2151788878683547207, guid: 468651ca88287ae4aacb842c55fb8dab, type: 3}
 --- !u!4 &1689757764
 Transform:

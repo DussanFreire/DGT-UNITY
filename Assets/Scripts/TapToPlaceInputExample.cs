@@ -5,11 +5,13 @@ using Microsoft.MixedReality.Toolkit.Input;
 public class TapToPlaceInputExample : MonoBehaviour
 {
 
-
+    public Material mat;
+    public Material mat1;
 	public GameObject graphPrefab;
     private  GameObject logoGraphGameObj;
     private GameObject graph;
     private TapToPlace tapToPlace;
+    GameObject cursorFocus ;
     void Start()
     {
         graph = FindInActiveObjectByName("HandleGraph");
@@ -20,6 +22,12 @@ public class TapToPlaceInputExample : MonoBehaviour
         tapToPlace.StartPlacement();
         tapToPlace.DefaultPlacementDistance =0.7f;
         tapToPlace.OnPlacingStopped.AddListener( SetColorsListener);
+        
+        PointerUtils.SetGazePointerBehavior(PointerBehavior.AlwaysOn);
+		cursorFocus = FindInActiveObjectByName("CursorFocus");
+        Material[] mats= {mat,mat1};
+        cursorFocus.GetComponent<MeshRenderer>().materials=mats;
+	
     }
     GameObject FindInActiveObjectByName(string name)
     {
@@ -48,5 +56,6 @@ public class TapToPlaceInputExample : MonoBehaviour
     void Update()
     {
         logoGraphGameObj.transform.GetChild(0).Rotate(0, 0, 0.4f, Space.Self);
+
     }
 }
