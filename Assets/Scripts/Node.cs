@@ -30,10 +30,9 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
     {
         if (clicked || colorChangedByHover) {
             Vector3 pos = Camera.main.transform.position;
-            transform.GetChild(0).LookAt(pos);
-            Vector3 rotation = transform.GetChild(0).rotation.eulerAngles;
-            transform.GetChild(0).Rotate(0, 180, 0);
-            transform.GetChild(0).GetChild(0).transform.LookAt(pos);
+            transform.LookAt(pos);
+            // transform.GetChild(0).Rotate(0, 180, 0);
+            // transform.GetChild(0).GetChild(0).transform.LookAt(pos);
         }
     }
     public void OnFocusEnter(FocusEventData eventData)
@@ -159,11 +158,12 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
         this.transform.GetChild(0).GetComponent<TextMesh>().text = this.name;
         this.transform.GetChild(0).GetComponent<TextMesh>().characterSize = Enviroment.TEXT_SIZE;
         this.transform.GetChild(0).GetComponent<TextMesh>().color = this.nodeColor;
+
         float width = getWidth(this.name, Enviroment.TEXT_SIZE);
-        this.transform.GetChild(0).GetChild(0).transform.localScale = new Vector3(width*60*(2-NodesManager.NodeSize), Enviroment.TEXT_BG_HEIGHT*30, 0.001f);
-        this.transform.GetChild(0).GetChild(0).transform.LookAt(Camera.main.transform.position);
+        this.transform.GetChild(0).GetChild(0).transform.localScale = new Vector3(width*80*(2-NodesManager.NodeSize), Enviroment.TEXT_BG_HEIGHT*30, 0.01f);
         Color bl = Color.black;
         this.transform.GetChild(0).GetChild(0).transform.GetComponent<Renderer>().material.color = new Color(bl.r,bl.g,bl.b,0.80f);
+        
         this.clicked = true;
     }
     public void hideTextLabel()

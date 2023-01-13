@@ -27,6 +27,9 @@ public class TapToPlaceInputExample : MonoBehaviour
 		cursorFocus = FindInActiveObjectByName("CursorFocus");
         Material[] mats= {mat,mat1};
         cursorFocus.GetComponent<MeshRenderer>().materials=mats;
+
+        cursorFocus = FindInActiveObjectByName("CursorPress");
+        cursorFocus.GetComponent<MeshRenderer>().materials=mats;
 	
     }
     GameObject FindInActiveObjectByName(string name)
