@@ -15,7 +15,7 @@ public class TapToPlaceInputExample : MonoBehaviour
     AudioSource audioData;
     void Start()
     {
-        graph = FindInActiveObjectByName("HandleGraph");
+        graph = ObjectManager.FindInActiveObjectByName("HandleGraph");
         logoGraphGameObj = Instantiate(graphPrefab, new Vector3(0, -0.5f, 0), Quaternion.identity);
         logoGraphGameObj.transform.localScale = Vector3.one * 0.02f;
         logoGraphGameObj.transform.position = Vector3.forward * 0.1f;
@@ -25,32 +25,24 @@ public class TapToPlaceInputExample : MonoBehaviour
         tapToPlace.OnPlacingStopped.AddListener( SetColorsListener);
         
         PointerUtils.SetGazePointerBehavior(PointerBehavior.AlwaysOn);
-		cursorFocus = FindInActiveObjectByName("CursorFocus");
-        Material[] mats= {mat,mat1};
-        cursorFocus.GetComponent<MeshRenderer>().materials=mats;
 
-        cursorFocus = FindInActiveObjectByName("CursorPress");
-        cursorFocus.GetComponent<MeshRenderer>().materials=mats;
+        if(!Enviroment.DESKTOP_SETUP){
+            cursorFocus =ObjectManager. FindInActiveObjectByName("CursorFocus");
+          
+            Material[] mats= {mat,mat1};
+        
+            cursorFocus.GetComponent<MeshRenderer>().materials=mats;
 
-        cursorFocus = FindInActiveObjectByName("CursorRest");
-        cursorFocus.GetComponent<MeshRenderer>().materials=mats;
+            cursorFocus =ObjectManager. FindInActiveObjectByName("CursorPress");
+            cursorFocus.GetComponent<MeshRenderer>().materials=mats;
+
+            cursorFocus =ObjectManager. FindInActiveObjectByName("CursorRest");
+            cursorFocus.GetComponent<MeshRenderer>().materials=mats;
+        }
+
 	
     }
-    GameObject FindInActiveObjectByName(string name)
-    {
-        Transform[] objs = Resources.FindObjectsOfTypeAll<Transform>() as Transform[];
-        for (int i = 0; i < objs.Length; i++)
-        {
-            if (objs[i].hideFlags == HideFlags.None)
-            {
-                if (objs[i].name == name)
-                {
-                    return objs[i].gameObject;
-                }
-            }
-        }
-        return null;
-    }
+
     
     public void SetColorsListener( )
     {

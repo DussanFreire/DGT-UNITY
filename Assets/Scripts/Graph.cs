@@ -43,7 +43,7 @@ public class Graph : MonoBehaviour
 
     public bool IsInPointingPose => throw new NotImplementedException();
 
-  	MixedRealityPose pose;
+	MixedRealityPose pose;
     AudioSource audioData;
 
     void Start()
@@ -55,6 +55,7 @@ public class Graph : MonoBehaviour
 		InvokeRepeating("GenerateRequest", 0.0f, 3.0f);
 		InvokeRepeating("getHeadCoords", 0.0f, 1.0f);
 		MetricsManager.headCoords= new List<Vector3>();
+		MetricsManager.headRotation= new List<Vector3>();
 		MetricsManager.leftHandDateTime= new List<string>();
 		MetricsManager.rightHandDateTime= new List<string>();
 		MetricsManager.actionsDone= new List<NodeActionDto>();
@@ -96,11 +97,16 @@ public class Graph : MonoBehaviour
 	public void getHeadCoords(){
 		Vector3 camPos = Camera.main.transform.position;
 		Vector3 coord = new Vector3();
+		Vector3 rotation = Camera.main.transform.eulerAngles;
 		coord.x=camPos.x;
 		coord.y=camPos.y;
 		coord.z=camPos.z;
+
+		rotation.x=rotation.x;
+		rotation.y=rotation.y;
+		rotation.z=rotation.z;
 		MetricsManager.headCoords.Add(coord);
-		Vector3 a =MetricsManager.headCoords.LastOrDefault();
+		MetricsManager.headRotation.Add(rotation);
 	}
 
 	public void GenerateRequest()
@@ -135,6 +141,7 @@ public class Graph : MonoBehaviour
 		if(currentTask != requestModel.taskId){
 			StartCoroutine(	RequestsManager.SendMetricsDataPost(Enviroment.URL_UPDATE));
 			MetricsManager.headCoords= new List<Vector3>();
+			MetricsManager.headRotation= new List<Vector3>();
 			MetricsManager.actionsDone= new List<NodeActionDto>();
 			MetricsManager.leftHandDateTime= new List<string>();
 			MetricsManager.rightHandDateTime= new List<string>();

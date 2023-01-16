@@ -38,7 +38,7 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
     public void OnFocusEnter(FocusEventData eventData)
     {
         
-        if(eventData.Pointer.PointerName!="Gaze Pointer" && !colorChangedByHover && !clicked){
+        if((Enviroment.DESKTOP_SETUP || eventData.Pointer.PointerName!="Gaze Pointer") && !colorChangedByHover && !clicked){
             MetricsManager.hoverUsed++;
             this.showTextLabel();
 

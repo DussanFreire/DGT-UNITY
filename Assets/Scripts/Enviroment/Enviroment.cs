@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class Enviroment 
 {
+
+    public static bool DESKTOP_SETUP = false ;
+
+
     // HTTP ENV
-    public const string BASE_URL = "https://dependency-graph-z42n.vercel.app";
-    // public const string BASE_URL= "http://localhost:3000";
+    // public const string BASE_URL = "https://dependency-graph-z42n.vercel.app";
+    public const string BASE_URL= "http://localhost:3000";
     public const string URL_INIT = BASE_URL+"/file/restart";
     public const string URL_UPDATE = BASE_URL+"/file/brain";
 

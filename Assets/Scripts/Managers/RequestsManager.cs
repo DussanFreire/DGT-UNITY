@@ -27,7 +27,7 @@ public class RequestsManager
 	public static IEnumerator SendMetricsDataPost(string uri)
 	{
 		HeadMetricsDto headMets = new HeadMetricsDto();
-		headMets.setCoords(MetricsManager.headCoords);
+		headMets.setCoords(MetricsManager.headCoords, MetricsManager.headRotation);
 
 		HandMetricsDto handMets = new HandMetricsDto();
 		handMets.setHandData(MetricsManager.rightHandDateTime,MetricsManager.leftHandDateTime);
