@@ -102,9 +102,6 @@ public class Graph : MonoBehaviour
 		coord.y=camPos.y;
 		coord.z=camPos.z;
 
-		rotation.x=rotation.x;
-		rotation.y=rotation.y;
-		rotation.z=rotation.z;
 		MetricsManager.headCoords.Add(coord);
 		MetricsManager.headRotation.Add(rotation);
 	}

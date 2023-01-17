@@ -4,8 +4,8 @@ using System;
 using UnityEngine.Networking;
 public class RequestsManager 
 {
- 
-   	public static  IEnumerator GetGraphData(string uri, Action<RequestDto> callback = null)
+	
+	public static  IEnumerator GetGraphData(string uri, Action<RequestDto> callback = null)
 	{
 		using (UnityWebRequest request = UnityWebRequest.Get(uri))
 		{
