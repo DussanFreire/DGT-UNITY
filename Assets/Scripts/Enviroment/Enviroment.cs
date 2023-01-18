@@ -5,7 +5,7 @@ using UnityEngine;
 public class Enviroment 
 {
 
-    public static bool DESKTOP_SETUP = false ;
+    public static bool DESKTOP_SETUP = true ;
 
 
     // HTTP ENV
