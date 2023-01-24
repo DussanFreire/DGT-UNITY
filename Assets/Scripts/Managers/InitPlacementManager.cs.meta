@@ -4,6 +4,8 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
+  - mat: {fileID: 2100000, guid: 195e8cf54852ab6429825d0bf4665f5b, type: 2}
+  - mat1: {fileID: 2100000, guid: 195e8cf54852ab6429825d0bf4665f5b, type: 2}
   - graphPrefab: {fileID: 2151788878683547207, guid: 468651ca88287ae4aacb842c55fb8dab, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}

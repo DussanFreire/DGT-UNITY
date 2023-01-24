@@ -2,7 +2,7 @@ using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using Microsoft.MixedReality.Toolkit.Input;
 
-public class TapToPlaceInputExample : MonoBehaviour
+public class InitPlacementManager : MonoBehaviour
 {
 
     public Material mat;
@@ -39,8 +39,6 @@ public class TapToPlaceInputExample : MonoBehaviour
             cursorFocus =ObjectManager. FindInActiveObjectByName("CursorRest");
             cursorFocus.GetComponent<MeshRenderer>().materials=mats;
         }
-
-	
     }
 
     
