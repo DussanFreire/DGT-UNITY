@@ -24,26 +24,19 @@ public class InitPlacementManager : MonoBehaviour
         tapToPlace.DefaultPlacementDistance =0.7f;
         tapToPlace.OnPlacingStopped.AddListener( SetColorsListener);
         
-        PointerUtils.SetGazePointerBehavior(PointerBehavior.AlwaysOn);
 
-        if(!Enviroment.DESKTOP_SETUP){
-            cursorFocus =ObjectManager. FindInActiveObjectByName("CursorFocus");
-          
-            Material[] mats= {mat,mat1};
-        
-            cursorFocus.GetComponent<MeshRenderer>().materials=mats;
-
-            cursorFocus =ObjectManager. FindInActiveObjectByName("CursorPress");
-            cursorFocus.GetComponent<MeshRenderer>().materials=mats;
-
-            cursorFocus =ObjectManager. FindInActiveObjectByName("CursorRest");
-            cursorFocus.GetComponent<MeshRenderer>().materials=mats;
+        if(Enviroment.DESKTOP_SETUP){
+            PointerUtils.SetGazePointerBehavior(PointerBehavior.AlwaysOn);
+        }
+        else{
+            PointerUtils.SetGazePointerBehavior(PointerBehavior.AlwaysOff);
         }
     }
 
     
-    public void SetColorsListener( )
+    public void SetColorsListener()
     {
+        tapToPlace.StopPlacement();
         audioData = GetComponent<AudioSource>();
         audioData.Play(0);
         NodesManager.GraphPos = logoGraphGameObj.transform.position;

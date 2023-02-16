@@ -22,10 +22,9 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
     public bool clicked = false;
     void Start()
     {
-        transform.GetChild(0).GetChild(0).localScale = new Vector3(0.0f, 0.0f, 0.0f);
+        transform.GetChild(1).localScale = new Vector3(0.0f, 0.0f, 0.0f);
         transform.GetChild(0).GetComponent<TextMesh>().text = "";
         startConfiguration();
-
         ColorsManager.SetColorsListener(this, nodeGameObject);
     }
     void Update()
@@ -34,14 +33,14 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
             Vector3 pos = Camera.main.transform.position;
             transform.LookAt(pos);
         }
+        Debug.Log(transform.GetChild(0).transform.lossyScale);
     }
     public void OnFocusEnter(FocusEventData eventData)
     {
         
-        if((Enviroment.DESKTOP_SETUP || eventData.Pointer.PointerName!="Gaze Pointer") && !colorChangedByHover && !clicked){
+        if(!colorChangedByHover && !clicked){
             MetricsManager.hoverUsed++;
             this.showTextLabel();
-
             addAction("Hover");
             clicked = false;
             colorChangedByHover=true;
@@ -167,18 +166,19 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
                 width += info.width;
             }
         }
-        return (width * characterSize * 0.1f * mesh.transform.lossyScale.x) + 0.01f;
+        return (width * characterSize * 0.0015f * mesh.transform.localScale.x) ;
     }
     public void showTextLabel()
     {
         this.transform.GetChild(0).GetComponent<TextMesh>().text = this.name;
         this.transform.GetChild(0).GetComponent<TextMesh>().characterSize = Enviroment.TEXT_SIZE;
         this.transform.GetChild(0).GetComponent<TextMesh>().color = this.nodeColor;
+        Vector3 scale = this.transform.GetChild(0).GetComponent<TextMesh>().transform.localScale;
 
         float width = getWidth(this.name, Enviroment.TEXT_SIZE);
-        this.transform.GetChild(0).GetChild(0).transform.localScale = new Vector3(width*80*(2-NodesManager.NodeSize), Enviroment.TEXT_BG_HEIGHT*30, 0.01f);
+        this.transform.GetChild(1).transform.localScale = new Vector3(width*70, Enviroment.TEXT_BG_HEIGHT*20, 0.01f);;
         Color bl = Color.black;
-        this.transform.GetChild(0).GetChild(0).transform.GetComponent<Renderer>().material.color = new Color(bl.r,bl.g,bl.b,0.80f);
+        this.transform.GetChild(1).transform.GetComponent<Renderer>().material.color = new Color(bl.r,bl.g,bl.b,0.80f);
 
         this.clicked = true;
     }
@@ -186,7 +186,7 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
     {
         this.clicked = false;
         this.transform.GetChild(0).GetComponent<TextMesh>().text = "";
-        this.transform.GetChild(0).GetChild(0).transform.localScale = new Vector3(0.0f, 0.0f, 0.0f);
+        this.transform.GetChild(1).transform.localScale = new Vector3(0.0f, 0.0f, 0.0f);
     }
 }
 
