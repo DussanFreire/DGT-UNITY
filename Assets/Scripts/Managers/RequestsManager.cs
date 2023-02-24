@@ -7,6 +7,7 @@ public class RequestsManager
 	
 	public static  IEnumerator GetGraphData(string uri, Action<RequestDto> callback = null)
 	{
+		Debug.Log(uri);
 		using (UnityWebRequest request = UnityWebRequest.Get(uri))
 		{
 			yield return request.SendWebRequest();
@@ -37,11 +38,6 @@ public class RequestsManager
 
 		Vector3 pos = Camera.main.transform.position;
 		WWWForm form = new WWWForm();
-		form.AddField("posX", pos.x.ToString());
-		form.AddField("posY", pos.y.ToString());
-		form.AddField("posZ", pos.z.ToString());
-		form.AddField("verticalRotationUsed", MetricsManager.verticalRotationUsed);
-		form.AddField("horizontalRotationUsed", MetricsManager.horizontalRotationUsed);
 		form.AddField("hoverUsed", MetricsManager.hoverUsed);
 		form.AddField("touchUsed", MetricsManager.touchUsed);
 		form.AddField("pointerUsed", MetricsManager.pointerUsed);
@@ -56,6 +52,7 @@ public class RequestsManager
 		form.AddField("transpFilterUsed", MetricsManager.transpFilterUsed);
 		
 
+		form.AddField("folderFilterUsed",JsonUtility.ToJson(headMets,false));
 		form.AddField("headMetrics",JsonUtility.ToJson(headMets,false));
 		form.AddField("handMetricsInSeconds",JsonUtility.ToJson(handMets,false));
 		form.AddField("actionsDone",JsonUtility.ToJson(actionsMets,false));

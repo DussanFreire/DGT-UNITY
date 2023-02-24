@@ -33,7 +33,6 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
             Vector3 pos = Camera.main.transform.position;
             transform.LookAt(pos);
         }
-        Debug.Log(transform.GetChild(0).transform.lossyScale);
     }
     public void OnFocusEnter(FocusEventData eventData)
     {

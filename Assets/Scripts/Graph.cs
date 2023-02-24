@@ -109,10 +109,10 @@ public class Graph : MonoBehaviour
 	public void GenerateRequest()
 	{
 		if(!graphBuilded){
-			StartCoroutine(RequestsManager.GetGraphData(Enviroment.URL_INIT, ResponseCallback));
+			StartCoroutine(RequestsManager.GetGraphData(Enviroment.URL_INIT_GRAPH, ResponseCallback));
 			graphBuilded=true;
 		}else{
-			StartCoroutine(RequestsManager.GetGraphData(Enviroment.URL_UPDATE, ResponseCallback));
+			StartCoroutine(RequestsManager.GetGraphData(Enviroment.URL_GET_GRAPH, ResponseCallback));
 		}
 	
 	}
@@ -136,7 +136,7 @@ public class Graph : MonoBehaviour
 				updateNodesFromData(requestModel);
 		}
 		if(currentTask != requestModel.taskId){
-			StartCoroutine(	RequestsManager.SendMetricsDataPost(Enviroment.URL_UPDATE));
+			StartCoroutine(	RequestsManager.SendMetricsDataPost(Enviroment.URL_SEND_METRICS));
 			MetricsManager.headCoords= new List<Vector3>();
 			MetricsManager.headRotation= new List<Vector3>();
 			MetricsManager.actionsDone= new List<NodeActionDto>();

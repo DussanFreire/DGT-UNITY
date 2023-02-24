@@ -11,8 +11,9 @@ public class Enviroment
     // HTTP ENV
     // public const string BASE_URL = "https://dependency-graph-z42n.vercel.app";
     public const string BASE_URL= "http://localhost:3000";
-    public const string URL_INIT = BASE_URL+"/file/restart";
-    public const string URL_UPDATE = BASE_URL+"/file/brain";
+    public const string URL_INIT_GRAPH = BASE_URL+"/graph/restart";
+    public const string URL_GET_GRAPH = BASE_URL+"/graph";
+    public const string URL_SEND_METRICS = BASE_URL+"/metrics";
 
     // MOVEMENT ENV
     public static float MOVEMENT_SPEED = 0.5f;
