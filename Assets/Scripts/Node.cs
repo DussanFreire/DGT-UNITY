@@ -169,6 +169,7 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
     }
     public void showTextLabel()
     {
+        ColorsManager.labelShowed =true;
         this.transform.GetChild(0).GetComponent<TextMesh>().text = this.name;
         this.transform.GetChild(0).GetComponent<TextMesh>().characterSize = Enviroment.TEXT_SIZE;
         this.transform.GetChild(0).GetComponent<TextMesh>().color = this.nodeColor;

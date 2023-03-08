@@ -129,12 +129,23 @@ public class Graph : MonoBehaviour
 		{
 			currentVersion =requestModel.version;
 			if(NodesManager.NodeSize!=requestModel.size){
+				Debug.Log("size:"+requestModel.size);
+				Vector3 currentPos = new Vector3( transform.position.x, transform.position.y, transform.position.z);
 				deleteGraph();
-				createNodesFromData(requestModel);
+				createNodesFromData(requestModel, currentPos);
+				foreach (Node node in NodesManager.AllNodes)
+				{
+					if( ColorsManager.labelShowed && node.visible){
+						Debug.Log("llega");
+						node.showTextLabel();
+					}
+				}
 			}
-			else
+			else{
 				updateNodesFromData(requestModel);
+			}
 		}
+	
 		if(currentTask != requestModel.taskId){
 			StartCoroutine(	RequestsManager.SendMetricsDataPost(Enviroment.URL_SEND_METRICS));
 			MetricsManager.headCoords= new List<Vector3>();
@@ -211,8 +222,11 @@ public class Graph : MonoBehaviour
 			return node;
 	}
 
-	private void createNodesFromData(RequestDto RequestModel)
+	private void createNodesFromData(RequestDto RequestModel, Vector3? pos=null)
 	{
+		if(pos!=null){
+			transform.position =  new Vector3(0,0,0);
+		}
 		NodesManager.NodeSize =RequestModel.size;
 		foreach (NodeRequestDto nodeRequest in RequestModel.nodes)
 		{
@@ -235,7 +249,6 @@ public class Graph : MonoBehaviour
         }
         foreach (Node node in NodesManager.AllNodes)
         {
-
             setNodeParents(node, NodesManager.AllNodes);
             setNodeChildren(node, NodesManager.AllNodes);
         }
@@ -254,8 +267,8 @@ public class Graph : MonoBehaviour
 				EdgesManager.AllEdges[i].turnEdgeToTranspColor(edgeColor);
 			}
         }
-
-
+	
+		
     }
 	void deleteGraph(){
 	

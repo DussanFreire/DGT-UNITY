@@ -22,7 +22,7 @@ public class InitPlacementManager : MonoBehaviour
         tapToPlace = logoGraphGameObj.AddComponent<TapToPlace>();
         tapToPlace.StartPlacement();
         tapToPlace.DefaultPlacementDistance =0.7f;
-        tapToPlace.OnPlacingStopped.AddListener( SetColorsListener);
+        tapToPlace.OnPlacingStopped.AddListener( SetPlacerListener);
         
 
         if(Enviroment.DESKTOP_SETUP){
@@ -34,7 +34,7 @@ public class InitPlacementManager : MonoBehaviour
     }
 
     
-    public void SetColorsListener()
+    public void SetPlacerListener()
     {
         tapToPlace.StopPlacement();
         audioData = GetComponent<AudioSource>();

@@ -6,6 +6,8 @@ using UnityEngine.EventSystems;
 
 public class ColorsManager 
 {
+
+    static public bool labelShowed =false;
     static public AudioSource audioData { get; set; }
     public static Color getColor(string colorHex)
     {
