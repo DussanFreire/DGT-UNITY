@@ -8,10 +8,10 @@ public class RorationManager
     private static bool horizontalRotationActivated=false;
 	public static void setRotationListeners(Transform graphTransform){
         if(horizontalRotationActivated){
-			graphTransform.Rotate(0,Enviroment.ROTATION_SPEED, 0, Space.Self);
+			graphTransform.Rotate(0,Enviroment.ROTATION_SPEED, 0, Space.World);
 		}
 		if(verticalRotationActivated){
-			graphTransform.Rotate(Enviroment.ROTATION_SPEED,0, 0, Space.Self);
+			graphTransform.Rotate(Enviroment.ROTATION_SPEED,0, 0, Space.World);
 		}
     }
 

@@ -157,13 +157,16 @@ public class Graph : MonoBehaviour
 			nodeToUpdate.setColor(nodeColor);
 			RorationManager.changeVerticalRotation(requestModel.actions.rotateV);
 			RorationManager.changeHorizontalRotation(requestModel.actions.rotateH);
-			if (nodeRequest.visible){
-				nodeToUpdate.showTextLabel();
-				nodeToUpdate.turnToSolidColor();
-			} else {
-				nodeToUpdate.hideTextLabel();
-				nodeToUpdate.turnToTranspColor();
+			if(requestModel.actions.filterUsed){
+				if (nodeRequest.visible ){
+					nodeToUpdate.showTextLabel();
+					nodeToUpdate.turnToSolidColor();
+				} else {
+					nodeToUpdate.hideTextLabel();
+					nodeToUpdate.turnToTranspColor();
+				}
 			}
+			
 			foreach (LinkDto link in links)
 			{
 				Edge edgeToUpdate=  EdgesManager.AllEdges.Find(e=>e.target==link.target&& e.origin ==link.source);

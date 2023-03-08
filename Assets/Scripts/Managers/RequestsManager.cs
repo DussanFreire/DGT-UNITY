@@ -7,7 +7,6 @@ public class RequestsManager
 	
 	public static  IEnumerator GetGraphData(string uri, Action<RequestDto> callback = null)
 	{
-		Debug.Log(uri);
 		using (UnityWebRequest request = UnityWebRequest.Get(uri))
 		{
 			yield return request.SendWebRequest();
