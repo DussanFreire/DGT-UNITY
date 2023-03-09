@@ -46,11 +46,11 @@ public class Graph : MonoBehaviour
 	MixedRealityPose pose;
     AudioSource audioData;
 
-	
+	private GameObject graph;
 
     void Start()
 	{
-
+   		graph = ObjectManager.FindInActiveObjectByName("Graph");
 		currentTask=0;
 		currentVersion=-1;
         NodesManager.AllNodes = new List<Node>();
@@ -169,6 +169,7 @@ public class Graph : MonoBehaviour
 			RorationManager.changeVerticalRotation(requestModel.actions.rotateV);
 			RorationManager.changeHorizontalRotation(requestModel.actions.rotateH);
 			if(requestModel.actions.filterUsed){
+				ColorsManager.labelShowed =true;
 				if (nodeRequest.visible ){
 					nodeToUpdate.showTextLabel();
 					nodeToUpdate.turnToSolidColor();
@@ -222,23 +223,30 @@ public class Graph : MonoBehaviour
 			return node;
 	}
 
-	public void SomeMethod()
+	public void SetLAbelsToNodes(Vector3 pos,Vector3 sizeGraph )
 	{
-		StartCoroutine(SomeCoroutine());
+		StartCoroutine(SetLAbelsToNodesCourtine(pos,sizeGraph));
 	}
 
-	private IEnumerator SomeCoroutine()
+	private IEnumerator SetLAbelsToNodesCourtine(Vector3 pos,Vector3 sizeGraph )
 	{
-		yield return new WaitForSeconds (1);
-		foreach (Node node in NodesManager.AllNodes)
-		{
-			if(node.visible)
-				node.showTextLabel();
+		yield return new WaitForSeconds(0.1f);
+		showNodesAndEdges();
+		if(ColorsManager.labelShowed){
+			foreach (Node node in NodesManager.AllNodes)
+			{
+
+				if(node.visible)
+					node.showTextLabel();
+			}
 		}
+		transform.position=pos;
 	}
 
 	private void createNodesFromData(RequestDto RequestModel, Vector3? pos=null)
 	{
+		Vector3 sizeGraph =  new Vector3(transform.localScale.x,transform.localScale.y,transform.localScale.z); 
+
 		if(pos!=null){
 			transform.position =  new Vector3(0,0,0);
 		}
@@ -282,10 +290,28 @@ public class Graph : MonoBehaviour
 				EdgesManager.AllEdges[i].turnEdgeToTranspColor(edgeColor);
 			}
         }
-		if(pos!=null && ColorsManager.labelShowed){
-			SomeMethod();
+		if(pos!=null){
+			hideNodesAndEdges();
+			SetLAbelsToNodes((Vector3)pos,sizeGraph);
 		}
     }
+	void hideNodesAndEdges(){
+		// for (int i = 0; i < graph.transform.childCount; i++)
+		// {
+		// 	GameObject child = graph.transform.GetChild(i).gameObject;
+		// 	child.SetActive(false);
+		// }
+		// graph.SetActive(false);
+	}
+
+	void showNodesAndEdges(){
+		// for (int i = 0; i < graph.transform.childCount; i++)
+		// {
+		// 	GameObject child = graph.transform.GetChild(i).gameObject;
+		// 	child.SetActive(true);
+		// }
+		// graph.SetActive(true);
+	}
 	void deleteGraph(){
 		NodesManager.AllNodes.ForEach(n=>{
 			Destroy(n.nodeGameObject);
