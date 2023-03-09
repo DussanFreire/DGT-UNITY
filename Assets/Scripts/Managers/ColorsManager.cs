@@ -46,6 +46,8 @@ public class ColorsManager
             node.addAction("Pointed");
             changeChildrenColors(node, material); 
             audioData.Play(0);
+            ColorsManager.labelShowed =true;
+
         });
         touchHandler.OnTouchCompleted.AddListener((e) => {
             MetricsManager.touchUsed++;

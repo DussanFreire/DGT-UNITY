@@ -40,24 +40,10 @@ public class RequestsManager
 		form.AddField("hoverUsed", MetricsManager.hoverUsed);
 		form.AddField("touchUsed", MetricsManager.touchUsed);
 		form.AddField("pointerUsed", MetricsManager.pointerUsed);
-		form.AddField("srcFilterUsed", MetricsManager.srcFilterUsed);
-		form.AddField("controllerFilterUsed", MetricsManager.controllerFilterUsed);
-		form.AddField("serviceFilterUsed", MetricsManager.serviceFilterUsed);
-		form.AddField("decoratorFilterUsed", MetricsManager.decoratorFilterUsed);
-		form.AddField("dtoFilterUsed", MetricsManager.dtoFilterUsed);
-		form.AddField("enumFilterUsed", MetricsManager.enumFilterUsed);
-		form.AddField("guardFilterUsed", MetricsManager.guardFilterUsed);
-		form.AddField("persistenceFilterUsed", MetricsManager.persistenceFilterUsed);
-		form.AddField("transpFilterUsed", MetricsManager.transpFilterUsed);
-		
-
-		form.AddField("folderFilterUsed",JsonUtility.ToJson(headMets,false));
+		form.AddField("desktopInputs",JsonUtility.ToJson(MetricsManager.desktopInputs,false));
 		form.AddField("headMetrics",JsonUtility.ToJson(headMets,false));
 		form.AddField("handMetricsInSeconds",JsonUtility.ToJson(handMets,false));
 		form.AddField("actionsDone",JsonUtility.ToJson(actionsMets,false));
-
-
-
 		form.AddField("currentTime", DateTime.Now.ToString());
 		form.AddField("id", MetricsManager.currentTest);
 		using (UnityWebRequest request = UnityWebRequest.Post(uri,form))

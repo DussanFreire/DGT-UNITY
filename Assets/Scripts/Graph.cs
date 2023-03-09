@@ -46,8 +46,11 @@ public class Graph : MonoBehaviour
 	MixedRealityPose pose;
     AudioSource audioData;
 
+	
+
     void Start()
 	{
+
 		currentTask=0;
 		currentVersion=-1;
         NodesManager.AllNodes = new List<Node>();
@@ -56,6 +59,7 @@ public class Graph : MonoBehaviour
 		InvokeRepeating("getHeadCoords", 0.0f, 1.0f);
 		MetricsManager.headCoords= new List<Vector3>();
 		MetricsManager.headRotation= new List<Vector3>();
+		MetricsManager.desktopInputs= new DesktopInputs();
 		MetricsManager.leftHandDateTime= new List<string>();
 		MetricsManager.rightHandDateTime= new List<string>();
 		MetricsManager.actionsDone= new List<NodeActionDto>();
@@ -63,11 +67,13 @@ public class Graph : MonoBehaviour
 		rightHandUsed =false;
         audioData = GetComponent<AudioSource>();
 		ColorsManager.audioData = audioData;
+	
 	}
 
 	void Update(){
 		RorationManager.setRotationListeners(transform);
 		PositionManager.setMovementListeners(transform);
+		KeyboardManager.setKeyboardAndMouseListeners(transform);
 		if (!rightHandUsed && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Right, out pose))
         {
 			RightHandTime = DateTime.Now;
@@ -133,13 +139,7 @@ public class Graph : MonoBehaviour
 				Vector3 currentPos = new Vector3( transform.position.x, transform.position.y, transform.position.z);
 				deleteGraph();
 				createNodesFromData(requestModel, currentPos);
-				foreach (Node node in NodesManager.AllNodes)
-				{
-					if( ColorsManager.labelShowed && node.visible){
-						Debug.Log("llega");
-						node.showTextLabel();
-					}
-				}
+				
 			}
 			else{
 				updateNodesFromData(requestModel);
@@ -222,6 +222,21 @@ public class Graph : MonoBehaviour
 			return node;
 	}
 
+	public void SomeMethod()
+	{
+		StartCoroutine(SomeCoroutine());
+	}
+
+	private IEnumerator SomeCoroutine()
+	{
+		yield return new WaitForSeconds (1);
+		foreach (Node node in NodesManager.AllNodes)
+		{
+			if(node.visible)
+				node.showTextLabel();
+		}
+	}
+
 	private void createNodesFromData(RequestDto RequestModel, Vector3? pos=null)
 	{
 		if(pos!=null){
@@ -267,12 +282,11 @@ public class Graph : MonoBehaviour
 				EdgesManager.AllEdges[i].turnEdgeToTranspColor(edgeColor);
 			}
         }
-	
-		
+		if(pos!=null && ColorsManager.labelShowed){
+			SomeMethod();
+		}
     }
 	void deleteGraph(){
-	
-		
 		NodesManager.AllNodes.ForEach(n=>{
 			Destroy(n.nodeGameObject);
 		});
@@ -282,7 +296,6 @@ public class Graph : MonoBehaviour
 		});
 		NodesManager.AllNodes = new List<Node>();
 		EdgesManager.AllEdges = new List<Edge>();
-
 	}
 	private void setEdges(Node node, List<LinkDto> links, List<Node> nodeList)
 	{

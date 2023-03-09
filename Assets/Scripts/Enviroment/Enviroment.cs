@@ -5,15 +5,19 @@ using UnityEngine;
 public class Enviroment 
 {
 
+
+    // public static bool DESKTOP_SETUP = Application.isPlaying? false : true;
     public static bool DESKTOP_SETUP = true;
 
 
     // HTTP ENV
-    // public const string BASE_URL = "https://dependency-graph-z42n.vercel.app";
-    public const string BASE_URL= "http://localhost:3000";
-    public const string URL_INIT_GRAPH = BASE_URL+"/graph/restart";
-    public const string URL_GET_GRAPH = BASE_URL+"/graph";
-    public const string URL_SEND_METRICS = BASE_URL+"/metrics";
+    public const string BASE_URL_DEPLOY = "https://dependency-graph-z42n.vercel.app";
+    public const string BASE_URL_LOCAL = "http://localhost:3000";
+
+    public static string BASE_URL= DESKTOP_SETUP ==false?  BASE_URL_DEPLOY : BASE_URL_LOCAL;
+    public static string URL_INIT_GRAPH = BASE_URL+"/graph/restart";
+    public static string URL_GET_GRAPH = BASE_URL+"/graph";
+    public static string URL_SEND_METRICS = BASE_URL+"/metrics";
 
     // MOVEMENT ENV
     public static float MOVEMENT_SPEED = 0.5f;
