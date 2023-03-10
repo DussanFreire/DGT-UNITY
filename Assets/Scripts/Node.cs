@@ -38,6 +38,7 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
     {
         
         if(!colorChangedByHover && !clicked){
+            Debug.Log("hover used");
             MetricsManager.hoverUsed++;
             this.showTextLabel();
             addAction("Hover");

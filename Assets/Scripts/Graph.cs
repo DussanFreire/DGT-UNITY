@@ -57,17 +57,10 @@ public class Graph : MonoBehaviour
         EdgesManager.AllEdges = new List<Edge>();
 		InvokeRepeating("GenerateRequest", 0.0f, 3.0f);
 		InvokeRepeating("getHeadCoords", 0.0f, 1.0f);
-		MetricsManager.headCoords= new List<Vector3>();
-		MetricsManager.headRotation= new List<Vector3>();
-		MetricsManager.desktopInputs= new DesktopInputs();
-		MetricsManager.leftHandDateTime= new List<string>();
-		MetricsManager.rightHandDateTime= new List<string>();
-		MetricsManager.actionsDone= new List<NodeActionDto>();
 		leftHandUsed =false;
 		rightHandUsed =false;
         audioData = GetComponent<AudioSource>();
 		ColorsManager.audioData = audioData;
-	
 	}
 
 	void Update(){
@@ -97,7 +90,6 @@ public class Graph : MonoBehaviour
 			MetricsManager.leftHandDateTime.Add(span.Seconds.ToString());
 			leftHandUsed =false;
 		}
-
 	}
 
 	public void getHeadCoords(){
@@ -120,8 +112,7 @@ public class Graph : MonoBehaviour
 		}else{
 			StartCoroutine(RequestsManager.GetGraphData(Enviroment.URL_GET_GRAPH, ResponseCallback));
 		}
-	
-	}
+ 	}
 
 	private void ResponseCallback(RequestDto requestModel)
 	{
@@ -135,11 +126,9 @@ public class Graph : MonoBehaviour
 		{
 			currentVersion =requestModel.version;
 			if(NodesManager.NodeSize!=requestModel.size){
-				Debug.Log("size:"+requestModel.size);
 				Vector3 currentPos = new Vector3( transform.position.x, transform.position.y, transform.position.z);
 				deleteGraph();
 				createNodesFromData(requestModel, currentPos);
-				
 			}
 			else{
 				updateNodesFromData(requestModel);

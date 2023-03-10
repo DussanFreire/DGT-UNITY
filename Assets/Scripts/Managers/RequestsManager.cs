@@ -33,19 +33,16 @@ public class RequestsManager
 		handMets.setHandData(MetricsManager.rightHandDateTime,MetricsManager.leftHandDateTime);
 
 		NodesActionsDto actionsMets = new NodesActionsDto();
-		actionsMets.setActionsDone(MetricsManager.actionsDone);
+		actionsMets.setActionsDone(MetricsManager.actionsDone,MetricsManager.hoverUsed,MetricsManager.touchUsed,MetricsManager.pointerUsed);
 
 		Vector3 pos = Camera.main.transform.position;
 		WWWForm form = new WWWForm();
-		form.AddField("hoverUsed", MetricsManager.hoverUsed);
-		form.AddField("touchUsed", MetricsManager.touchUsed);
-		form.AddField("pointerUsed", MetricsManager.pointerUsed);
 		form.AddField("desktopInputs",JsonUtility.ToJson(MetricsManager.desktopInputs,false));
 		form.AddField("headMetrics",JsonUtility.ToJson(headMets,false));
 		form.AddField("handMetricsInSeconds",JsonUtility.ToJson(handMets,false));
 		form.AddField("actionsDone",JsonUtility.ToJson(actionsMets,false));
 		form.AddField("currentTime", DateTime.Now.ToString());
-		form.AddField("id", MetricsManager.currentTest);
+		form.AddField("experimentId", MetricsManager.currentTest);
 		using (UnityWebRequest request = UnityWebRequest.Post(uri,form))
 		{
 			yield return request.SendWebRequest();
