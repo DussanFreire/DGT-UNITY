@@ -125,8 +125,14 @@ public class Graph : MonoBehaviour
 		else if(requestModel.version > currentVersion)
 		{
 			currentVersion =requestModel.version;
-			if(NodesManager.NodeSize!=requestModel.size){
-				Vector3 currentPos = new Vector3( transform.position.x, transform.position.y, transform.position.z);
+			if(NodesManager.NodeSize!=requestModel.size || requestModel.actions.resetUsed){
+				Vector3 currentPos ;
+				if(requestModel.actions.resetUsed){
+					currentPos = new Vector3( NodesManager.GraphPos.x, NodesManager.GraphPos.y, NodesManager.GraphPos.z);
+				}
+				else{
+					currentPos = new Vector3( transform.position.x, transform.position.y, transform.position.z);
+				}
 				deleteGraph();
 				createNodesFromData(requestModel, currentPos);
 			}
@@ -167,7 +173,8 @@ public class Graph : MonoBehaviour
 					nodeToUpdate.turnToTranspColor();
 				}
 			}
-			
+
+		
 			foreach (LinkDto link in links)
 			{
 				Edge edgeToUpdate=  EdgesManager.AllEdges.Find(e=>e.target==link.target&& e.origin ==link.source);
@@ -234,6 +241,10 @@ public class Graph : MonoBehaviour
 
 	private void createNodesFromData(RequestDto RequestModel, Vector3? pos=null)
 	{
+		if(RequestModel.actions.resetUsed){
+			ColorsManager.labelShowed =false;
+		}
+			
 		Vector3 sizeGraph =  new Vector3(transform.localScale.x,transform.localScale.y,transform.localScale.z); 
 
 		if(pos!=null){

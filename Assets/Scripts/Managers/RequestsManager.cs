@@ -41,7 +41,6 @@ public class RequestsManager
 		form.AddField("headMetrics",JsonUtility.ToJson(headMets,false));
 		form.AddField("handMetricsInSeconds",JsonUtility.ToJson(handMets,false));
 		form.AddField("actionsDone",JsonUtility.ToJson(actionsMets,false));
-		form.AddField("currentTime", DateTime.Now.ToString());
 		form.AddField("experimentId", MetricsManager.currentTest);
 		using (UnityWebRequest request = UnityWebRequest.Post(uri,form))
 		{
