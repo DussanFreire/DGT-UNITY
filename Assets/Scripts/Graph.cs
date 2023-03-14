@@ -55,8 +55,10 @@ public class Graph : MonoBehaviour
 		currentVersion=-1;
         NodesManager.AllNodes = new List<Node>();
         EdgesManager.AllEdges = new List<Edge>();
+		if(!Enviroment.DESKTOP_SETUP){
+			InvokeRepeating("getHeadCoords", 0.0f, 1.0f);
+		}
 		InvokeRepeating("GenerateRequest", 0.0f, 3.0f);
-		InvokeRepeating("getHeadCoords", 0.0f, 1.0f);
 		leftHandUsed =false;
 		rightHandUsed =false;
         audioData = GetComponent<AudioSource>();
@@ -102,6 +104,10 @@ public class Graph : MonoBehaviour
 
 		MetricsManager.headCoords.Add(coord);
 		MetricsManager.headRotation.Add(rotation);
+		Debug.Log(MetricsManager.headCoords.Count);
+		if(MetricsManager.headCoords.Count > 3){
+			StartCoroutine(RequestsManager.SendHeadMetricsDataPost(Enviroment.URL_SEND_METRICS_HEAD));
+		}
 	}
 
 	public void GenerateRequest()
@@ -112,7 +118,7 @@ public class Graph : MonoBehaviour
 		}else{
 			StartCoroutine(RequestsManager.GetGraphData(Enviroment.URL_GET_GRAPH, ResponseCallback));
 		}
- 	}
+	}
 
 	private void ResponseCallback(RequestDto requestModel)
 	{
@@ -142,7 +148,10 @@ public class Graph : MonoBehaviour
 		}
 	
 		if(currentTask != requestModel.taskId){
-			StartCoroutine(	RequestsManager.SendMetricsDataPost(Enviroment.URL_SEND_METRICS));
+			if(!Enviroment.DESKTOP_SETUP){
+				StartCoroutine(RequestsManager.SendHeadMetricsDataPost(Enviroment.URL_SEND_METRICS_HEAD));
+			}
+			StartCoroutine(RequestsManager.SendMetricsDataPost(Enviroment.URL_SEND_METRICS));
 			MetricsManager.headCoords= new List<Vector3>();
 			MetricsManager.headRotation= new List<Vector3>();
 			MetricsManager.actionsDone= new List<NodeActionDto>();

@@ -30,10 +30,13 @@ public class MetricsManager
 		touchUsed = 0;
 		pointerUsed = 0;
 
-        headCoords= new List<Vector3>();
-        headRotation= new List<Vector3>();
         rightHandDateTime= new List<string>();
         leftHandDateTime= new List<string>();
         actionsDone= new List<NodeActionDto>();
+    }
+
+    static public void staticInitHeadMetric(){
+        headCoords= new List<Vector3>();
+        headRotation= new List<Vector3>();
     }
 }

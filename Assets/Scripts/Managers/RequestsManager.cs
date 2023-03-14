@@ -59,6 +59,33 @@ public class RequestsManager
 		MetricsManager.staticInitMetric();
 	}
 
+	public static IEnumerator SendHeadMetricsDataPost(string uri)
+	{
+		Debug.Log("entro");
+
+		HeadMetricsDto headMets = new HeadMetricsDto();
+		headMets.setCoords(MetricsManager.headCoords, MetricsManager.headRotation);
+
+		Vector3 pos = Camera.main.transform.position;
+		WWWForm form = new WWWForm();
+		form.AddField("headMetrics",JsonUtility.ToJson(headMets,false));
+		using (UnityWebRequest request = UnityWebRequest.Post(uri,form))
+		{
+			yield return request.SendWebRequest();
+
+			if (request.result!= UnityWebRequest.Result.Success)
+			{
+				Debug.Log(request.error);
+			}
+			else
+			{
+				var data = request.downloadHandler.text;
+				RequestDto RequestModel = JsonUtility.FromJson<RequestDto>(data);
+			}
+		}
+		MetricsManager.staticInitHeadMetric();
+	}
+
 
 
 }

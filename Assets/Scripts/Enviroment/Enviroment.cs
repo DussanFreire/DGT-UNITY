@@ -18,6 +18,7 @@ public class Enviroment
     public static string URL_INIT_GRAPH = BASE_URL+"/graph/restart";
     public static string URL_GET_GRAPH = BASE_URL+"/graph";
     public static string URL_SEND_METRICS = BASE_URL+"/metrics";
+    public static string URL_SEND_METRICS_HEAD = BASE_URL+"/graph-data-flow";
 
     // MOVEMENT ENV
     public static float MOVEMENT_SPEED = 0.5f;
