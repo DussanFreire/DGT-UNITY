@@ -15,6 +15,7 @@ public class Enviroment
     public const string BASE_URL_LOCAL = "http://localhost:3000";
 
     public static string BASE_URL= DESKTOP_SETUP ==false?  BASE_URL_DEPLOY : BASE_URL_LOCAL;
+    // public static string BASE_URL= BASE_URL_DEPLOY ;
     public static string URL_INIT_GRAPH = BASE_URL+"/graph/restart";
     public static string URL_GET_GRAPH = BASE_URL+"/graph";
     public static string URL_SEND_METRICS = BASE_URL+"/metrics";

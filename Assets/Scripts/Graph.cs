@@ -105,7 +105,7 @@ public class Graph : MonoBehaviour
 		MetricsManager.headCoords.Add(coord);
 		MetricsManager.headRotation.Add(rotation);
 		Debug.Log(MetricsManager.headCoords.Count);
-		if(MetricsManager.headCoords.Count > 3){
+		if(MetricsManager.headCoords.Count > 10){
 			StartCoroutine(RequestsManager.SendHeadMetricsDataPost(Enviroment.URL_SEND_METRICS_HEAD));
 		}
 	}
@@ -236,7 +236,6 @@ public class Graph : MonoBehaviour
 	private IEnumerator SetLAbelsToNodesCourtine(Vector3 pos,Vector3 sizeGraph )
 	{
 		yield return new WaitForSeconds(0.1f);
-		showNodesAndEdges();
 		if(ColorsManager.labelShowed){
 			foreach (Node node in NodesManager.AllNodes)
 			{
@@ -300,27 +299,10 @@ public class Graph : MonoBehaviour
 			}
         }
 		if(pos!=null){
-			hideNodesAndEdges();
 			SetLAbelsToNodes((Vector3)pos,sizeGraph);
 		}
     }
-	void hideNodesAndEdges(){
-		// for (int i = 0; i < graph.transform.childCount; i++)
-		// {
-		// 	GameObject child = graph.transform.GetChild(i).gameObject;
-		// 	child.SetActive(false);
-		// }
-		// graph.SetActive(false);
-	}
-
-	void showNodesAndEdges(){
-		// for (int i = 0; i < graph.transform.childCount; i++)
-		// {
-		// 	GameObject child = graph.transform.GetChild(i).gameObject;
-		// 	child.SetActive(true);
-		// }
-		// graph.SetActive(true);
-	}
+	
 	void deleteGraph(){
 		NodesManager.AllNodes.ForEach(n=>{
 			Destroy(n.nodeGameObject);
