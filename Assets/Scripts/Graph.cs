@@ -50,7 +50,7 @@ public class Graph : MonoBehaviour
 
     void Start()
 	{
-   		graph = ObjectManager.FindInActiveObjectByName("Graph");
+   		graph = ObjectManager.FindInActiveObjectByName("HandleGraph");
 		currentTask=0;
 		currentVersion=-1;
         NodesManager.AllNodes = new List<Node>();
@@ -58,7 +58,7 @@ public class Graph : MonoBehaviour
 		if(!Enviroment.DESKTOP_SETUP){
 			InvokeRepeating("getHeadCoords", 0.0f, 1.0f);
 		}
-		InvokeRepeating("GenerateRequest", 0.0f, 3.0f);
+		InvokeRepeating("GenerateRequest", 0.0f, 1.0f);
 		leftHandUsed =false;
 		rightHandUsed =false;
         audioData = GetComponent<AudioSource>();
@@ -130,8 +130,10 @@ public class Graph : MonoBehaviour
 		}
 		else if(requestModel.version > currentVersion)
 		{
+			graph.transform.localScale =  new Vector3(1,1,1);
 			currentVersion =requestModel.version;
 			if(NodesManager.NodeSize!=requestModel.size || requestModel.actions.resetUsed){
+
 				Vector3 currentPos ;
 				if(requestModel.actions.resetUsed){
 					currentPos = new Vector3( NodesManager.GraphPos.x, NodesManager.GraphPos.y, NodesManager.GraphPos.z);
