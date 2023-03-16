@@ -8,10 +8,12 @@ public class PositionManager
 	private static bool movingY =false;
 	private static bool movingZ =false;
 	private static bool initPosMov =false;
+	private static bool initPosMovSlow =false;
 	private static Vector3 posXTarget;
 	private static Vector3 posYTarget;
 	private static Vector3 posZTarget;
 
+    public static float speed = 2.0f;
    
 
     public static void  setMovementListeners(Transform graphTransform){
@@ -27,6 +29,12 @@ public class PositionManager
 		if(initPosMov){
             graphTransform.position = NodesManager.GraphPos;
         }
+		if(initPosMovSlow){
+			graphTransform.position = Vector3.Lerp (graphTransform.position, NodesManager.GraphPos, speed * Time.deltaTime);
+			if((Vector3.Distance(graphTransform.position, NodesManager.GraphPos) < 0.01f)){
+				initPosMovSlow=false;
+			}
+		}
     }
     public static void moveXPosition(bool backward, bool forward, Transform graphTransform){
 		if(!backward && !forward)
@@ -71,7 +79,7 @@ public class PositionManager
 		});
 	}
 
-	public static void moveInitPosition(Transform graphTransform){
+	public static void moveInitPosition(){
         float movement = Enviroment.MOVEMENT_SPEED;
 		initPosMov = true;
 		Task.Run(async () =>
@@ -79,5 +87,8 @@ public class PositionManager
 			await Task.Delay(Enviroment.MOVEMENT_TIME);
 			initPosMov=false;
 		});
+	}
+	public static void moveInitPositionSlow(){
+		initPosMovSlow = true;
 	}
 }

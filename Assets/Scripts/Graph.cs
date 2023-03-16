@@ -20,28 +20,6 @@ public class Graph : MonoBehaviour
 	bool rightHandUsed { get; set; }
 	bool leftHandUsed { get; set; }
 
-    public TrackingState TrackingState => throw new NotImplementedException();
-
-    public Handedness ControllerHandedness => throw new NotImplementedException();
-
-    public IMixedRealityInputSource InputSource => throw new NotImplementedException();
-
-    public IMixedRealityControllerVisualizer Visualizer => throw new NotImplementedException();
-
-    public bool IsPositionAvailable => throw new NotImplementedException();
-
-    public bool IsPositionApproximate => throw new NotImplementedException();
-
-    public bool IsRotationAvailable => throw new NotImplementedException();
-
-    public MixedRealityInteractionMapping[] Interactions => throw new NotImplementedException();
-
-    public Vector3 AngularVelocity => throw new NotImplementedException();
-
-    public Vector3 Velocity => throw new NotImplementedException();
-
-    public bool IsInPointingPose => throw new NotImplementedException();
-
 	MixedRealityPose pose;
     AudioSource audioData;
 
@@ -49,7 +27,7 @@ public class Graph : MonoBehaviour
 
     void Start()
 	{
-   		graph = ObjectManager.FindInActiveObjectByName("HandleGraph");
+		graph = ObjectManager.FindInActiveObjectByName("HandleGraph");
 		currentTask=0;
 		currentVersion=-1;
         NodesManager.AllNodes = new List<Node>();
@@ -120,44 +98,62 @@ public class Graph : MonoBehaviour
 		}
 	}
 
+	private void updateToNewVersion(RequestDto requestModel){
+		currentVersion =requestModel.version;
+		if(NodesManager.NodeSize!=requestModel.size){
+			NodesManager.NodeSize=requestModel.size;
+			SizeManager.changeSize(new Vector3(requestModel.size,requestModel.size,requestModel.size));
+		}
+		else if(requestModel.actions.resetUsed){
+			SizeManager.changeSize(new Vector3(1,1,1));
+			PositionManager.moveInitPositionSlow();
+			ColorsManager.labelShowed =false;
+			Debug.Log("llego aqui");
+			updateNodesFromData(requestModel);
+			foreach (Node node in NodesManager.AllNodes)
+			{
+				node.hideTextLabel();
+				node.turnToSolidColor();
+					
+			}
+		}
+		else{
+			updateNodesFromData(requestModel);
+		}
+	}
+
+	private void initGraphForirstTime(RequestDto requestModel){
+		currentVersion=0;
+		GameObject.Find("GraphPrefab(Clone)").SetActive(false);
+		createNodesFromData(requestModel);
+		PositionManager.moveInitPosition();
+	}
+
+	private void changeTask(RequestDto requestModel){
+		if(!Enviroment.DESKTOP_SETUP){
+			StartCoroutine(RequestsManager.SendHeadMetricsDataPost(Enviroment.URL_SEND_METRICS_HEAD));
+		}
+		StartCoroutine(RequestsManager.SendMetricsDataPost(Enviroment.URL_SEND_METRICS));
+		MetricsManager.headCoords= new List<Vector3>();
+		MetricsManager.headRotation= new List<Vector3>();
+		MetricsManager.actionsDone= new List<NodeActionDto>();
+		MetricsManager.leftHandDateTime= new List<string>();
+		MetricsManager.rightHandDateTime= new List<string>();
+		currentTask= requestModel.taskId;
+	}
+
 	private void ResponseCallback(RequestDto requestModel)
 	{
 		if(currentVersion==-1){
-			currentVersion=0;
-			GameObject.Find("GraphPrefab(Clone)").SetActive(false);
-			createNodesFromData(requestModel);
-			PositionManager.moveInitPosition(transform);
+			initGraphForirstTime(requestModel);
 		}
 		else if(requestModel.version > currentVersion)
 		{
-			graph.transform.localScale =  new Vector3(1,1,1);
-			currentVersion =requestModel.version;
-			if(NodesManager.NodeSize!=requestModel.size){
-				SizeManager.newSize= new Vector3(requestModel.size,requestModel.size,requestModel.size);
-				SizeManager.sizeChanged=true;
-			}
-			if(requestModel.actions.resetUsed){
-
-				Vector3 currentPos = new Vector3( NodesManager.GraphPos.x, NodesManager.GraphPos.y, NodesManager.GraphPos.z);
-				deleteGraph();
-				createNodesFromData(requestModel, currentPos);
-			}
-			else{
-				updateNodesFromData(requestModel);
-			}
+			updateToNewVersion(requestModel);
 		}
 	
 		if(currentTask != requestModel.taskId){
-			if(!Enviroment.DESKTOP_SETUP){
-				StartCoroutine(RequestsManager.SendHeadMetricsDataPost(Enviroment.URL_SEND_METRICS_HEAD));
-			}
-			StartCoroutine(RequestsManager.SendMetricsDataPost(Enviroment.URL_SEND_METRICS));
-			MetricsManager.headCoords= new List<Vector3>();
-			MetricsManager.headRotation= new List<Vector3>();
-			MetricsManager.actionsDone= new List<NodeActionDto>();
-			MetricsManager.leftHandDateTime= new List<string>();
-			MetricsManager.rightHandDateTime= new List<string>();
-			currentTask= requestModel.taskId;
+			changeTask(requestModel);
 		}
 	}
 
@@ -228,26 +224,7 @@ public class Graph : MonoBehaviour
 			return node;
 	}
 
-	public void SetLAbelsToNodes(Vector3 pos,Vector3 sizeGraph )
-	{
-		StartCoroutine(SetLAbelsToNodesCourtine(pos,sizeGraph));
-	}
-
-	private IEnumerator SetLAbelsToNodesCourtine(Vector3 pos,Vector3 sizeGraph )
-	{
-		yield return new WaitForSeconds(0.1f);
-		if(ColorsManager.labelShowed){
-			foreach (Node node in NodesManager.AllNodes)
-			{
-
-				if(node.visible)
-					node.showTextLabel();
-			}
-		}
-		transform.position=pos;
-	}
-
-	private void createNodesFromData(RequestDto RequestModel, Vector3? pos=null)
+	private void createNodesFromData(RequestDto RequestModel)
 	{
 		if(RequestModel.actions.resetUsed){
 			ColorsManager.labelShowed =false;
@@ -255,9 +232,7 @@ public class Graph : MonoBehaviour
 			
 		Vector3 sizeGraph =  new Vector3(transform.localScale.x,transform.localScale.y,transform.localScale.z); 
 
-		if(pos!=null){
-			transform.position =  new Vector3(0,0,0);
-		}
+	
 		NodesManager.NodeSize =RequestModel.size;
 		foreach (NodeRequestDto nodeRequest in RequestModel.nodes)
 		{
@@ -298,22 +273,8 @@ public class Graph : MonoBehaviour
 				EdgesManager.AllEdges[i].turnEdgeToTranspColor(edgeColor);
 			}
         }
-		if(pos!=null){
-			SetLAbelsToNodes((Vector3)pos,sizeGraph);
-		}
     }
 	
-	void deleteGraph(){
-		NodesManager.AllNodes.ForEach(n=>{
-			Destroy(n.nodeGameObject);
-		});
-		
-		EdgesManager.AllEdges.ForEach(n=>{
-			Destroy(n.edge);
-		});
-		NodesManager.AllNodes = new List<Node>();
-		EdgesManager.AllEdges = new List<Edge>();
-	}
 	private void setEdges(Node node, List<LinkDto> links, List<Node> nodeList)
 	{
 		foreach (LinkDto link in links)
