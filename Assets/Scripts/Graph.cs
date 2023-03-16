@@ -98,6 +98,23 @@ public class Graph : MonoBehaviour
 		}
 	}
 
+	private void resetGraph(RequestDto requestModel){
+		SizeManager.changeSize(new Vector3(1,1,1));
+		PositionManager.moveInitPositionSlow();
+		ColorsManager.labelShowed =false;
+		Color edgeColor = ColorsManager.getColor(Enviroment.REGULAR_EDGE_COLOR);
+		foreach (Node node in NodesManager.AllNodes)
+		{
+			node.hideTextLabel();
+			node.turnToSolidColor();
+		}	
+
+		foreach (Edge edge in EdgesManager.AllEdges)
+		{
+			edge.turnEdgeToSolidColor(edgeColor);
+		}	
+	}
+
 	private void updateToNewVersion(RequestDto requestModel){
 		currentVersion =requestModel.version;
 		if(NodesManager.NodeSize!=requestModel.size){
@@ -105,17 +122,7 @@ public class Graph : MonoBehaviour
 			SizeManager.changeSize(new Vector3(requestModel.size,requestModel.size,requestModel.size));
 		}
 		else if(requestModel.actions.resetUsed){
-			SizeManager.changeSize(new Vector3(1,1,1));
-			PositionManager.moveInitPositionSlow();
-			ColorsManager.labelShowed =false;
-			Debug.Log("llego aqui");
-			updateNodesFromData(requestModel);
-			foreach (Node node in NodesManager.AllNodes)
-			{
-				node.hideTextLabel();
-				node.turnToSolidColor();
-					
-			}
+			resetGraph(requestModel);
 		}
 		else{
 			updateNodesFromData(requestModel);
@@ -179,7 +186,6 @@ public class Graph : MonoBehaviour
 				}
 			}
 
-		
 			foreach (LinkDto link in links)
 			{
 				Edge edgeToUpdate=  EdgesManager.AllEdges.Find(e=>e.target==link.target&& e.origin ==link.source);
@@ -226,13 +232,8 @@ public class Graph : MonoBehaviour
 
 	private void createNodesFromData(RequestDto RequestModel)
 	{
-		if(RequestModel.actions.resetUsed){
-			ColorsManager.labelShowed =false;
-		}
-			
 		Vector3 sizeGraph =  new Vector3(transform.localScale.x,transform.localScale.y,transform.localScale.z); 
 
-	
 		NodesManager.NodeSize =RequestModel.size;
 		foreach (NodeRequestDto nodeRequest in RequestModel.nodes)
 		{
