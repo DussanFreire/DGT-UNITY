@@ -19,7 +19,6 @@ public class Graph : MonoBehaviour
 	public int currentTask { get; set; }
 	bool rightHandUsed { get; set; }
 	bool leftHandUsed { get; set; }
-    public bool Enabled { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
     public TrackingState TrackingState => throw new NotImplementedException();
 
@@ -66,8 +65,9 @@ public class Graph : MonoBehaviour
 	}
 
 	void Update(){
+		SizeManager.setSizeListener(graph.transform);
 		RorationManager.setRotationListeners(transform);
-		PositionManager.setMovementListeners(transform);
+		PositionManager.setMovementListeners(graph.transform);
 		KeyboardManager.setKeyboardAndMouseListeners(transform);
 		if (!rightHandUsed && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Right, out pose))
         {
@@ -132,15 +132,13 @@ public class Graph : MonoBehaviour
 		{
 			graph.transform.localScale =  new Vector3(1,1,1);
 			currentVersion =requestModel.version;
-			if(NodesManager.NodeSize!=requestModel.size || requestModel.actions.resetUsed){
+			if(NodesManager.NodeSize!=requestModel.size){
+				SizeManager.newSize= new Vector3(requestModel.size,requestModel.size,requestModel.size);
+				SizeManager.sizeChanged=true;
+			}
+			if(requestModel.actions.resetUsed){
 
-				Vector3 currentPos ;
-				if(requestModel.actions.resetUsed){
-					currentPos = new Vector3( NodesManager.GraphPos.x, NodesManager.GraphPos.y, NodesManager.GraphPos.z);
-				}
-				else{
-					currentPos = new Vector3( transform.position.x, transform.position.y, transform.position.z);
-				}
+				Vector3 currentPos = new Vector3( NodesManager.GraphPos.x, NodesManager.GraphPos.y, NodesManager.GraphPos.z);
 				deleteGraph();
 				createNodesFromData(requestModel, currentPos);
 			}
@@ -264,7 +262,7 @@ public class Graph : MonoBehaviour
 		foreach (NodeRequestDto nodeRequest in RequestModel.nodes)
 		{
 			Node node = generateNode(nodeRequest);
-			node.nodeGameObject.transform.localScale=Enviroment.NODE_LOCAL_SCALE* NodesManager.NodeSize*10;
+			node.nodeGameObject.transform.localScale=Enviroment.NODE_LOCAL_SCALE* NodesManager.NodeSize*3;
 			NodesManager.AllNodes.Add(node);
 		}
 
@@ -289,7 +287,7 @@ public class Graph : MonoBehaviour
         {
 			Color edgeColor = ColorsManager.getColor(Enviroment.REGULAR_EDGE_COLOR);
 			Vector3 localScaleEdge = EdgesManager.AllEdges[i].edge.transform.localScale;
-			Vector3 auxScaleEdge = Enviroment.EDGE_LOCAL_SCALE* NodesManager.NodeSize;
+			Vector3 auxScaleEdge = Enviroment.EDGE_LOCAL_SCALE* NodesManager.NodeSize*0.3f;
 			EdgesManager.AllEdges[i].edge.transform.localScale= new Vector3(auxScaleEdge.x,auxScaleEdge.y,localScaleEdge.z); 
 			if (EdgesManager.AllEdges[i].visible)
 			{
