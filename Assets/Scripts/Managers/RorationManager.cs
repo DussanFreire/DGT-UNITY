@@ -15,21 +15,23 @@ public class RorationManager
 		}
     }
 
-    public static void changeVerticalRotation(bool rotationUpdate)
+    public static bool changeVerticalRotation(bool rotationUpdate)
     {   
             if(rotationUpdate==verticalRotationActivated)
-                return;
+                return false;
             verticalRotationActivated=!verticalRotationActivated;
             if(verticalRotationActivated)
                 MetricsManager.verticalRotationUsed++;
+            return true;
     }
 
-    public static void changeHorizontalRotation(bool rotationUpdate)
+    public static bool changeHorizontalRotation(bool rotationUpdate)
     {   
             if(rotationUpdate==horizontalRotationActivated)
-                return;
+                return false;
             horizontalRotationActivated=!horizontalRotationActivated;
             if(horizontalRotationActivated)
                 MetricsManager.horizontalRotationUsed++;
+            return true;
     }
 }

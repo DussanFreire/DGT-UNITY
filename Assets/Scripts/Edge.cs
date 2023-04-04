@@ -20,7 +20,7 @@ public class Edge
     }
 
     public void turnEdgeToTranspColor(Color edgeColor){
-        this.edge.GetComponent<Renderer>().material.color = new Color(edgeColor.r,edgeColor.g,edgeColor.b, Enviroment.TRANSP_DENSITY);
-        this.edge.transform.GetChild(0).GetComponent<Renderer>().material.color = new Color(edgeColor.r, edgeColor.g, edgeColor.b, Enviroment.TRANSP_DENSITY);
+        this.edge.GetComponent<Renderer>().material.color = new Color(edgeColor.r,edgeColor.g,edgeColor.b, Enviroment.TRANSP_EDGE_DENSITY);
+        this.edge.transform.GetChild(0).GetComponent<Renderer>().material.color = new Color(edgeColor.r, edgeColor.g, edgeColor.b, Enviroment.TRANSP_EDGE_DENSITY);
     }
 }

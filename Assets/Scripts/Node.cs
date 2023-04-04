@@ -11,6 +11,7 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
     public GameObject edgePrefab;
     public GameObject nodeGameObject;
     public Color nodeColor;
+    public Color nodeBackground;
     public List<int> childIds;
     public List<Edge> edges = new List<Edge>();
     public List<Edge> parentEdges = new List<Edge>();
@@ -114,11 +115,18 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
 
         this.nodeColor = new Color(color.r,color.g,color.b);
     }
+
+    public void setBackground(Color color)
+    {
+
+        this.nodeBackground = new Color(color.r,color.g,color.b);
+    }
+
     public void turnToSolidColor(){
         this.nodeGameObject.GetComponent<Renderer>().material.color =  this.nodeColor;
     }
     public void turnToTranspColor(){
-        this.nodeGameObject.GetComponent<Renderer>().material.color = new Color(nodeColor.r,nodeColor.g,nodeColor.b,Enviroment.TRANSP_DENSITY);
+        this.nodeGameObject.GetComponent<Renderer>().material.color = new Color(nodeColor.r,nodeColor.g,nodeColor.b,Enviroment.TRANSP_NODE_DENSITY);
     }
     public void setChildIds(List<int> childIds)
     {
@@ -176,7 +184,7 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
 
         float width = getWidth(this.name, Enviroment.TEXT_SIZE);
         this.transform.GetChild(1).transform.localScale = new Vector3(width*70, Enviroment.TEXT_BG_HEIGHT*20, 0.01f);;
-        Color bl = Color.black;
+        Color bl = this.nodeBackground;
         this.transform.GetChild(1).transform.GetComponent<Renderer>().material.color = new Color(bl.r,bl.g,bl.b,0.80f);
 
         this.clicked = true;

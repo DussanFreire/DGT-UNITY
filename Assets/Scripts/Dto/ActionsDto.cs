@@ -13,6 +13,7 @@ public class ActionsDto
     public bool yBackward;  
     public bool filterUsed;  
     public bool resetUsed;  
+    public bool sizeChanged;  
     public bool zBackward;
 
 }

@@ -82,7 +82,6 @@ public class Graph : MonoBehaviour
 
 		MetricsManager.headCoords.Add(coord);
 		MetricsManager.headRotation.Add(rotation);
-		Debug.Log(MetricsManager.headCoords.Count);
 		if(MetricsManager.headCoords.Count > 10){
 			StartCoroutine(RequestsManager.SendHeadMetricsDataPost(Enviroment.URL_SEND_METRICS_HEAD));
 		}
@@ -117,7 +116,7 @@ public class Graph : MonoBehaviour
 
 	private void updateToNewVersion(RequestDto requestModel){
 		currentVersion =requestModel.version;
-		if(NodesManager.NodeSize!=requestModel.size){
+		if(requestModel.actions.sizeChanged){
 			NodesManager.NodeSize=requestModel.size;
 			SizeManager.changeSize(new Vector3(requestModel.size,requestModel.size,requestModel.size));
 		}
@@ -166,51 +165,55 @@ public class Graph : MonoBehaviour
 
     private void updateNodesFromData(RequestDto requestModel)
     {
-		foreach (NodeRequestDto nodeRequest in requestModel.nodes)
+		if(!(RorationManager.changeVerticalRotation(requestModel.actions.rotateV) || RorationManager.changeHorizontalRotation(requestModel.actions.rotateH)))
 		{
-			Node nodeToUpdate = NodesManager.AllNodes.Find(n=>n.id == nodeRequest.id);
-			List<LinkDto> links = getEdges(nodeToUpdate.id, requestModel);
-			Color nodeColor = ColorsManager.getColor(nodeRequest.color);
-			nodeToUpdate.visible = nodeRequest.visible;
-			nodeToUpdate.setColor(nodeColor);
-			RorationManager.changeVerticalRotation(requestModel.actions.rotateV);
-			RorationManager.changeHorizontalRotation(requestModel.actions.rotateH);
-			if(requestModel.actions.filterUsed){
-				ColorsManager.labelShowed =true;
-				if (nodeRequest.visible ){
-					nodeToUpdate.showTextLabel();
-					nodeToUpdate.turnToSolidColor();
-				} else {
-					nodeToUpdate.hideTextLabel();
-					nodeToUpdate.turnToTranspColor();
-				}
-			}
-
-			foreach (LinkDto link in links)
+			foreach (NodeRequestDto nodeRequest in requestModel.nodes)
 			{
-				Edge edgeToUpdate=  EdgesManager.AllEdges.Find(e=>e.target==link.target&& e.origin ==link.source);
-				edgeToUpdate.visible = link.visible;
-				Color edgeColor = ColorsManager.getColor(Enviroment.REGULAR_EDGE_COLOR);
+				Node nodeToUpdate = NodesManager.AllNodes.Find(n=>n.id == nodeRequest.id);
+				List<LinkDto> links = getEdges(nodeToUpdate.id, requestModel);
+				Color nodeColor = ColorsManager.getColor(nodeRequest.color);
+				nodeToUpdate.visible = nodeRequest.visible;
+				nodeToUpdate.setColor(nodeColor);
 
-				if (link .visible)
-				{
-					edgeToUpdate.turnEdgeToSolidColor(edgeColor);
+				if(requestModel.actions.filterUsed){
+					ColorsManager.labelShowed =true;
+					if (nodeRequest.visible ){
+						nodeToUpdate.showTextLabel();
+						nodeToUpdate.turnToSolidColor();
+					} else {
+						nodeToUpdate.hideTextLabel();
+						nodeToUpdate.turnToTranspColor();
+					}
 				}
-				else
+
+				foreach (LinkDto link in links)
 				{
-					edgeToUpdate.turnEdgeToTranspColor(edgeColor);
+					Edge edgeToUpdate=  EdgesManager.AllEdges.Find(e=>e.target==link.target&& e.origin ==link.source);
+					edgeToUpdate.visible = link.visible;
+					Color edgeColor = ColorsManager.getColor(Enviroment.REGULAR_CONN);
+
+					if (link .visible)
+					{
+						edgeToUpdate.turnEdgeToSolidColor(edgeColor);
+					}
+					else
+					{
+						edgeToUpdate.turnEdgeToTranspColor(edgeColor);
+					}
 				}
+				
 			}
 			
+			PositionManager.moveXPosition(requestModel.actions.xBackward,requestModel.actions.xForward, transform);
+			PositionManager.moveYPosition(requestModel.actions.yBackward,requestModel.actions.yForward, transform);
+			PositionManager.moveZPosition(requestModel.actions.zBackward,requestModel.actions.zForward, transform);
 		}
-		
-		PositionManager.moveXPosition(requestModel.actions.xBackward,requestModel.actions.xForward, transform);
-		PositionManager.moveYPosition(requestModel.actions.yBackward,requestModel.actions.yForward, transform);
-		PositionManager.moveZPosition(requestModel.actions.zBackward,requestModel.actions.zForward, transform);
+	
     }
 
 	private Node generateNode(NodeRequestDto nodeRequest){
 			Color nodeColor = ColorsManager.getColor(nodeRequest.color);
+			Color nodeBackground = ColorsManager.getColor(nodeRequest.background);
 			GameObject nodeGameObj = Instantiate(nodePrefab, new Vector3(nodeRequest.x, nodeRequest.y, nodeRequest.z), Quaternion.identity);
 			nodeGameObj.transform.parent = transform;
 			nodeGameObj.name = nodeRequest.name;
@@ -221,6 +224,7 @@ public class Graph : MonoBehaviour
 			node.setChildIds(nodeRequest.childIds);
 			node.setNode(nodeGameObj);
 			node.setColor(nodeColor);
+			node.setBackground(nodeBackground);
 			node.graphtransf = transform;
 			if (nodeRequest.visible){
 				node.turnToSolidColor();

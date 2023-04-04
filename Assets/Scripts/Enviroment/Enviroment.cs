@@ -7,16 +7,12 @@ public class Enviroment
 
 
     // public static bool DESKTOP_SETUP = Application.isPlaying? false : true;
-    public static bool DESKTOP_SETUP = false;
+    public static bool DESKTOP_SETUP = true;
 
 
     // HTTP ENV
-    public const string BASE_URL_DEPLOY = "http://192.168.89.21:3000";
-    // public const string BASE_URL_DEPLOY = "https://dependency-graph-z42n.vercel.app";
-    public const string BASE_URL_LOCAL = "http://localhost:3000";
 
-    // public static string BASE_URL= DESKTOP_SETUP ==false?  BASE_URL_DEPLOY : BASE_URL_LOCAL;
-    public static string BASE_URL= BASE_URL_DEPLOY ;
+    public static string BASE_URL= "http://192.168.89.21:3000" ;
     public static string URL_INIT_GRAPH = BASE_URL+"/graph/restart";
     public static string URL_GET_GRAPH = BASE_URL+"/graph";
     public static string URL_SEND_METRICS = BASE_URL+"/metrics";
@@ -31,7 +27,9 @@ public class Enviroment
 
    // EDGE COLORS ENV
     public static string REGULAR_EDGE_COLOR  = "#000000";
-    public static float TRANSP_DENSITY  = 0.25f;
+    public static string REGULAR_CONN  = "#349536";
+    public static float TRANSP_EDGE_DENSITY  = 0.000f;
+    public static float TRANSP_NODE_DENSITY  = 0.25f;
     // TEXT ENV
     static public float TEXT_SIZE =0.7f;
     static public float TEXT_BG_HEIGHT =0.03f ;

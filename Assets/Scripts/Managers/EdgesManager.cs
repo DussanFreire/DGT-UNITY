@@ -12,8 +12,8 @@ public class EdgesManager  {
         {
             AllEdges[i].intensityOfColor = 0;
             Color edgeColor = ColorsManager.getColor(Enviroment.REGULAR_EDGE_COLOR);
-            AllEdges[i].edge.GetComponent<Renderer>().material.color = new Color(edgeColor.r,edgeColor.g,edgeColor.b,Enviroment.TRANSP_DENSITY);
-            AllEdges[i].edge.transform.GetChild(0).GetComponent<Renderer>().material.color = new Color(edgeColor.r, edgeColor.g, edgeColor.b, Enviroment.TRANSP_DENSITY);
+            AllEdges[i].edge.GetComponent<Renderer>().material.color = new Color(edgeColor.r,edgeColor.g,edgeColor.b,Enviroment.TRANSP_EDGE_DENSITY);
+            AllEdges[i].edge.transform.GetChild(0).GetComponent<Renderer>().material.color = new Color(edgeColor.r, edgeColor.g, edgeColor.b, Enviroment.TRANSP_EDGE_DENSITY);
         }
     }
 
