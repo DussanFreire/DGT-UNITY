@@ -162,10 +162,18 @@ public class Graph : MonoBehaviour
 			changeTask(requestModel);
 		}
 	}
-
+	private bool moveActionTriggered(RequestDto requestModel){
+		if(requestModel.actions.xBackward) return true;
+		if(requestModel.actions.xForward) return true;
+		if(requestModel.actions.yBackward) return true;
+		if(requestModel.actions.yForward) return true;
+		if(requestModel.actions.zBackward) return true;
+		if(requestModel.actions.zForward) return true;
+		return false;
+	}
     private void updateNodesFromData(RequestDto requestModel)
     {
-		if(!(RorationManager.changeVerticalRotation(requestModel.actions.rotateV) || RorationManager.changeHorizontalRotation(requestModel.actions.rotateH)))
+		if(!(moveActionTriggered(requestModel) ||RorationManager.changeVerticalRotation(requestModel.actions.rotateV) || RorationManager.changeHorizontalRotation(requestModel.actions.rotateH)))
 		{
 			foreach (NodeRequestDto nodeRequest in requestModel.nodes)
 			{
@@ -201,9 +209,8 @@ public class Graph : MonoBehaviour
 						edgeToUpdate.turnEdgeToTranspColor(edgeColor);
 					}
 				}
-				
 			}
-			
+		}else if(moveActionTriggered(requestModel)){
 			PositionManager.moveXPosition(requestModel.actions.xBackward,requestModel.actions.xForward, transform);
 			PositionManager.moveYPosition(requestModel.actions.yBackward,requestModel.actions.yForward, transform);
 			PositionManager.moveZPosition(requestModel.actions.zBackward,requestModel.actions.zForward, transform);
