@@ -12,7 +12,7 @@ public class Enviroment
 
     // HTTP ENV
 
-    public static string BASE_URL= "http://192.168.89.21:3000" ;
+    public static string BASE_URL= "http://localhost:3000" ;
     public static string URL_INIT_GRAPH = BASE_URL+"/graph/restart";
     public static string URL_GET_GRAPH = BASE_URL+"/graph";
     public static string URL_SEND_METRICS = BASE_URL+"/metrics";
