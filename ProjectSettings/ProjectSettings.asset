@@ -13,8 +13,8 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: DefaultCompany
-  productName: Graph by DF
-  defaultCursor: {fileID: 0}
+  productName: DGT-AR
+  defaultCursor: {fileID: 2800000, guid: 8313e57259bf4a5479749c69b2d124e7, type: 3}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
   m_ShowUnitySplashScreen: 1
@@ -39,8 +39,10 @@ PlayerSettings:
     y: 0
     width: 1
     height: 1
-  m_SplashScreenLogos: []
-  m_VirtualRealitySplashScreen: {fileID: 0}
+  m_SplashScreenLogos:
+  - logo: {fileID: 21300000, guid: ad7d13871c26e094bb8a7d216f6067f4, type: 3}
+    duration: 2
+  m_VirtualRealitySplashScreen: {fileID: 2800000, guid: 8313e57259bf4a5479749c69b2d124e7, type: 3}
   m_HolographicTrackingLossScreen: {fileID: 0}
   defaultScreenWidth: 1024
   defaultScreenHeight: 768
@@ -166,6 +168,7 @@ PlayerSettings:
   - {fileID: 0}
   - {fileID: 3913821078919465157, guid: 50aab0f4ccc962445a36cb22247b58f5, type: 2}
   - {fileID: -3662003323193351676, guid: 619c7722b932c954f91aee754120313b, type: 2}
+  - {fileID: 0}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -299,7 +302,7 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 0}
+      m_Icon: {fileID: 2800000, guid: 8313e57259bf4a5479749c69b2d124e7, type: 3}
       m_Width: 128
       m_Height: 128
       m_Kind: 0
@@ -655,8 +658,12 @@ PlayerSettings:
   metroCertificateNotAfter: 009d8aec0541da01
   metroApplicationDescription: Template_3D
   wsaImages:
-    65936: Assets/graph.png
-  metroTileShortName: Graph by DF
+    65636: Assets/images/DGT-AR 1 50.png
+    65661: Assets/images/DGT-AR 1 63.png
+    65686: Assets/images/DGT-AR 1 73.png
+    65736: Assets/images/DGT-AR 1 100.png
+    65936: Assets/images/DGT-AR 1 200.png
+  metroTileShortName: DGT-AR
   metroTileShowName: 0
   metroMediumTileShowName: 0
   metroLargeTileShowName: 0

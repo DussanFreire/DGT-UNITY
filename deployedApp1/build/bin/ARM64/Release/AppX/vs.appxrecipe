@@ -1,0 +1,315 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Machine>DESKTOP-96NJL6O</Machine>
+    <WindowsUser>internet</WindowsUser>
+    <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+    <TargetOsVersion>10.0</TargetOsVersion>
+    <TargetOsDescription>Windows 10.0</TargetOsDescription>
+    <SolutionConfiguration>Release|ARM64</SolutionConfiguration>
+    <PackageArchitecture>arm64</PackageArchitecture>
+    <PackageIdentityName>338a07c1-6899-4f11-8ccd-b185c7cdea13</PackageIdentityName>
+    <PackageIdentityPublisher>CN=DefaultCompany</PackageIdentityPublisher>
+    <IntermediateOutputPath>C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\build\obj\Graph by DF\ARM64\Release\</IntermediateOutputPath>
+    <RemoteDeploymentType>CopyToDevice</RemoteDeploymentType>
+    <PackageRegistrationPath>
+    </PackageRegistrationPath>
+    <RemoveNonLayoutFiles>false</RemoveNonLayoutFiles>
+    <DeployOptionalPackages>false</DeployOptionalPackages>
+    <WindowsSdkPath>C:\Program Files %28x86%29\Windows Kits\10\</WindowsSdkPath>
+    <LayoutDir>C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\build\bin\ARM64\Release\AppX</LayoutDir>
+    <RegisteredManifestChecksum>E76131D9B589E3F943467BAD222CAF1D0779C1C45828879C4DBBA556890A1BFB</RegisteredManifestChecksum>
+    <RegisteredPackageMoniker>Template3D_1.0.0.0_arm64__pzq3xp76mxafg</RegisteredPackageMoniker>
+    <RegisteredUserModeAppID>Template3D_pzq3xp76mxafg!App</RegisteredUserModeAppID>
+    <RegisteredPackageID>Template3D</RegisteredPackageID>
+    <RegisteredPackagePublisher>CN=DefaultCompany</RegisteredPackagePublisher>
+    <RegisteredVersion>1.0.0.0</RegisteredVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <AppXManifest Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\build\bin\ARM64\Release\AppxManifest.xml">
+      <PackagePath>AppxManifest.xml</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2023-06-26T15:28:27.940</Modified>
+    </AppXManifest>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\build\bin\ARM64\Release\Graph by DF.exe">
+      <PackagePath>Graph by DF.exe</PackagePath>
+      <Modified>2023-06-26T15:28:26.996</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files\Unity\Hub\Editor\2020.3.19f1\Editor\Data\PlaybackEngines\MetroSupport\Players\UAP\il2cpp\ARM64\Release\UnityPlayer.winmd">
+      <PackagePath>UnityPlayer.winmd</PackagePath>
+      <Modified>2021-09-16T19:17:58.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files\Unity\Hub\Editor\2020.3.19f1\Editor\Data\PlaybackEngines\MetroSupport\Players\UAP\il2cpp\ARM64\Release\UnityPlayer.dll">
+      <PackagePath>UnityPlayer.dll</PackagePath>
+      <Modified>2021-09-16T19:17:52.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\build\bin\ARM64\Release\Graph_by_DF.winmd">
+      <PackagePath>Graph_by_DF.winmd</PackagePath>
+      <Modified>2023-06-26T15:28:26.936</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Assets\SplashScreen.scale-200.png">
+      <PackagePath>Assets\SplashScreen.scale-200.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2021-09-16T18:29:42.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Assets\Square150x150Logo.scale-200.png">
+      <PackagePath>Assets\Square150x150Logo.scale-200.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2021-09-16T18:29:42.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Assets\Square44x44Logo.scale-200.png">
+      <PackagePath>Assets\Square44x44Logo.scale-200.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2021-09-16T18:29:42.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Assets\Square44x44Logo.targetsize-24.png">
+      <PackagePath>Assets\Square44x44Logo.targetsize-24.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2021-09-16T18:29:42.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Assets\Square44x44Logo.targetsize-24_altform-unplated.png">
+      <PackagePath>Assets\Square44x44Logo.targetsize-24_altform-unplated.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2021-09-16T18:29:42.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Assets\StoreLogo.scale-100.png">
+      <PackagePath>Assets\StoreLogo.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2021-09-16T18:29:42.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Assets\StoreLogo.scale-400.png">
+      <PackagePath>Assets\StoreLogo.scale-400.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2023-06-22T15:07:18.547</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Assets\Wide310x150Logo.scale-200.png">
+      <PackagePath>Assets\Wide310x150Logo.scale-200.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2021-09-16T18:29:42.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Assets\AppLauncherModel.glb">
+      <PackagePath>Assets\AppLauncherModel.glb</PackagePath>
+      <Modified>2023-06-22T15:07:18.313</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\StoreManifest.xml">
+      <PackagePath>StoreManifest.xml</PackagePath>
+      <Modified>2023-06-26T15:25:09.812</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Data\il2cpp_data\etc\mono\mconfig\config.xml">
+      <PackagePath>Data\il2cpp_data\etc\mono\mconfig\config.xml</PackagePath>
+      <Modified>2021-09-16T18:20:42.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Data\boot.config">
+      <PackagePath>Data\boot.config</PackagePath>
+      <Modified>2023-06-26T15:25:08.437</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Data\il2cpp_data\etc\mono\2.0\machine.config">
+      <PackagePath>Data\il2cpp_data\etc\mono\2.0\machine.config</PackagePath>
+      <Modified>2021-09-16T18:20:42.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Data\il2cpp_data\etc\mono\2.0\web.config">
+      <PackagePath>Data\il2cpp_data\etc\mono\2.0\web.config</PackagePath>
+      <Modified>2021-09-16T18:20:42.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Data\il2cpp_data\etc\mono\4.0\machine.config">
+      <PackagePath>Data\il2cpp_data\etc\mono\4.0\machine.config</PackagePath>
+      <Modified>2021-09-16T18:20:42.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Data\il2cpp_data\etc\mono\4.0\web.config">
+      <PackagePath>Data\il2cpp_data\etc\mono\4.0\web.config</PackagePath>
+      <Modified>2021-09-16T18:20:42.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Data\il2cpp_data\etc\mono\4.5\machine.config">
+      <PackagePath>Data\il2cpp_data\etc\mono\4.5\machine.config</PackagePath>
+      <Modified>2021-09-16T18:20:42.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Data\il2cpp_data\etc\mono\4.5\web.config">
+      <PackagePath>Data\il2cpp_data\etc\mono\4.5\web.config</PackagePath>
+      <Modified>2021-09-16T18:20:42.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Data\globalgamemanagers">
+      <PackagePath>Data\globalgamemanagers</PackagePath>
+      <Modified>2023-06-26T15:24:32.372</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Data\level0">
+      <PackagePath>Data\level0</PackagePath>
+      <Modified>2023-06-26T15:24:29.262</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Data\il2cpp_data\etc\mono\config">
+      <PackagePath>Data\il2cpp_data\etc\mono\config</PackagePath>
+      <Modified>2021-09-16T18:22:32.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Data\Resources\unity default resources">
+      <PackagePath>Data\Resources\unity default resources</PackagePath>
+      <Modified>2021-09-16T18:29:48.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Data\Resources\unity_builtin_extra">
+      <PackagePath>Data\Resources\unity_builtin_extra</PackagePath>
+      <Modified>2023-06-26T15:25:08.432</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Data\globalgamemanagers.assets">
+      <PackagePath>Data\globalgamemanagers.assets</PackagePath>
+      <Modified>2023-06-26T15:24:32.442</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Data\resources.assets">
+      <PackagePath>Data\resources.assets</PackagePath>
+      <Modified>2023-06-26T15:24:36.245</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Data\sharedassets0.assets">
+      <PackagePath>Data\sharedassets0.assets</PackagePath>
+      <Modified>2023-06-26T15:24:59.986</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Data\level0.resS">
+      <PackagePath>Data\level0.resS</PackagePath>
+      <Modified>2023-06-26T15:24:29.262</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Data\resources.assets.resS">
+      <PackagePath>Data\resources.assets.resS</PackagePath>
+      <Modified>2023-06-26T15:24:36.245</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Data\sharedassets0.assets.resS">
+      <PackagePath>Data\sharedassets0.assets.resS</PackagePath>
+      <Modified>2023-06-26T15:24:59.972</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Data\nativePlugins.txt">
+      <PackagePath>Data\nativePlugins.txt</PackagePath>
+      <Modified>2023-06-26T15:25:40.053</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Data\RuntimeInitializeOnLoads.json">
+      <PackagePath>Data\RuntimeInitializeOnLoads.json</PackagePath>
+      <Modified>2023-06-26T15:24:10.892</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Data\ScriptingAssemblies.json">
+      <PackagePath>Data\ScriptingAssemblies.json</PackagePath>
+      <Modified>2023-06-26T15:24:32.112</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Data\UnitySubsystems\MicrosoftOpenXRPlugin\UnitySubsystemsManifest.json">
+      <PackagePath>Data\UnitySubsystems\MicrosoftOpenXRPlugin\UnitySubsystemsManifest.json</PackagePath>
+      <Modified>2023-06-22T15:06:49.472</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Data\UnitySubsystems\UnityOpenXR\UnitySubsystemsManifest.json">
+      <PackagePath>Data\UnitySubsystems\UnityOpenXR\UnitySubsystemsManifest.json</PackagePath>
+      <Modified>2021-11-11T16:13:57.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Data\sharedassets0.resource">
+      <PackagePath>Data\sharedassets0.resource</PackagePath>
+      <Modified>2023-06-26T15:24:59.954</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Data\il2cpp_data\etc\mono\browscap.ini">
+      <PackagePath>Data\il2cpp_data\etc\mono\browscap.ini</PackagePath>
+      <Modified>2021-09-16T18:22:32.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Data\il2cpp_data\etc\mono\2.0\DefaultWsdlHelpGenerator.aspx">
+      <PackagePath>Data\il2cpp_data\etc\mono\2.0\DefaultWsdlHelpGenerator.aspx</PackagePath>
+      <Modified>2021-09-16T18:20:42.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Data\il2cpp_data\etc\mono\4.0\DefaultWsdlHelpGenerator.aspx">
+      <PackagePath>Data\il2cpp_data\etc\mono\4.0\DefaultWsdlHelpGenerator.aspx</PackagePath>
+      <Modified>2021-09-16T18:20:42.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Data\il2cpp_data\etc\mono\4.5\DefaultWsdlHelpGenerator.aspx">
+      <PackagePath>Data\il2cpp_data\etc\mono\4.5\DefaultWsdlHelpGenerator.aspx</PackagePath>
+      <Modified>2021-09-16T18:20:42.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Data\il2cpp_data\etc\mono\2.0\settings.map">
+      <PackagePath>Data\il2cpp_data\etc\mono\2.0\settings.map</PackagePath>
+      <Modified>2021-09-16T18:20:42.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Data\il2cpp_data\etc\mono\4.0\settings.map">
+      <PackagePath>Data\il2cpp_data\etc\mono\4.0\settings.map</PackagePath>
+      <Modified>2021-09-16T18:20:42.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Data\il2cpp_data\etc\mono\4.5\settings.map">
+      <PackagePath>Data\il2cpp_data\etc\mono\4.5\settings.map</PackagePath>
+      <Modified>2021-09-16T18:20:42.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Data\il2cpp_data\etc\mono\2.0\Browsers\Compat.browser">
+      <PackagePath>Data\il2cpp_data\etc\mono\2.0\Browsers\Compat.browser</PackagePath>
+      <Modified>2021-09-16T18:20:42.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Data\il2cpp_data\etc\mono\4.0\Browsers\Compat.browser">
+      <PackagePath>Data\il2cpp_data\etc\mono\4.0\Browsers\Compat.browser</PackagePath>
+      <Modified>2021-09-16T18:20:42.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Data\il2cpp_data\etc\mono\4.5\Browsers\Compat.browser">
+      <PackagePath>Data\il2cpp_data\etc\mono\4.5\Browsers\Compat.browser</PackagePath>
+      <Modified>2021-09-16T18:20:42.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Data\il2cpp_data\Metadata\global-metadata.dat">
+      <PackagePath>Data\il2cpp_data\Metadata\global-metadata.dat</PackagePath>
+      <Modified>2023-06-26T15:25:36.952</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Data\il2cpp_data\Resources\I18N.CJK.dll-resources.dat">
+      <PackagePath>Data\il2cpp_data\Resources\I18N.CJK.dll-resources.dat</PackagePath>
+      <Modified>2023-06-26T15:25:28.112</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\Data\il2cpp_data\Resources\mscorlib.dll-resources.dat">
+      <PackagePath>Data\il2cpp_data\Resources\mscorlib.dll-resources.dat</PackagePath>
+      <Modified>2023-06-26T15:25:28.112</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\UnityOpenXR.dll">
+      <PackagePath>UnityOpenXR.dll</PackagePath>
+      <Modified>2021-11-11T16:13:57.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\openxr_loader.dll">
+      <PackagePath>openxr_loader.dll</PackagePath>
+      <Modified>2021-11-11T16:13:57.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\Graph by DF\MicrosoftOpenXRPlugin.dll">
+      <PackagePath>MicrosoftOpenXRPlugin.dll</PackagePath>
+      <Modified>2023-06-22T15:06:49.472</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\build\bin\ARM64\Release\GameAssembly.dll">
+      <PackagePath>GameAssembly.dll</PackagePath>
+      <Modified>2023-06-26T15:28:23.570</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files\Unity\Hub\Editor\2020.3.19f1\Editor\Data\PlaybackEngines\MetroSupport\Players\UAP\il2cpp\ARM64\Release\baselib.dll">
+      <PackagePath>baselib.dll</PackagePath>
+      <Modified>2021-09-16T19:17:50.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\internet\Desktop\DGT-UNITY\deployedApp1\build\bin\ARM64\Release\resources.pri">
+      <PackagePath>resources.pri</PackagePath>
+      <Modified>2023-06-26T15:28:27.523</Modified>
+    </AppxPackagedFile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResolvedSDKReference Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows Kits\10\ExtensionSDKs\Microsoft.VCLibs\14.0\">
+      <Name>Microsoft.VCLibs.140.00</Name>
+      <Version>14.0.30704.0</Version>
+      <Architecture>ARM</Architecture>
+      <FrameworkIdentity>Name = Microsoft.VCLibs.140.00, MinVersion = 14.0.30704.0, Publisher = %27CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US%27</FrameworkIdentity>
+      <AppxLocation>C:\Program Files %28x86%29\Microsoft SDKs\Windows Kits\10\ExtensionSDKs\Microsoft.VCLibs\14.0\.\AppX\Retail\ARM\Microsoft.VCLibs.ARM.14.00.appx</AppxLocation>
+      <MoreInfo>
+      </MoreInfo>
+    </ResolvedSDKReference>
+    <ResolvedSDKReference Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows Kits\10\ExtensionSDKs\Microsoft.VCLibs\14.0\">
+      <Name>Microsoft.VCLibs.140.00</Name>
+      <Version>14.0.30704.0</Version>
+      <Architecture>ARM64</Architecture>
+      <FrameworkIdentity>Name = Microsoft.VCLibs.140.00, MinVersion = 14.0.30704.0, Publisher = %27CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US%27</FrameworkIdentity>
+      <AppxLocation>C:\Program Files %28x86%29\Microsoft SDKs\Windows Kits\10\ExtensionSDKs\Microsoft.VCLibs\14.0\.\AppX\Retail\ARM64\Microsoft.VCLibs.ARM64.14.00.appx</AppxLocation>
+      <MoreInfo>
+      </MoreInfo>
+    </ResolvedSDKReference>
+    <ResolvedSDKReference Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows Kits\10\ExtensionSDKs\Microsoft.VCLibs\14.0\">
+      <Name>Microsoft.VCLibs.140.00</Name>
+      <Version>14.0.30704.0</Version>
+      <Architecture>x64</Architecture>
+      <FrameworkIdentity>Name = Microsoft.VCLibs.140.00, MinVersion = 14.0.30704.0, Publisher = %27CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US%27</FrameworkIdentity>
+      <AppxLocation>C:\Program Files %28x86%29\Microsoft SDKs\Windows Kits\10\ExtensionSDKs\Microsoft.VCLibs\14.0\.\AppX\Retail\x64\Microsoft.VCLibs.x64.14.00.appx</AppxLocation>
+      <MoreInfo>
+      </MoreInfo>
+    </ResolvedSDKReference>
+    <ResolvedSDKReference Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows Kits\10\ExtensionSDKs\Microsoft.VCLibs\14.0\">
+      <Name>Microsoft.VCLibs.140.00</Name>
+      <Version>14.0.30704.0</Version>
+      <Architecture>x86</Architecture>
+      <FrameworkIdentity>Name = Microsoft.VCLibs.140.00, MinVersion = 14.0.30704.0, Publisher = %27CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US%27</FrameworkIdentity>
+      <AppxLocation>C:\Program Files %28x86%29\Microsoft SDKs\Windows Kits\10\ExtensionSDKs\Microsoft.VCLibs\14.0\.\AppX\Retail\x86\Microsoft.VCLibs.x86.14.00.appx</AppxLocation>
+      <MoreInfo>
+      </MoreInfo>
+    </ResolvedSDKReference>
+  </ItemGroup>
+</Project>
