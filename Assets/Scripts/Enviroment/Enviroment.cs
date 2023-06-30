@@ -7,7 +7,7 @@ public class Enviroment
 
 
     // public static bool DESKTOP_SETUP = Application.isPlaying? false : true;
-    public static bool DESKTOP_SETUP = true;
+    public static bool DESKTOP_SETUP = false;
 
 
     // HTTP ENV
