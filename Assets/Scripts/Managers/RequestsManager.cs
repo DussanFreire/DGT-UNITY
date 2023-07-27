@@ -61,7 +61,6 @@ public class RequestsManager
 
 	public static IEnumerator SendHeadMetricsDataPost(string uri)
 	{
-		Debug.Log("entro");
 
 		HeadMetricsDto headMets = new HeadMetricsDto();
 		headMets.setCoords(MetricsManager.headCoords, MetricsManager.headRotation);

@@ -1,22 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class dialogIP : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public GameObject targetObject;
+    
+    public static string RemoveZeroWidthSpace(string input)
     {
-        
+        return input.Replace("\u200B", "");
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void clickButton(){
-        Debug.Log("clickButton");
+        GameObject location = ObjectManager.FindInActiveObjectByName("PlaceLocation");
+        GameObject idDialog = ObjectManager.FindInActiveObjectByName("idDialog");
+        if (targetObject != null)
+        {
+            TextMeshProUGUI textMeshPro = targetObject.GetComponent<TextMeshProUGUI>();
+
+            if (textMeshPro != null)
+            {
+                string text = textMeshPro.text;
+                string server= "http://"+RemoveZeroWidthSpace(text)+":3000";
+                Enviroment.setBaseURL(server); 
+                location.SetActive(true);
+                idDialog.SetActive(false);
+            }
+        }
     }
 }

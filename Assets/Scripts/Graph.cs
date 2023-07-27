@@ -83,17 +83,17 @@ public class Graph : MonoBehaviour
 		MetricsManager.headCoords.Add(coord);
 		MetricsManager.headRotation.Add(rotation);
 		if(MetricsManager.headCoords.Count > 10){
-			StartCoroutine(RequestsManager.SendHeadMetricsDataPost(Enviroment.URL_SEND_METRICS_HEAD));
+			StartCoroutine(RequestsManager.SendHeadMetricsDataPost(Enviroment.getSendMetricsHeadURL()));
 		}
 	}
 
 	public void GenerateRequest()
 	{
 		if(!graphBuilded){
-			StartCoroutine(RequestsManager.GetGraphData(Enviroment.URL_INIT_GRAPH, ResponseCallback));
+			StartCoroutine(RequestsManager.GetGraphData(Enviroment.getInitGraphURL(), ResponseCallback));
 			graphBuilded=true;
 		}else{
-			StartCoroutine(RequestsManager.GetGraphData(Enviroment.URL_GET_GRAPH, ResponseCallback));
+			StartCoroutine(RequestsManager.GetGraphData(Enviroment.getGraphURL(), ResponseCallback));
 		}
 	}
 
@@ -137,9 +137,9 @@ public class Graph : MonoBehaviour
 
 	private void changeTask(RequestDto requestModel){
 		if(!Enviroment.DESKTOP_SETUP){
-			StartCoroutine(RequestsManager.SendHeadMetricsDataPost(Enviroment.URL_SEND_METRICS_HEAD));
+			StartCoroutine(RequestsManager.SendHeadMetricsDataPost(Enviroment.getSendMetricsHeadURL()));
 		}
-		StartCoroutine(RequestsManager.SendMetricsDataPost(Enviroment.URL_SEND_METRICS));
+		StartCoroutine(RequestsManager.SendMetricsDataPost(Enviroment.getSendMetricsURL()));
 		MetricsManager.headCoords= new List<Vector3>();
 		MetricsManager.headRotation= new List<Vector3>();
 		MetricsManager.actionsDone= new List<NodeActionDto>();

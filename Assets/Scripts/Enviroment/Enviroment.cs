@@ -12,7 +12,34 @@ public class Enviroment
 
     // HTTP ENV
 
-    public static string BASE_URL= "http://192.168.88.173:3000" ;
+    public static string BASE_URL= "http://localhost:3000" ;
+
+    public static void setBaseURL(string url){
+        BASE_URL= url ;
+        URL_INIT_GRAPH = url+"/graph/restart";
+        URL_GET_GRAPH = url+"/graph";
+        URL_SEND_METRICS = url+"/metrics";
+        URL_SEND_METRICS_HEAD = url+"/graph-data-flow";
+    }
+    public static string getInitGraphURL(){
+        return URL_INIT_GRAPH;
+    }
+
+    public static string getGraphURL(){
+        return URL_GET_GRAPH;
+    }
+
+    public static string getBaseURL(){
+        return BASE_URL;
+    }
+
+    public static string getSendMetricsURL(){
+        return URL_SEND_METRICS;
+    }
+
+    public static string getSendMetricsHeadURL(){
+        return URL_SEND_METRICS_HEAD;
+    }
     public static string URL_INIT_GRAPH = BASE_URL+"/graph/restart";
     public static string URL_GET_GRAPH = BASE_URL+"/graph";
     public static string URL_SEND_METRICS = BASE_URL+"/metrics";
