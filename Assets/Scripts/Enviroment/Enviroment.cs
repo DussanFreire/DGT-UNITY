@@ -58,8 +58,9 @@ public class Enviroment
     public static float TRANSP_EDGE_DENSITY  = 0.000f;
     public static float TRANSP_NODE_DENSITY  = 0.25f;
     // TEXT ENV
-    static public float TEXT_SIZE =0.7f;
-    static public float TEXT_BG_HEIGHT =0.03f ;
+    static public float TEXT_SIZE =1.4f;
+    static public float TEXT_BG_HEIGHT =0.06f ;
+    // static public float TEXT_BG_HEIGHT =0.03f ;
     static public Vector3 NODE_LOCAL_SCALE = new Vector3(0.0500000007f,0.0500000007f,0.0500000007f);
     static public Vector3 EDGE_LOCAL_SCALE = new Vector3(0.00300000003f,0.00300000003f,0.200000003f);
 }

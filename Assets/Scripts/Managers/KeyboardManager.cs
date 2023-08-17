@@ -30,5 +30,10 @@ public class KeyboardManager : MonoBehaviour
         {
             MetricsManager.desktopInputs.d_pressed++;
         }
+        if (Input.GetKeyDown("j"))
+        {
+            Debug.Log("image");
+            ScreenCapture.CaptureScreenshot("Imagen.png", 20);
+        }
     }
 }

@@ -177,13 +177,15 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
     }
     public void showTextLabel()
     {
+        Color white = new Color(1f, 1f, 1f, 1f);
         this.transform.GetChild(0).GetComponent<TextMesh>().text = this.name;
         this.transform.GetChild(0).GetComponent<TextMesh>().characterSize = Enviroment.TEXT_SIZE;
-        this.transform.GetChild(0).GetComponent<TextMesh>().color = this.nodeColor;
+        this.transform.GetChild(0).GetComponent<TextMesh>().color = white;
+        // this.transform.GetChild(0).GetComponent<TextMesh>().color = this.nodeColor;
         Vector3 scale = this.transform.GetChild(0).GetComponent<TextMesh>().transform.localScale;
-
+        // this.transform.GetChild(0).GetComponent<TextMesh>().transform.localScale = scale*2;
         float width = getWidth(this.name, Enviroment.TEXT_SIZE);
-        this.transform.GetChild(1).transform.localScale = new Vector3(width*70, Enviroment.TEXT_BG_HEIGHT*20, 0.01f);;
+        this.transform.GetChild(1).transform.localScale = new Vector3(width*70, Enviroment.TEXT_BG_HEIGHT*20, 0.01f);
         Color bl = this.nodeBackground;
         this.transform.GetChild(1).transform.GetComponent<Renderer>().material.color = new Color(bl.r,bl.g,bl.b,0.80f);
 
