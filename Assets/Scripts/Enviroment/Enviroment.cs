@@ -20,6 +20,7 @@ public class Enviroment
         URL_GET_GRAPH = url+"/graph";
         URL_SEND_METRICS = url+"/metrics";
         URL_SEND_METRICS_HEAD = url+"/graph-data-flow";
+        URL_SET_DATASET = url+"/graph/set-dataset";
     }
     public static string getInitGraphURL(){
         return URL_INIT_GRAPH;

@@ -20,14 +20,17 @@ public class dialogIP : MonoBehaviour
 
             if (textMeshPro != null)
             {
-                Debug.Log(Enviroment.URL_SET_DATASET);
-                StartCoroutine(RequestsManager.SelectDatasetData(Enviroment.URL_SET_DATASET));
+         
 
                 string text = textMeshPro.text;
                 string server= "http://"+RemoveZeroWidthSpace(text)+":3000";
                 Enviroment.setBaseURL(server); 
+                Debug.Log(Enviroment.URL_SET_DATASET);
+                StartCoroutine(RequestsManager.SelectDatasetData(Enviroment.URL_SET_DATASET));
+                
                 location.SetActive(true);
                 idDialog.SetActive(false);
+
             }
         }
     }
