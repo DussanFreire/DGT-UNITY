@@ -20,7 +20,8 @@ public class dialogIP : MonoBehaviour
 
             if (textMeshPro != null)
             {
-                RequestsManager.SelectDatasetData(Enviroment.URL_SET_DATASET)
+                Debug.Log(Enviroment.URL_SET_DATASET);
+                StartCoroutine(RequestsManager.SelectDatasetData(Enviroment.URL_SET_DATASET));
 
                 string text = textMeshPro.text;
                 string server= "http://"+RemoveZeroWidthSpace(text)+":3000";
@@ -31,12 +32,15 @@ public class dialogIP : MonoBehaviour
         }
     }
     public void clickButtonMario(){
-        Enviroment.dataset = "mario"
-        Debug.Log("clickButtonMario",Enviroment.dataset);
+        Enviroment.dataset = "mario";
+        Debug.Log("clickButtonMario");
+        Debug.Log(Enviroment.dataset);
     }
 
     public void clickButtonAngular(){
-        Enviroment.dataset = "angular"
-        Debug.Log("clickButtonAngular",Enviroment.dataset);
+        Enviroment.dataset = "angular";
+        Debug.Log("clickButtonAngular");
+        Debug.Log(Enviroment.dataset);
     }
+
 }
