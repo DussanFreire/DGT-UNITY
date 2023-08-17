@@ -1,6 +1,0 @@
-﻿  App.cpp
-  UnityGenerated.cpp
-  Generating code
-  Finished generating code
-  DGT-AR.vcxproj -> C:\Users\internet\Desktop\DGT-UNITY\deployedApp5\build\bin\ARM64\Release\DGT-AR.exe
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VisualStudio\v16.0\AppxPackage\Microsoft.AppXPackage.Targets(3367,5): warning : APPX4001: Build property AppxBundlePlatforms is not explicitly set and is calculated based on currently building architecture. Use 'Create App Package' wizard or edit project file to set it.

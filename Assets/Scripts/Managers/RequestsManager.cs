@@ -24,6 +24,23 @@ public class RequestsManager
 			}
 		}
 	}	
+
+	public static  IEnumerator SelectDatasetData(string uri)
+	{
+		WWWForm form = new WWWForm();
+		form.AddField("dataset",Enviroment.dataset);
+		
+		using (UnityWebRequest request = UnityWebRequest.Post(uri,form))
+		{
+			yield return request.SendWebRequest();
+
+			if (request.result!= UnityWebRequest.Result.Success)
+			{
+				Debug.Log(request.error);
+			}
+		}
+		MetricsManager.staticInitMetric();
+	}	
 	public static IEnumerator SendMetricsDataPost(string uri)
 	{
 		HeadMetricsDto headMets = new HeadMetricsDto();

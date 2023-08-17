@@ -44,6 +44,7 @@ public class Enviroment
     public static string URL_GET_GRAPH = BASE_URL+"/graph";
     public static string URL_SEND_METRICS = BASE_URL+"/metrics";
     public static string URL_SEND_METRICS_HEAD = BASE_URL+"/graph-data-flow";
+    public static string URL_SET_DATASET = BASE_URL+"/graph/set-dataset";
 
     // MOVEMENT ENV
     public static float MOVEMENT_SPEED = 0.5f;
@@ -51,6 +52,7 @@ public class Enviroment
 	public static  float MOVEMENT_STEP = 0.1f * Time.deltaTime;
 
     public static float ROTATION_SPEED = 0.55f;
+    public static string dataset = "angular";
 
    // EDGE COLORS ENV
     public static string REGULAR_EDGE_COLOR  = "#000000";

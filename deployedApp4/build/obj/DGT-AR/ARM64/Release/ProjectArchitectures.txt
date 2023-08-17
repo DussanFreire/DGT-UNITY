@@ -1,1 +1,0 @@
-C:\Users\internet\Desktop\DGT-UNITY\deployedApp4\DGT-AR\DGT-AR.vcxproj;arm64
