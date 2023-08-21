@@ -20,8 +20,6 @@ public class dialogIP : MonoBehaviour
 
             if (textMeshPro != null)
             {
-         
-
                 string text = textMeshPro.text;
                 string server= "http://"+RemoveZeroWidthSpace(text)+":3000";
                 Enviroment.setBaseURL(server); 
@@ -30,7 +28,6 @@ public class dialogIP : MonoBehaviour
                 
                 location.SetActive(true);
                 idDialog.SetActive(false);
-
             }
         }
     }
@@ -43,6 +40,17 @@ public class dialogIP : MonoBehaviour
     public void clickButtonAngular(){
         Enviroment.dataset = "angular";
         Debug.Log("clickButtonAngular");
+        Debug.Log(Enviroment.dataset);
+    }
+
+    public void clickButtonToy1(){
+        Enviroment.dataset = "toy1";
+        Debug.Log("clickButtonToy1");
+        Debug.Log(Enviroment.dataset);
+    }
+     public void clickButtonToy2(){
+        Enviroment.dataset = "toy2";
+        Debug.Log("clickButtonToy2");
         Debug.Log(Enviroment.dataset);
     }
 
