@@ -39,7 +39,6 @@ public class RequestsManager
 				Debug.Log(request.error);
 			}
 		}
-		MetricsManager.staticInitMetric();
 	}	
 	public static IEnumerator SendMetricsDataPost(string uri)
 	{
