@@ -6,7 +6,7 @@ public class SizeManager
 {
 
     public static bool sizeChanged { get; set; }
-    public static float speed = 2.0f;
+    public static float speed = 7.0f;
     public static Vector3 newSize { get; set; }
     public static void changeSize(Vector3 auxSize){
         newSize=auxSize;

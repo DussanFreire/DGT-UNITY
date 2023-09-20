@@ -36,7 +36,7 @@ public class PositionManager
 			}
 		}
     }
-    public static void moveXPosition(bool backward, bool forward, Transform graphTransform){
+    public static async void  moveXPosition(bool backward, bool forward, Transform graphTransform){
 		if(!backward && !forward)
 			return;
         float movement = Enviroment.MOVEMENT_SPEED;
@@ -44,13 +44,13 @@ public class PositionManager
 		posXTarget = graphTransform.position;
 		posXTarget += new Vector3(movement,0,0);
 		movingX = true;
-		Task.Run(async () =>
+		await Task.Run(async () =>
 		{
 			await Task.Delay(Enviroment.MOVEMENT_TIME);
 			movingX=false;
 		});
 	}
-	public static void moveYPosition(bool backward, bool forward, Transform graphTransform){
+	public static async void moveYPosition(bool backward, bool forward, Transform graphTransform){
 		if(!backward && !forward)
 			return;
         float movement = Enviroment.MOVEMENT_SPEED;
@@ -58,13 +58,13 @@ public class PositionManager
 		posYTarget = graphTransform.position;
 		posYTarget += new Vector3(0,movement,0);
 		movingY = true;
-		Task.Run(async () =>
+		await Task.Run(async () =>
 		{
 			await Task.Delay(Enviroment.MOVEMENT_TIME);
 			movingY=false;
 		});
 	}
-	public static void moveZPosition(bool backward, bool forward, Transform graphTransform){
+	public static async void moveZPosition(bool backward, bool forward, Transform graphTransform){
 		if(!backward && !forward)
 			return;
         float movement = Enviroment.MOVEMENT_SPEED;
@@ -72,7 +72,7 @@ public class PositionManager
 		posZTarget = graphTransform.position;
 		posZTarget += new Vector3(0,0,movement);
 		movingZ = true;
-		Task.Run(async () =>
+		await Task.Run(async () =>
 		{
 			await Task.Delay(Enviroment.MOVEMENT_TIME);
 			movingZ=false;

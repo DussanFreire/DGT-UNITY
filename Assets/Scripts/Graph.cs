@@ -35,7 +35,7 @@ public class Graph : MonoBehaviour
 		if(!Enviroment.DESKTOP_SETUP){
 			InvokeRepeating("getHeadCoords", 0.0f, 1.0f);
 		}
-		InvokeRepeating("GenerateRequest", 0.0f, 1.0f);
+		InvokeRepeating("GenerateRequest", 0.0f, 0.1f);
 		leftHandUsed =false;
 		rightHandUsed =false;
         audioData = GetComponent<AudioSource>();
@@ -211,8 +211,10 @@ public class Graph : MonoBehaviour
 				}
 			}
 		}else if(moveActionTriggered(requestModel)){
+			Debug.Log("requestModel.actions.xForward");
+			Debug.Log(requestModel.actions.xForward);
 			PositionManager.moveXPosition(requestModel.actions.xBackward,requestModel.actions.xForward, transform);
-			PositionManager.moveYPosition(requestModel.actions.yBackward,requestModel.actions.yForward, transform);
+		 	PositionManager.moveYPosition(requestModel.actions.yBackward,requestModel.actions.yForward, transform);
 			PositionManager.moveZPosition(requestModel.actions.zBackward,requestModel.actions.zForward, transform);
 		}
 	

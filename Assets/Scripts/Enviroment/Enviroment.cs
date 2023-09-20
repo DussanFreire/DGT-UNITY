@@ -49,10 +49,11 @@ public class Enviroment
 
     // MOVEMENT ENV
     public static float MOVEMENT_SPEED = 0.5f;
-    public static int MOVEMENT_TIME = 7000;
-	public static  float MOVEMENT_STEP = 0.1f * Time.deltaTime;
+    public static int MOVEMENT_TIME = 2000;
+	public static  float MOVEMENT_STEP = 0.5f * Time.deltaTime;
 
-    public static float ROTATION_SPEED = 0.55f;
+    public static float ROTATION_SPEED_MR = 0.30f;
+    public static float ROTATION_SPEED_DESKTOP = 0.10f;
     public static string dataset = "angular";
 
    // EDGE COLORS ENV

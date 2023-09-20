@@ -7,11 +7,12 @@ public class RorationManager
     private static bool verticalRotationActivated=false;
     private static bool horizontalRotationActivated=false;
 	public static void setRotationListeners(Transform graphTransform){
+        float rotationSpeed = Enviroment.DESKTOP_SETUP? Enviroment.ROTATION_SPEED_DESKTOP :Enviroment.ROTATION_SPEED_MR;
         if(horizontalRotationActivated){
-			graphTransform.Rotate(0,Enviroment.ROTATION_SPEED, 0, Space.World);
+			graphTransform.Rotate(0,rotationSpeed, 0, Space.World);
 		}
 		if(verticalRotationActivated){
-			graphTransform.Rotate(Enviroment.ROTATION_SPEED,0, 0, Space.World);
+			graphTransform.Rotate(rotationSpeed,0, 0, Space.World);
 		}
     }
 

@@ -5,6 +5,15 @@ using UnityEngine;
 
 public class dialogIP : MonoBehaviour
 {
+    void Start()
+	{
+	    if(Enviroment.DESKTOP_SETUP){
+            Debug.Log("llega aca");
+            ObjectManager.FindInActiveObjectByName("TitleText123").SetActive(false);
+            ObjectManager.FindInActiveObjectByName("Canvas123").SetActive(false);
+            ObjectManager.FindInActiveObjectByName("DescriptionText123").SetActive(false);
+        }
+	}
     public GameObject targetObject;
     
     public static string RemoveZeroWidthSpace(string input)
@@ -14,15 +23,17 @@ public class dialogIP : MonoBehaviour
     public void clickButton(){
         GameObject location = ObjectManager.FindInActiveObjectByName("PlaceLocation");
         GameObject idDialog = ObjectManager.FindInActiveObjectByName("idDialog");
+        string text = Enviroment.BASE_URL;
         if (targetObject != null)
         {
-            TextMeshProUGUI textMeshPro = targetObject.GetComponent<TextMeshProUGUI>();
+            if(!Enviroment.DESKTOP_SETUP){
+                TextMeshProUGUI textMeshPro = targetObject.GetComponent<TextMeshProUGUI>();
+                text = "http://"+RemoveZeroWidthSpace(textMeshPro.text)+":3000";
+            }
 
-            if (textMeshPro != null)
+            if (text != "")
             {
-                string text = textMeshPro.text;
-                string server= "http://"+RemoveZeroWidthSpace(text)+":3000";
-                Enviroment.setBaseURL(server); 
+                Enviroment.setBaseURL(text); 
                 Debug.Log(Enviroment.URL_SET_DATASET);
                 StartCoroutine(RequestsManager.SelectDatasetData(Enviroment.URL_SET_DATASET));
                 

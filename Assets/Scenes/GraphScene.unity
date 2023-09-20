@@ -4138,7 +4138,7 @@ GameObject:
   - component: {fileID: 603103339}
   - component: {fileID: 603103337}
   m_Layer: 0
-  m_Name: TitleText
+  m_Name: TitleText123
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10914,7 +10914,7 @@ GameObject:
   - component: {fileID: 1497863504}
   - component: {fileID: 1497863503}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: Canvas123
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14201,7 +14201,7 @@ GameObject:
   - component: {fileID: 2088893094}
   - component: {fileID: 2088893092}
   m_Layer: 0
-  m_Name: DescriptionText
+  m_Name: DescriptionText123
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
