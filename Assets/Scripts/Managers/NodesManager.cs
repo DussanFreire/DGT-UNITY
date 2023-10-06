@@ -24,4 +24,13 @@ public class NodesManager
         }
     }
 
+     static public void turnColorAllNodes()
+    {
+        for (int i = 0; i < AllNodes.Count; i++)
+        {
+            AllNodes[i].colorChangedByHover =false;
+            AllNodes[i].turnToSolidColor();
+        }
+    }
+
 }

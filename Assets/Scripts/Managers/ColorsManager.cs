@@ -16,6 +16,11 @@ public class ColorsManager
         return color;
     }
     static public void changeChildrenColors(Node currentNode,Material material){
+        foreach (var nodeAux in NodesManager.AllNodes)
+        {
+            nodeAux.rootNode=false;
+        }
+        currentNode.rootNode =true;
         currentNode.turnToSolidColor();
         currentNode.showTextLabel();
         List<Node> childrenNode = new List<Node>();
@@ -40,14 +45,21 @@ public class ColorsManager
         var touchHandler = targetNode.AddComponent<TouchHandler>();
         pointerHandler.OnPointerDown.AddListener((e) => {
             NodesManager.resetAllLabels();
-            NodesManager.turnTranspAllNodes();
-            EdgesManager.turnTranspAllEdges();   
+            if(node.rootNode){
+                NodesManager.turnColorAllNodes();
+                EdgesManager.turnSolidAllEdges();
+                ColorsManager.labelShowed = false;
+                node.rootNode = false;
+            }
+            else{
+                NodesManager.turnTranspAllNodes();
+                EdgesManager.turnTranspAllEdges(); 
+                changeChildrenColors(node, material); 
+                ColorsManager.labelShowed = true;
+            }
+            audioData.Play(0);
             MetricsManager.pointerUsed++;
             node.addAction("Pointed");
-            changeChildrenColors(node, material); 
-            audioData.Play(0);
-            ColorsManager.labelShowed =true;
-
         });
         touchHandler.OnTouchCompleted.AddListener((e) => {
             MetricsManager.touchUsed++;

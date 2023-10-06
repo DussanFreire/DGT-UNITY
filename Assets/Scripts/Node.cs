@@ -7,6 +7,7 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
 {
     public Transform graphtransf { get; set; }
     public int id;
+    public bool rootNode { get; set; }
     public bool visible { get; set; }
     public GameObject edgePrefab;
     public GameObject nodeGameObject;
@@ -26,6 +27,7 @@ public class Node : MonoBehaviour,IMixedRealityFocusHandler
         transform.GetChild(1).localScale = new Vector3(0.0f, 0.0f, 0.0f);
         transform.GetChild(0).GetComponent<TextMesh>().text = "";
         startConfiguration();
+        this.rootNode = false;
         ColorsManager.SetColorsListener(this, nodeGameObject);
     }
     void Update()
