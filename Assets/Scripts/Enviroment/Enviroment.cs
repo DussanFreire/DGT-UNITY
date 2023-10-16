@@ -67,4 +67,5 @@ public class Enviroment
     // static public float TEXT_BG_HEIGHT =0.03f ;
     static public Vector3 NODE_LOCAL_SCALE = new Vector3(0.0500000007f,0.0500000007f,0.0500000007f);
     static public Vector3 EDGE_LOCAL_SCALE = new Vector3(0.00300000003f,0.00300000003f,0.200000003f);
+    static public Vector3 MIN_GRAPH_SIZE = new Vector3(0.95f,0.95f,0.95f);
 }

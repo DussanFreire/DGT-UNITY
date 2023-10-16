@@ -41,12 +41,19 @@ public class Graph : MonoBehaviour
         audioData = GetComponent<AudioSource>();
 		ColorsManager.audioData = audioData;
 	}
+	void sizeController(){
+		Vector3 currentSize = graph.transform.localScale;
+		if(currentSize.x< Enviroment.MIN_GRAPH_SIZE.x ||currentSize.y< Enviroment.MIN_GRAPH_SIZE.y||currentSize.z< Enviroment.MIN_GRAPH_SIZE.z){
+			SizeManager.changeSize(new Vector3(1,1,1));
+		}
+	}
 
 	void Update(){
 		SizeManager.setSizeListener(graph.transform);
 		RorationManager.setRotationListeners(transform);
 		PositionManager.setMovementListeners(graph.transform);
 		KeyboardManager.setKeyboardAndMouseListeners(transform);
+		sizeController();
 		if (!rightHandUsed && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Right, out pose))
         {
 			RightHandTime = DateTime.Now;

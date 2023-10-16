@@ -59,7 +59,7 @@ public class dialogIP : MonoBehaviour
         Debug.Log("clickButtonToy1");
         Debug.Log(Enviroment.dataset);
     }
-     public void clickButtonToy2(){
+    public void clickButtonToy2(){
         Enviroment.dataset = "toy2";
         Debug.Log("clickButtonToy2");
         Debug.Log(Enviroment.dataset);
